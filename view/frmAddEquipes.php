@@ -5,18 +5,21 @@
     
     $equipeController = new EquipeController();
     $campeonatoController = new CampeonatoController();
-    $estatisticaController = new EstatisticaController();
-
-    $id = $_GET['id']; // id do campeonato
-
+    
+    $id_campeonato = $_GET['id']; // id do campeonato
+    
+    // valores para envio de dados
     if(isset($_POST['chkId'])){
-        $equipes = $_POST['chkId'];
-        $campeonato = $campeonatoController->listarPorId($id);
+        $estatisticaController = new EstatisticaController();
 
+        $equipes = $_POST['chkId'];
+        $estatisticaController->inserirEstatistica($equipes,$id_campeonato);
+        header('Location: menu');
+        die();
     }
 
     $equipe = $equipeController->listarNome();
-    $campeonato = $campeonatoController->listarId($id);
+    $campeonato = $campeonatoController->listarId($id_campeonato);
 
     //valor usado para função em javascript
     $valor = $campeonato->getNEquipe();
@@ -34,7 +37,7 @@
         <hr>
         <p>Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
         <input type="button" value="Voltar" onclick="javascript: location.href='frmInsCampeonato'">Excluir esse botão
-        <form action="frmAddEquipes" method="post" id="frmInsCampeonato" name="frmInsCampeonato">
+        <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="frmInsCampeonato">
         <table>
             <tr>
                 <th>*</th>

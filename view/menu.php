@@ -31,7 +31,7 @@
             <?php foreach($campeonato as $row) { ?>
             <tr>
                 <td>
-                    <input type="button" value="<?= $row->getNome() ?>" onclick="javascript: location.href='teste<?= $row->getId() ?>'">
+                    <input type="button" value="<?= $row->getNome() ?>" onclick="javascript: location.href='lstEstatistica?id=<?= $row->getId() ?>'">
                 </td>
                 <td>E: <?= $row->getNEquipe() ?></td>
                 <td>R: <?= $campeonatoController->numeroRodadas($row->getNEquipe(),$row->getTurno()) ?></td>
