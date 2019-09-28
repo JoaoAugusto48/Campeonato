@@ -11,8 +11,16 @@
         }
 
         //Listas
+        public function listarPorCampeonato(int $id):array{
+            return $this->estatisticaDAO->listarPorCampeonato($id);
+        }
 
         //Inserir
+        public function inserirEstatistica(array $idequipe, int $idcampeonato):void{
+            foreach($idequipe as $equipe){
+                $this->estatisticaDAO->inserirEstatistica($equipe, $idcampeonato);
+            }
+        }
 
         //Modificar
 
