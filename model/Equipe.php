@@ -50,6 +50,7 @@
             $this->idPais = $idPais;
         }
 
+        //verificar essa função
         public function setPais(int $pais): void{
             $this->pais = $pais;
         }

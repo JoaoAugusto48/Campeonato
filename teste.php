@@ -65,43 +65,72 @@
             $time[$n] = null;
             $n++;
         }
+
         //imprimindo cada rodada do campeonato
         for($y=0; $y<($n-1); $y++){
-            echo '<h3>Rodada ' . ($y+1) . '</h3>';
-            for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){
-                if($y%2 != 0 && $i == 0)
-                    echo $time[$j] . ' x ' . $time[$i] . '<br>';
-                else if($i%2 == 0)
-                    echo $time[$i] . ' x ' . $time[$j] . '<br>';
-                    else 
-                        echo $time[$j] . ' x ' . $time[$i] . '<br>';
-            }
+            Jogos($time,$n,$y);
             // reordenando a lista para os confrontos
-            $aux = $time[$n-1];
-            for($i=$n-1; $i>0; $i--){
-                $time[$i] = $time[$i-1];
-            }
-            $time[1] = $aux;
+            $time = ReordenarListaJogos($time,$n);
         }
         //var_dump($returno);
         if($returno){
             for($y=$n-1; $y<($n-1)*2; $y++){
-                echo '<h3>Rodada ' . ($y+1) . '</h3>';
-                for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){
-                    if($y%2 == 0 && $i == 0)
-                        echo $time[$i] . ' x ' . $time[$j] . '<br>';
-                    else if($i%2 == 0)
-                        echo $time[$j] . ' x ' . $time[$i] . '<br>';
-                        else 
-                            echo $time[$i] . ' x ' . $time[$j] . '<br>';
-                }
+                JogosReturno($time,$n,$y);
                 // reordenando a lista para os confrontos
-                $aux = $time[$n-1];
-                for($i=$n-1; $i>0; $i--){
-                    $time[$i] = $time[$i-1];
-                }
-                $time[1] = $aux;
+                $time = ReordenarListaJogos($time,$n);
             }
         }
+    }
+
+    function Jogos(array $time, int $n, int $y){
+        NumeroRodada($y);
+        for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){ //for de impressão das rodas
+            if(($time[$i] && $time[$j]) != ''){
+                if($y%2 != 0 && $i == 0)
+                    Partida($time[$j],$time[$i]);
+                else if($i%2 == 0)
+                    Partida($time[$i],$time[$j]);
+                    else 
+                        Partida($time[$j],$time[$i]);
+            } else EquipeAusente($time[$i],$time[$j]);
+        }   
+    }
+
+    function JogosReturno(array $time, int $n, int $y){
+        NumeroRodada($y);
+        for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){
+            if(($time[$i] && $time[$j]) != ''){
+                if($y%2 == 0 && $i == 0)
+                    Partida($time[$i],$time[$j]);
+                else if($i%2 == 0)
+                    Partida($time[$j],$time[$i]);
+                    else 
+                        Partida($time[$i],$time[$j]);
+            } else EquipeAusente($time[$i],$time[$j]);
+        }
+    }
+
+    function EquipeAusente($casa, $fora){
+        if($casa != '') {
+            $semjogo = $casa;
+        }else {$semjogo = $fora;}
+        echo '<br> <b>'. $semjogo . '</b> não joga essa rodada<br>';
+    }
+
+    function NumeroRodada($y){
+        echo '<h3>Rodada ' . ($y+1) . '</h3>';
+    }
+
+    function ReordenarListaJogos(array $time, int $n):array{
+        $aux = $time[$n-1];
+        for($i=$n-1; $i>0; $i--){
+            $time[$i] = $time[$i-1];
+        }
+        $time[1] = $aux;
+        return $time;
+    }
+
+    function Partida(string $casa, string $visitante){
+        echo $casa . ' x ' . $visitante . '<br>';
     }
 ?>

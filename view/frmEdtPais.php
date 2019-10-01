@@ -16,16 +16,10 @@
         header('Location: lstPais');
         die();
     }
-?>
-<!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Inserir País</title>
-    </head>
-    <body>
+    $titulo = 'Editar País';
+    require_once('header.php');
+ ?>
+
         <h2>Editar País</h2>
         <hr/>
         <input type="button" value="Voltar" onclick="javascript: location.href='lstPais'">
@@ -40,5 +34,6 @@
             </div>
             <input type="submit" value="Editar">
         </form>
-    </body>
-</html>
+ 
+
+<?php require_once('footer.php'); ?>
