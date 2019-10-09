@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 19-Set-2019 às 02:09
+-- Tempo de geração: 03-Out-2019 às 03:23
 -- Versão do servidor: 10.3.16-MariaDB
 -- versão do PHP: 7.3.7
 
@@ -40,41 +40,7 @@ CREATE TABLE `campeonato` (
 --
 
 INSERT INTO `campeonato` (`id`, `nequipe`, `turno`, `nome`) VALUES
-(1, 10, 0, 'Brasileirão'),
-(2, 12, 0, 'serie a'),
-(3, 12, 0, 'serie a'),
-(4, 12, 0, 'serie a'),
-(5, 12, 0, 'serie a'),
-(6, 12, 0, 'serie a'),
-(7, 8, 0, 'Serie A'),
-(8, 8, 0, 'Serie A'),
-(9, 8, 0, 'Serie A'),
-(10, 8, 0, 'Serie A'),
-(11, 8, 0, 'Serie A'),
-(12, 8, 0, 'Serie A'),
-(13, 4, 0, 'Super Liga'),
-(14, 4, 0, 'Super Liga'),
-(15, 4, 0, 'Super Liga'),
-(16, 4, 0, 'Super Liga'),
-(17, 4, 0, 'Super Liga'),
-(18, 4, 0, 'Super Liga'),
-(19, 4, 0, 'Super Liga'),
-(20, 4, 0, 'Super Liga'),
-(21, 4, 0, 'Super Liga'),
-(22, 4, 0, 'Super Liga'),
-(23, 4, 0, 'Super Liga'),
-(24, 4, 0, 'Super Liga'),
-(25, 4, 0, 'Super Liga'),
-(26, 4, 0, 'Super Liga'),
-(27, 4, 0, 'Super Liga'),
-(28, 4, 0, 'Super Liga'),
-(29, 4, 0, 'Amigos'),
-(30, 12, 0, 'Teste'),
-(31, 12, 0, 'Teste'),
-(32, 12, 0, 'Teste'),
-(33, 12, 0, 'Teste'),
-(34, 12, 0, 'Teste'),
-(35, 12, 0, 'Teste');
+(1, 8, 1, 'Brasileirão');
 
 -- --------------------------------------------------------
 
@@ -106,7 +72,9 @@ INSERT INTO `equipe` (`id`, `nome`, `sigla`, `idpais`) VALUES
 (13, 'Grêmio', 'GRE', 1),
 (14, 'Napoli', 'NAP', 7),
 (15, 'Barcelona', 'BAR', 6),
-(16, 'Internacional', 'INT', 1);
+(16, 'Internacional', 'INT', 1),
+(17, 'Chapecoense', 'CHA', 1),
+(18, 'Sandra FC', 'SAN', 1);
 
 -- --------------------------------------------------------
 
@@ -116,14 +84,28 @@ INSERT INTO `equipe` (`id`, `nome`, `sigla`, `idpais`) VALUES
 
 CREATE TABLE `estatistica` (
   `id` int(11) NOT NULL,
-  `vitoria` int(11) NOT NULL,
-  `empate` int(11) NOT NULL,
-  `derrota` int(11) NOT NULL,
-  `golpro` int(11) NOT NULL,
-  `golcontra` int(11) NOT NULL,
+  `vitoria` int(2) NOT NULL,
+  `empate` int(2) NOT NULL,
+  `derrota` int(2) NOT NULL,
+  `golpro` int(3) NOT NULL,
+  `golcontra` int(3) NOT NULL,
   `idequipe` int(11) NOT NULL,
   `idcampeonato` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `estatistica`
+--
+
+INSERT INTO `estatistica` (`id`, `vitoria`, `empate`, `derrota`, `golpro`, `golcontra`, `idequipe`, `idcampeonato`) VALUES
+(1, 0, 0, 0, 0, 0, 6, 1),
+(2, 0, 0, 0, 0, 0, 17, 1),
+(3, 0, 0, 0, 0, 0, 1, 1),
+(4, 0, 0, 0, 0, 0, 13, 1),
+(5, 0, 0, 0, 0, 0, 16, 1),
+(6, 0, 0, 0, 0, 0, 8, 1),
+(7, 0, 0, 0, 0, 0, 18, 1),
+(8, 0, 0, 0, 0, 0, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -169,7 +151,8 @@ INSERT INTO `pais` (`id`, `nome`, `status`) VALUES
 (43, 'teste aksaks', 0),
 (44, 'asdasfafs', 0),
 (45, 'mais um', 1),
-(46, 'teste, errei', 1);
+(46, 'teste, errei', 1),
+(47, 'Estados Unidos', 1);
 
 -- --------------------------------------------------------
 
@@ -183,8 +166,72 @@ CREATE TABLE `partida` (
   `timecasa` int(11) NOT NULL,
   `timevisitante` int(11) NOT NULL,
   `ngolcasa` int(2) NOT NULL,
-  `ngolvisitante` int(2) NOT NULL
+  `ngolvisitante` int(2) NOT NULL,
+  `rodada` int(2) NOT NULL,
+  `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `partida`
+--
+
+INSERT INTO `partida` (`id`, `idcampeonato`, `timecasa`, `timevisitante`, `ngolcasa`, `ngolvisitante`, `rodada`, `status`) VALUES
+(1, 1, 18, 8, 0, 0, 0, 0),
+(2, 1, 16, 2, 0, 0, 0, 0),
+(3, 1, 1, 6, 0, 0, 0, 0),
+(4, 1, 13, 17, 0, 0, 0, 0),
+(5, 1, 8, 16, 0, 0, 1, 0),
+(6, 1, 6, 18, 0, 0, 1, 0),
+(7, 1, 2, 13, 0, 0, 1, 0),
+(8, 1, 17, 1, 0, 0, 1, 0),
+(9, 1, 6, 8, 0, 0, 2, 0),
+(10, 1, 13, 16, 0, 0, 2, 0),
+(11, 1, 18, 17, 0, 0, 2, 0),
+(12, 1, 1, 2, 0, 0, 2, 0),
+(13, 1, 8, 13, 0, 0, 3, 0),
+(14, 1, 17, 6, 0, 0, 3, 0),
+(15, 1, 16, 1, 0, 0, 3, 0),
+(16, 1, 2, 18, 0, 0, 3, 0),
+(17, 1, 17, 8, 0, 0, 4, 0),
+(18, 1, 1, 13, 0, 0, 4, 0),
+(19, 1, 6, 2, 0, 0, 4, 0),
+(20, 1, 18, 16, 0, 0, 4, 0),
+(21, 1, 8, 1, 0, 0, 5, 0),
+(22, 1, 2, 17, 0, 0, 5, 0),
+(23, 1, 13, 18, 0, 0, 5, 0),
+(24, 1, 16, 6, 0, 0, 5, 0),
+(25, 1, 2, 8, 0, 0, 6, 0),
+(26, 1, 18, 1, 0, 0, 6, 0),
+(27, 1, 17, 16, 0, 0, 6, 0),
+(28, 1, 6, 13, 0, 0, 6, 0),
+(29, 1, 8, 18, 0, 0, 7, 0),
+(30, 1, 2, 16, 0, 0, 7, 0),
+(31, 1, 6, 1, 0, 0, 7, 0),
+(32, 1, 17, 13, 0, 0, 7, 0),
+(33, 1, 16, 8, 0, 0, 8, 0),
+(34, 1, 18, 6, 0, 0, 8, 0),
+(35, 1, 13, 2, 0, 0, 8, 0),
+(36, 1, 1, 17, 0, 0, 8, 0),
+(37, 1, 8, 6, 0, 0, 9, 0),
+(38, 1, 16, 13, 0, 0, 9, 0),
+(39, 1, 17, 18, 0, 0, 9, 0),
+(40, 1, 2, 1, 0, 0, 9, 0),
+(41, 1, 13, 8, 0, 0, 10, 0),
+(42, 1, 6, 17, 0, 0, 10, 0),
+(43, 1, 1, 16, 0, 0, 10, 0),
+(44, 1, 18, 2, 0, 0, 10, 0),
+(45, 1, 8, 17, 0, 0, 11, 0),
+(46, 1, 13, 1, 0, 0, 11, 0),
+(47, 1, 2, 6, 0, 0, 11, 0),
+(48, 1, 16, 18, 0, 0, 11, 0),
+(49, 1, 1, 8, 0, 0, 12, 0),
+(50, 1, 17, 2, 0, 0, 12, 0),
+(51, 1, 18, 13, 0, 0, 12, 0),
+(52, 1, 6, 16, 0, 0, 12, 0),
+(53, 1, 8, 2, 0, 0, 13, 0),
+(54, 1, 1, 18, 0, 0, 13, 0),
+(55, 1, 16, 17, 0, 0, 13, 0),
+(56, 1, 13, 6, 0, 0, 13, 0);
 
 --
 -- Índices para tabelas despejadas
@@ -234,31 +281,31 @@ ALTER TABLE `partida`
 -- AUTO_INCREMENT de tabela `campeonato`
 --
 ALTER TABLE `campeonato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `equipe`
 --
 ALTER TABLE `equipe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de tabela `estatistica`
 --
 ALTER TABLE `estatistica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `pais`
 --
 ALTER TABLE `pais`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de tabela `partida`
 --
 ALTER TABLE `partida`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Restrições para despejos de tabelas

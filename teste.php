@@ -1,4 +1,7 @@
 <?php
+    // site de validação javascript
+    //http://www.criarweb.com/artigos/validacao-formulario-com-javascript.html
+
     $n = 10;
     $time = array(
         0 => 'Corinthians', 
@@ -65,7 +68,6 @@
             $time[$n] = null;
             $n++;
         }
-
         //imprimindo cada rodada do campeonato
         for($y=0; $y<($n-1); $y++){
             Jogos($time,$n,$y);
@@ -84,30 +86,34 @@
 
     function Jogos(array $time, int $n, int $y){
         NumeroRodada($y);
+        echo '<table>';
         for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){ //for de impressão das rodas
             if(($time[$i] && $time[$j]) != ''){
-                if($y%2 != 0 && $i == 0)
-                    Partida($time[$j],$time[$i]);
+                if($y%2 == 0 && $i == 0)
+                    Partida($time[$j],$j,$time[$i],$i);
                 else if($i%2 == 0)
-                    Partida($time[$i],$time[$j]);
+                    Partida($time[$i],$i,$time[$j],$j);
                     else 
-                        Partida($time[$j],$time[$i]);
+                        Partida($time[$j],$j,$time[$i],$i);
             } else EquipeAusente($time[$i],$time[$j]);
-        }   
+        }
+        echo '</table>';
     }
 
     function JogosReturno(array $time, int $n, int $y){
         NumeroRodada($y);
+        echo '<table>';
         for($i=0, $j=($n-1); $i<(int)($n/2); $i++, $j--){
             if(($time[$i] && $time[$j]) != ''){
-                if($y%2 == 0 && $i == 0)
-                    Partida($time[$i],$time[$j]);
+                if($y%2 != 0 && $i == 0)
+                    Partida($time[$i],$i,$time[$j],$j);
                 else if($i%2 == 0)
-                    Partida($time[$j],$time[$i]);
+                    Partida($time[$j],$j,$time[$i],$i);
                     else 
-                        Partida($time[$i],$time[$j]);
+                        Partida($time[$i],$i,$time[$j],$j);
             } else EquipeAusente($time[$i],$time[$j]);
         }
+        echo '</table>';
     }
 
     function EquipeAusente($casa, $fora){
@@ -130,7 +136,17 @@
         return $time;
     }
 
-    function Partida(string $casa, string $visitante){
-        echo $casa . ' x ' . $visitante . '<br>';
+    function Partida(string $casa, int $i, string $visitante, int $j){
+        echo '
+            <tr>
+                <td align="right">' . $casa. "</td>
+                <td>
+                    <input type='text' name= ".$i." id=".$i." style='text-align: center' maxlength='2' size='1'>" 
+                    . ' x ' . 
+                    " <input type='text' name=".$j." id=".$j." style='text-align: center' maxlength='2' size='1'>
+                </td>
+                <td>" . $visitante .'</td>
+            </tr>
+            ';
     }
 ?>

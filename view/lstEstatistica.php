@@ -18,7 +18,7 @@
     <h2><?= $campeonato->getNome() ?></h2>
     <hr>
     <input type="button" value="Voltar" onclick="javascript: location.href='menu'">
-    <input type="button" value="Jogos" onclick="javascript: location.href='lstJogos?id=<?= $id_campeonato ?>'">
+    <input type="button" value="Jogos" onclick="javascript: location.href='lstPartidas?id=<?= $id_campeonato ?>'">
     <br><br>
     <table>
         <tr>
@@ -32,29 +32,22 @@
             <th>PONTOS</th>
         </tr>
         <?php 
-            // passando variaveis para pontosCalculo
-            foreach($estatistica as $row){
-                $row->pontosCalculo = $estatisticaController->Pontos($row->getId(),$row->getVitoria(),$row->getEmpate());
-            }
 
-            // ordenando por pontos
-           usort($estatistica, function($timeA,$timeB){
-                return $timeA->pontosCalculo < $timeB->pontosCalculo; 
-            });
+            $classificacao = $estatisticaController->classificacao($estatistica);
 
-            $i=1; foreach($estatistica as $row) { 
+            $i=1; foreach($classificacao as $row) { 
         ?>
         <tr>
             <td><?= $i ?></td>
             <td><?= $row->getEquipe()->getNome() ?></td>
-            <td><?= $estatisticaController->Jogos($row->getId(),$row->getVitoria(),$row->getEmpate(),$row->getDerrota()) ?></td>
+            <td><?= $estatisticaController->jogos($row->getId(),$row->getVitoria(),$row->getEmpate(),$row->getDerrota()) ?></td>
             <td><?= $row->getVitoria() ?></td>
             <td><?= $row->getEmpate() ?></td>
             <td><?= $row->getDerrota() ?></td>
             <td>
                 <?= $row->getGolPro() ?>/<?= $row->getGolContra() ?>
             </td>
-            <td><?= $row->pontosCalculo ?></td>
+            <td><?= $estatisticaController->pontos($row->getId(),$row->getVitoria(),$row->getEmpate()) ?></td>
         </tr>
         <?php $i++; } ?>
     </table>

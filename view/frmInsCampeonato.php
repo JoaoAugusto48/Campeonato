@@ -11,14 +11,14 @@
         header('Location: frmAddEquipes?id='.$campeonato);
         die();
     }
-    $titulo = 'Criar Campeonato';
+    $titulo = 'Campeonato - Criar';
     require_once('header.php');
  ?>
 
     <h2>Criação de Campeonato</h2>
     <hr/>
     <input type="button" value="Voltar" onclick="javascript: location.href='menu'">
-    <form action="frmInsCampeonato" method="post" id="frmInsCampeonato" name="frmInsCampeonato">
+    <form action="frmInsCampeonato" method="POST" name="fcampeonato">
         <div>
             <label for="lblNome">Nome do Campeonato: </label>
             <input type="text" name="txtNome" id="txtNome" placeholder="ex: Brasileirão" autocomplete="off">
@@ -32,8 +32,9 @@
             <input type="checkbox" name="chkTurno" id="chkTurno">
         </div>
 
-        <input type="submit" value="Enviar">
+        <input type="button" value="Enviar" onclick="valida_campeonato()">
     </form>
 
+    <script type="text/javascript" src="js/Campeonato.js"></script>
 
-<?php require_once('footer.php');
+<?php require_once('footer.php'); ?>

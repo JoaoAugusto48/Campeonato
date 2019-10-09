@@ -7,6 +7,8 @@
         private $timevisitante;
         private $ngolcasa;
         private $ngolvisitante;
+        private $rodada;
+        private $status;
 
         //GETs
         public function getId():int{
@@ -32,6 +34,14 @@
         public function getNGolVisitante():int{
             return $this->ngolvisitante;
         }
+        
+        public function getRodada():int{
+            return $this->rodada;
+        }
+
+        public function getStatus():bool{
+            return $this->status;
+        }
 
         //SETs
         public function setId(int $id):void{
@@ -56,6 +66,14 @@
 
         public function setNGolVisitante(int $ngolvisitante):void{
             $this->ngolvisitante = $ngolvisitante;
+        }
+
+        public function setRodada(int $rodada):void{
+            $this->rodada = $rodada;
+        }
+
+        public function setStatus(bool $status):void{
+            $this->status = $status;
         }
     }
 ?>

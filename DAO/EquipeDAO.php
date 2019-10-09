@@ -58,22 +58,4 @@
 
         //Deletar
     }
-
-/*   $nome = trim($_POST['txtNome']);
-    $sigla = trim($_POST['txtSigla']);
-    $pais = trim($_POST['idPais']);
-
-    $sigla = strtoupper($sigla);
-
-    if(!empty($nome) && !empty($sigla) && !empty($pais)){
-        require_once('Banco.php');
-        $pdo = Banco::conectar();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO equipe (nome, sigla, idpais) VALUES (?, ?, ?);";
-        $qry = $pdo->prepare($sql);
-        $qry->execute(array($nome, $sigla, $pais));
-        Banco::desconectar();
-    }
-    header('location: lstEquipe.php');
-*/
 ?>

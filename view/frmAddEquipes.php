@@ -2,6 +2,7 @@
     require_once('../controller/EquipeController.php');
     require_once('../controller/CampeonatoController.php');
     require_once('../controller/EstatisticaController.php');
+    require_once('../controller/PartidaController.php');
     
     $equipeController = new EquipeController();
     $campeonatoController = new CampeonatoController();
@@ -14,6 +15,16 @@
 
         $equipes = $_POST['chkId'];
         $estatisticaController->inserirEstatistica($equipes,$id_campeonato);
+        // a cima inserido as estatisticas docampeonato -- abaixo inserindo as partidas do mesmo
+
+        $partidaController = new PartidaController();
+        $campeonatoController = new CampeonatoController();
+        
+        $campeonato = $campeonatoController->listarId($id_campeonato);
+        
+        $nequipes = count($equipes);
+        $partidaController->criarPartida($equipes,$nequipes,$id_campeonato,$campeonato->getTurno());
+
         header('Location: menu');
         die();
     }
@@ -28,12 +39,11 @@
     $titulo = $campeonato->getNome();
     require_once('header.php');
  ?>
-
     <h2><?= $campeonato->getNome() ?> - Seleção de Equipes</h2>
     <hr>
     <p>Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
     <input type="button" value="Voltar" onclick="javascript: location.href='frmInsCampeonato'">Excluir esse botão
-    <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="frmInsCampeonato">
+    <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="fvalida">
     <table>
         <tr>
             <th>*</th>
@@ -43,56 +53,16 @@
         </tr>
         <?php foreach($equipe as $row) { ?>
         <tr>
-            <td><input type="checkbox" name="chkId[]" value="<?= $row->getId() ?>" onclick="getItensSel()"></td>
+            <td><input type="checkbox" name="chkId[]" value="<?= $row->getId() ?>" onclick="getItensSel(<?= $valor ?>)"></td>
             <td><?= $row->getNome() ?></td>
             <td><?= $row->getSigla() ?></td>
             <td><?= $row->getPais()->getNome() ?></td>
         </tr>
         <?php } ?>
 
-        <input type="submit" value="Enviar" onclick="validarSubmit()">
+        <input type="button" value="Enviar" onclick="valida_estatistica()">
     </form>
-
+    
+    <script type="text/javascript" src="js/Estatistica.js"></script>
 
 <?php require_once('footer.php'); ?>
-
-<script>
-var d = document;
-function $( bloco )
-{
-    return d.getElementById( bloco );
-}
-
-function getItensSel()
-{
-    itens = <?= $valor ?>;
-    var oElementos = d.getElementsByTagName('input');
-    for( var i = 0; i < oElementos.length; i++ )
-    {
-        if( oElementos[ i ].type == 'checkbox' )
-        {
-           if( oElementos[ i ].checked )
-           {
-              itens--;
-           }
-        }
-    }   
-    $( 'total' ).innerHTML = itens;
-}
-
-function validarSubmit(event){
-    // Previnir comportamento padrão
-    event.preventDefault();
-
-    // Pegando valor do input
-    var value = getItensSel();
-    
-    // fazer validação em caso esteja OK
-    if(value.length != 0)
-        alert('Não é possível ser enviado, pois o valor é diferente do declarado');
-    else{
-        alert('Formulário enviado');
-        form.submit();
-    }
-}
-</script>

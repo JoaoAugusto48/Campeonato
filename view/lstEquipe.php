@@ -24,7 +24,7 @@
         <?php foreach($equipe as $row) { ?>
         <tr>
             <td><?= $row->getId() ?></td>
-            <td><?= $row->getNome() ?></td>
+            <td><?= strip_tags($row->getNome()) ?></td>
             <td><?= $row->getSigla() ?></td>
             <td><?= $row->getPais()->getNome() ?></td>
             <th>
@@ -35,4 +35,4 @@
         <?php } ?>
     </table>
 
-<?php require_once('footer.php');
+<?php require_once('footer.php'); ?>

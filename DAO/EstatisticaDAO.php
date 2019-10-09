@@ -10,14 +10,29 @@
         }
 
         //Listas
-        public function Jogos(int $id, int $vitoria, int $empate, int $derrota):int{
+        public function jogos(int $id, int $vitoria, int $empate, int $derrota):int{
             $resultado = $this->sql->query('SELECT ((:vitoria)+(:empate)+(:derrota)) AS jogos FROM estatistica WHERE id=:id',[':vitoria',':empate',':derrota',':id'],[$vitoria,$empate,$derrota,$id])[0];
             return $resultado->jogos;
         }
 
-        public function Pontos(int $id, int $vitoria, int $empate):int{
+        public function pontos(int $id, int $vitoria, int $empate):int{
             $resultado = $this->sql->query('SELECT ((:vitoria*3)+(:empate)) AS pontos FROM estatistica WHERE id=:id',[':vitoria',':empate',':id'],[$vitoria,$empate,$id])[0];
             return $resultado->pontos;
+        }
+
+        public function nVitoria(int $id, int $vitoria):int{
+            $resultado = $this->sql->query('SELECT (:vitoria) AS vitoria FROM estatistica WHERE id=:id',[':vitoria',':id'],[$vitoria,$id])[0];
+            return $resultado->vitoria;
+        }
+
+        public function saldoGol(int $id,int $golpro,int $golcontra):int{
+            $resultado = $this->sql->query('SELECT (:golpro-:golcontra) AS saldo FROM estatistica WHERE id=:id',[':golpro','golcontra',':id'],[$golpro,$golcontra,$id])[0];
+            return $resultado->saldo;
+        }
+
+        public function golsMarcados(int $id,int $golpro):int{
+            $resultado = $this->sql->query('SELECT (:golpro) AS golpro FROM estatistica WHERE id=:id',[':golpro',':id'],[$golpro,$id])[0];
+            return $resultado->golpro;
         }
 
         public function listarPorCampeonato(int $id_campeonato):array{
@@ -65,6 +80,56 @@
         }
 
         //Modificar
+        public function atualizarVitoria(int $idcampeonato,int $vencedor,int $ngolfeito, int $ngolsofrido):void{
+            $resultado = $this->sql->query('UPDATE estatistica SET golpro=(golpro+:ngolfeito), golcontra=(golcontra+:ngolsofrido), vitoria=(vitoria+1) WHERE idcampeonato=:idcampeonato AND idequipe=:vencedor',
+                        [':ngolfeito',':ngolsofrido',':idcampeonato',':vencedor'],
+                        [$ngolfeito,$ngolsofrido,$idcampeonato,$vencedor]);
+            $estatistica = new Estatistica();
+            $estatistica->setIdCampeonato($idcampeonato);
+            $estatistica->setIdEquipe($vencedor);
+            $estatistica->setGolPro($ngolfeito);
+            $estatistica->setGolContra($ngolsofrido);
+        }
+
+        public function atualizarDerrota(int $idcampeonato,int $derrotado,int $ngolfeito,int $ngolsofrido):void{
+            $resultado = $this->sql->query('UPDATE estatistica SET golpro=(golpro+:ngolfeito), golcontra=(golcontra+:ngolsofrido), derrota=(derrota+1) WHERE idcampeonato=:idcampeonato AND idequipe=:derrotado',
+                        [':ngolfeito',':ngolsofrido',':idcampeonato',':derrotado'],
+                        [$ngolfeito,$ngolsofrido,$idcampeonato,$derrotado]);
+            $estatistica = new Estatistica();
+            $estatistica->setIdCampeonato($idcampeonato);
+            $estatistica->setIdEquipe($derrotado);
+            $estatistica->setGolPro($ngolfeito);
+            $estatistica->setGolContra($ngolsofrido);
+        }
+
+        public function atualizarEmpate(int $idcampeonato,int $empate,int $ngolsofrido,int $ngolfeito):void{
+            $resultado = $this->sql->query('UPDATE estatistica SET golpro=(golpro+:ngolfeito), golcontra=(golcontra+:ngolsofrido), empate=(empate+1) WHERE idcampeonato=:idcampeonato AND idequipe=:empate',
+                        [':ngolfeito',':ngolsofrido',':idcampeonato',':empate'],
+                        [$ngolfeito,$ngolsofrido,$idcampeonato,$empate]);
+            $estatistica = new Estatistica();
+            $estatistica->setIdCampeonato($idcampeonato);
+            $estatistica->setIdEquipe($empate);
+            $estatistica->setGolPro($ngolfeito);
+            $estatistica->setGolContra($ngolsofrido);
+        }
+
+        public function anteriorVitoria(int $idcampeonato,int $vencedor,int $ngolfeito, int $ngolsofrido):void{
+            $this->sql->query('UPDATE estatistica SET golpro=(golpro-:ngolfeito), golcontra=(golcontra-:ngolsofrido), vitoria=(vitoria-1) WHERE idcampeonato=:idcampeonato AND idequipe=:vencedor',
+                    [':ngolfeito',':ngolsofrido',':idcampeonato',':vencedor'],
+                    [$ngolfeito,$ngolsofrido,$idcampeonato,$vencedor]);
+        }
+
+        public function anteriorDerrota(int $idcampeonato,int $derrotado,int $ngolfeito, int $ngolsofrido):void{
+            $this->sql->query('UPDATE estatistica SET golpro=(golpro-:ngolfeito), golcontra=(golcontra-:ngolsofrido), derrota=(derrota-1) WHERE idcampeonato=:idcampeonato AND idequipe=:derrotado',
+                    [':ngolfeito',':ngolsofrido',':idcampeonato',':derrotado'],
+                    [$ngolfeito,$ngolsofrido,$idcampeonato,$derrotado]);
+        }
+
+        public function anteriorEmpate(int $idcampeonato,int $empate,int $ngolfeito, int $ngolsofrido):void{
+            $this->sql->query('UPDATE estatistica SET golpro=(golpro-:ngolfeito), golcontra=(golcontra-:ngolsofrido), empate=(empate-1) WHERE idcampeonato=:idcampeonato AND idequipe=:empate',
+                    [':ngolfeito',':ngolsofrido',':idcampeonato',':empate'],
+                    [$ngolfeito,$ngolsofrido,$idcampeonato,$empate]);
+        }
 
         //Deletar (logicamente)
 

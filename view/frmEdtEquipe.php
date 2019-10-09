@@ -43,7 +43,7 @@
         </div>
         <div>
             <label for="lblSigla">Sigla: </label>
-            <input type="text" name="txtSigla" id="txtSigla" value="<?= $equipe->getSigla() ?>" placeholder="Sigla da Equipe" autocomplete="off">
+            <input type="text" name="txtSigla" id="txtSigla" value="<?= $equipe->getSigla() ?>" maxlength="4" size="3" placeholder="Sigla da Equipe" autocomplete="off">
         </div>
         <div>
             <label for="lblPais">País: </label>
@@ -61,4 +61,4 @@
         <input type="submit" value="Enviar">
     </form>
 
-<?php require_once('footer.php');
+<?php require_once('footer.php'); ?>
