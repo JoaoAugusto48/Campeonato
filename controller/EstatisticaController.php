@@ -29,7 +29,19 @@
             }
         }
 
+
         //Modificar
+        public function average(int $vitoria,int $empate,int $derrota){
+            $jogos = $vitoria+$empate+$derrota; //numero de jogos
+            $pontosMax = $jogos*3; // máximo de pontos a ser conquistados
+            if(!$pontosMax){
+                $pontosMax = 1; // se número de rodadas = 0, então pontosMax = 1 
+            }
+            $avg =  ((($vitoria*3)+$empate)/$pontosMax)*100; // calculo da media
+            $avg = number_format($avg,1,",","."); // formatação da pontuação
+            return $avg;
+        }
+
         public function atualizarEstatistica(int $idcampeonato,int $idpartida,bool $status,int $equipecasa,int $ngolcasa,int $equipevisitante,int $ngolvisitante):void{
             if($status){
                 $estatAnterior = $this->partidaController->partidaAnterior($idpartida);
@@ -106,6 +118,28 @@
         //Deletar (logicamente)
 
         //Deletar
+
+        //outros metodos
+        public function listarCampeao(object $campeonato,array $classificacao){
+            //criando especificando o numero de pertidas que serão jogadas por cada equipe
+            $njogos = ($campeonato->getNEquipe()-1);
+            if($campeonato->getTurno()){
+                $njogos*=2;
+            }
+
+            $partidasJogadas = 0;
+            foreach($classificacao as $equipe){
+                $jogados = $this->jogos($equipe->getId(),$equipe->getVitoria(),$equipe->getEmpate(),$equipe->getDerrota());
+                if($jogados != $njogos){
+                    $partidasJogadas++;
+                }
+            }
+            if($partidasJogadas==0){
+                return $classificacao[0]->getIdEquipe();
+            }else return 0;
+        }
+
+
     }
 
 ?>

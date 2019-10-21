@@ -42,7 +42,7 @@
     <h2><?= $campeonato->getNome() ?> - Seleção de Equipes</h2>
     <hr>
     <p>Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
-    <input type="button" value="Voltar" onclick="javascript: location.href='frmInsCampeonato'">Excluir esse botão
+    <input type="button" value="Voltar" onclick="javascript: location.href='frmInsCampeonato'">
     <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="fvalida">
     <table>
         <tr>

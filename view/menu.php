@@ -3,11 +3,11 @@
    $campeonatoController = new CampeonatoController();
    
    $campeonato = $campeonatoController->listarCampeonato();
-
+   
    $titulo = 'Página Principal';
    require_once('header.php');
 ?>
-
+    
     <h1>Campeonato</h1>
 
     <input type="button" value="Equipes" onclick="javascript: location.href='lstEquipe'">
@@ -16,24 +16,27 @@
 
     <hr>
     <h3>Campeonatos recorrentes</h3>
-    <table>
-        <tr>
-            <th>Campeonato</th>
-            <th>Equipes</th>
-            <th>Rodadas</th>
-            <th>Turno</th>
-        </tr>
-        <?php foreach($campeonato as $row) { ?>
-        <tr>
-            <td>
-                <input type="button" value="<?= $row->getNome() ?>" onclick="javascript: location.href='lstEstatistica?id=<?= $row->getId() ?>'">
-            </td>
-            <td>E: <?= $row->getNEquipe() ?></td>
-            <td>R: <?= $campeonatoController->numeroRodadas($row->getNEquipe(),$row->getTurno()) ?></td>
-            <td>T: <?= $campeonatoController->condicaoTurno($row->getTurno()) ?></td>
-        </tr>
-        <?php } ?>
+    <table class="table table-striped table-hover bg-secondary text-white">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Campeonato</th>
+                <th scope="col">Equipes</th>
+                <th scope="col">Rodadas</th>
+                <th scope="col">Turno</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($campeonato as $row) { ?>
+            <tr>
+                <td scope="row">
+                    <input type="button" value="<?= strip_tags($row->getNome()) ?>" onclick="javascript: location.href='lstEstatistica?id=<?= $row->getId() ?>'">
+                </td>
+                <td scope="row">E: <?= $row->getNEquipe() ?></td>
+                <td scope="row">R: <?= $campeonatoController->numeroRodadas($row->getNEquipe(),$row->getTurno()) ?></td>
+                <td scope="row">T: <?= $campeonatoController->condicaoTurno($row->getTurno()) ?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
     </table>
-
 
 <?php require_once('footer.php'); ?>

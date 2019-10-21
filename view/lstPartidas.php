@@ -36,7 +36,7 @@
     $titulo = $campeonato->getNome();
     require_once('header.php');
 ?>
-    <h2><?= $campeonato->getNome() ?> - Jogos</h2>
+    <h2 id="0"><?= $campeonato->getNome() ?> - Jogos</h2>
     <hr>
     <input type="button" value="Voltar" onclick="javascript: location.href='lstEstatistica?id=<?= $id_campeonato ?>'">
     <br><br>
@@ -47,16 +47,19 @@
     <!-- fim botão das rodadas -->
 
     <!-- inicio impressão das rodadas -->
-    <?php for($i=0;$i < $rodadas;$i++){
+    <?php 
+        for($i=0;$i < $rodadas;$i++){
             $partida = $partidaController->listarPartidas($campeonato->getId(),$i);
     ?>
     <h3 id="<?= $i+1 ?>">Rodada <?= $i+1 ?></h3>
 
-    <table>       
+    <table class="table">
+        
         <?php foreach($partida as $row){ 
             $casa = $equipeController->listarPorId($row->getTimeCasa());
             $visitante = $equipeController->listarPorId($row->getTimeVisitante());
 
+            // não mostra valores ainda não inseridos
             if(!$row->getStatus()){
                 $mandante = '';
                 $fora = '';
@@ -74,17 +77,18 @@
                 <input type="hidden" name="statuspartida" value="<?= $row->getStatus() ?>">
 
                 <td align="right"><?= $casa->getNome() ?></td>
-                <td><input type="text" name="casa" style="text-align: center" maxlength="2" size="1" value="<?= $mandante ?>" autocomplete="off">
+                <td align="center"><input type="text" name="casa" style="text-align: center" maxlength="2" size="1" value="<?= $mandante ?>" autocomplete="off">
                     x 
                 <input type="text" name="visitante" style="text-align: center" maxlength="2" size="1" value="<?= $fora ?>" autocomplete="off"></td>
-                <td><?= $visitante->getNome() ?></td>
+                <td align="left"><?= $visitante->getNome() ?></td>
                 <td><input type="submit" value="Gravar"></td>
             </form>
-            </tr>  
-
+            </tr>
+            <tr>
         <?php } ?>
     </table>
     <p>botão Executar Rodada</p>
+    <a href="#0"><input type="button" value="Voltar Topo"></a>
     <?php } ?>
     <!-- fim impressão das rodadas -->
 

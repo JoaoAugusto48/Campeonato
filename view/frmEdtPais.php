@@ -23,17 +23,18 @@
         <h2>Editar País</h2>
         <hr/>
         <input type="button" value="Voltar" onclick="javascript: location.href='lstPais'">
-        <form id="frmEdtPais" name="frmEdtPais" action="frmEdtPais" method="POST">
+        <form name="fvalida" action="frmEdtPais" method="POST">
             <div>
                 <label for="lblId">ID: <?= $pais->getId() ?></label>
-                <input type="hidden" name='txtId' value="<?= $pais->getId() ?>">
+                <input type="hidden" name="txtId" value="<?= $pais->getId() ?>">
             </div>            
             <div>
                 <label for="lblNome">Nacionalidade: </label>
                 <input type="text" name="txtNome" id="txtNome" value="<?= $pais->getNome() ?>" placeholder="Nome do Pais" autocomplete="off">
             </div>
-            <input type="submit" value="Editar">
+            <input type="button" value="Enviar" onclick="valida_pais()">
         </form>
  
+        <script type="text/javascript" src="js/Pais.js"></script>
 
 <?php require_once('footer.php'); ?>

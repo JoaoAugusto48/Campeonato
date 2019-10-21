@@ -11,7 +11,7 @@
 
         //Listas
         public function listarPorNome():array{
-            $resultados = $this->sql->query('SELECT e.id, e.nome, e.sigla, e.idPais, p.nome as nomepais FROM equipe AS e JOIN pais AS p on e.idpais = p.id order by e.nome',[],[]);
+            $resultados = $this->sql->query('SELECT e.id, e.nome, e.sigla, e.idPais, p.nome as nomepais FROM equipe AS e JOIN pais AS p on e.idpais = p.id WHERE e.status=1 order by e.nome',[],[]);
             $retorno = [];
             foreach($resultados as $resultado){
                 $equipe = new Equipe();
@@ -26,7 +26,7 @@
         }
 
         public function listarPorId(int $id){
-            $resultados = $this->sql->query('SELECT e.id, e.nome, e.sigla, e.idPais, p.nome as nomepais FROM equipe AS e JOIN pais AS p ON e.idpais = p.id WHERE e.id=:id',[':id'],[$id])[0];
+            $resultados = $this->sql->query('SELECT e.id, e.nome, e.sigla, e.idPais, p.nome as nomepais FROM equipe AS e JOIN pais AS p ON e.idpais = p.id WHERE e.id=:id AND e.status=true',[':id'],[$id])[0];
             $equipe = new Equipe();
             $equipe->setId($id);
             $equipe->setNome($resultados->nome);
@@ -38,7 +38,8 @@
 
         //Inserir
         public function insEquipe(string $nome, string $sigla, int $idPais):void{
-            $inserir = $this->sql->query('INSERT INTO equipe (nome, sigla, idpais) VALUES (:nome, :sigla, :idpais)',[':nome', ':sigla', ':idpais'],[$nome, $sigla, $idPais]);
+            $status = true;
+            $inserir = $this->sql->query('INSERT INTO equipe (nome, sigla, idpais, status) VALUES (:nome, :sigla, :idpais, :status)',[':nome', ':sigla', ':idpais',':status'],[$nome, $sigla, $idPais,$status]);
             $equipe = new Equipe();
             $equipe->setNome($nome);
             $equipe->setSigla($sigla);
@@ -55,6 +56,12 @@
         }
 
         //Deletar (logicamente)
+        public function removerLogicamente(int $id){
+            $status = false;
+            $remover = $this->sql->query('UPDATE equipe SET status=:status WHERE id=:id',[':status',':id'],[$status,$id]);
+            $equipe = new Equipe();
+            $equipe->setStatus($status);
+        }
 
         //Deletar
     }

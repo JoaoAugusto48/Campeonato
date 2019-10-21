@@ -32,7 +32,7 @@
     <h2>Edicação da Equipe</h2>
     <hr/>
     <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
-    <form id="frmEdtEquipe" name="frmEdtEquipe" action="frmEdtEquipe" method="POST">
+    <form name="fequipe" action="frmEdtEquipe" method="POST">
         <div>
             <label for="lblId">Id: <?= $equipe->getId() ?></label>
             <input type="hidden" name="txtId" id="txtId" value="<?= $equipe->getId() ?>">
@@ -58,7 +58,9 @@
                 } ?>
             </select>
         </div>
-        <input type="submit" value="Enviar">
+        <input type="button" value="Editar" onclick="valida_equipe()">
     </form>
+
+    <script type="text/javascript" src="js/Equipe.js"></script>
 
 <?php require_once('footer.php'); ?>

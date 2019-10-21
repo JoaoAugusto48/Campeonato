@@ -13,6 +13,7 @@
         $paisController = new PaisController();
         $paisController->remLogPais($id);
         header('Location: lstPais');
+        die();
     }
 
     $titulo = 'Remover País';

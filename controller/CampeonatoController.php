@@ -20,6 +20,9 @@
 
         public function numeroRodadas(int $equipe,bool $turno):int{
             $rodadas = ($equipe-1);
+            if($equipe%2 != 0){
+                $rodadas++;
+            }
             if($turno){
                 $rodadas = $rodadas*2;
             }
@@ -30,7 +33,6 @@
             $status = 'desligado';
             if($turno)
                 $status = 'ligado';
-
             return $status;
         }
 

@@ -19,6 +19,14 @@
             return $this->partidaDAO->partidaAnterior($idpartida);
         }
 
+        // public function equipeAusente(int $equipeA,int $equipeB){
+        //     if($equipeA != '') {
+        //         $semjogo = $equipeA;
+        //     }else {$semjogo = $equipeB;}
+        //     //echo '<br> <b>'. $semjogo . '</b> não joga essa rodada<br>';
+        //     return $semjogo;
+        // } 
+
         //Inserir
         public function criarPartida(array $equipes,int $nequipe,int $idcampeonato,bool $returno):void{
             //int $rodada,int $timecasa,int $timevisitante;
@@ -60,7 +68,7 @@
                         $this->inserirPartida($idcampeonato,$rodada,$equipes[$i],$equipes[$j]);
                         else 
                             $this->inserirPartida($idcampeonato,$rodada,$equipes[$j],$equipes[$i]);
-                } //else EquipeAusente($time[$i],$time[$j]);
+                } 
             }
         }
 
@@ -75,7 +83,7 @@
                         $this->inserirPartida($idcampeonato,$rodada,$equipes[$j],$equipes[$i]);
                         else 
                             $this->inserirPartida($idcampeonato,$rodada,$equipes[$i],$equipes[$j]);
-                } //else EquipeAusente($time[$i],$time[$j]);
+                }
             }
         }
 
@@ -91,7 +99,6 @@
             $equipes[1] = $aux;
             return $equipes;
         }
-
     }
 
 ?>

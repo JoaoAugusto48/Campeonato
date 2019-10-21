@@ -29,8 +29,12 @@
         public function editarEquipe(int $id, string $nome, string $sigla, string $idPais):void{
             $sigla = strtoupper($sigla);
             $this->equipeDAO->editarEquipe($id, $nome, $sigla, $idPais);
-        } 
+        }
+        
         //Deletar (logicamente)
+        public function removerEquipe(int $id):void{
+            $this->equipeDAO->removerLogicamente($id);
+        }
 
         //Deletar
     }

@@ -11,6 +11,7 @@
         header('Location: frmAddEquipes?id='.$campeonato);
         die();
     }
+    
     $titulo = 'Campeonato - Criar';
     require_once('header.php');
  ?>

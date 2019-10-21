@@ -6,6 +6,7 @@
         private $nome;
         private $sigla;
         private $idPais;
+        private $status;
         
         private $pais;
         
@@ -29,25 +30,33 @@
         public function getIdPais():int{
             return $this->idPais;
         }
+
+        public function getStatus():int{
+            return $this->status;
+        }
         
         public function getPais():Pais{
             return $this->pais;
         }
         // SET
-        public function setId(int $id): void{
+        public function setId(int $id):void{
             $this->id = $id;
         }
 
-        public function setNome(string $nome): void{
+        public function setNome(string $nome):void{
             $this->nome = $nome;
         }
 
-        public function setSigla(string $sigla): void{
+        public function setSigla(string $sigla):void{
             $this->sigla = $sigla;
         }
 
-        public function setIdPais(int $idPais): void{
+        public function setIdPais(int $idPais):void{
             $this->idPais = $idPais;
+        }
+
+        public function setStatus(int $status):void{
+            $this->status = $status;
         }
 
         //verificar essa função

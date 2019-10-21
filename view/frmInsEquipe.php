@@ -22,7 +22,7 @@
     <h2>Cadastrar nova Equipe</h2>
     <hr/>
     <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
-    <form id="frmInsEquipe" name="frmInsEquipe" action="frmInsEquipe" method="POST">
+    <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe" method="POST">
         <div>
             <label for="lblNome">Equipe</label>
             <input type="text" name="txtNome" id="txtNome" placeholder="Nome da Equipe" autocomplete="off">
@@ -41,8 +41,9 @@
                 ?>
             </select>
         </div>
-        <input type="submit" value="Enviar">
+        <input type="button" value="Enviar" onclick="valida_equipe()">
     </form>
 
+    <script type="text/javascript" src="js/Equipe.js"></script>
 
 <?php require_once('footer.php'); ?>

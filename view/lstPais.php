@@ -24,7 +24,7 @@
         <?php foreach($pais as $row) { ?>
         <tr>
             <td><?= $row->getId() ?></td>
-            <td><?= $row->getNome() ?></td>
+            <td><?= strip_tags($row->getNome()) ?></td>
             <td>
                 <input type="button" value="Editar" onclick="javascript: location.href='frmEdtPais?id='+<?= $row->getId() ?>">
                 <input type="button" value="Remover" onclick="javascript: location.href='frmRemPais?id='+<?= $row->getId() ?>">
