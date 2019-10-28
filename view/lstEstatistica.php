@@ -35,18 +35,18 @@
 ?>
 
     <h2><?= $campeonato->getNome() . $timeCampeao ?></h2>
-    <hr>
-    <input type="button" value="Voltar" onclick="javascript: location.href='menu'">
-    <input type="button" value="Jogos" onclick="javascript: location.href='lstPartidas?id=<?= $id_campeonato ?>'">
+    <hr class="bg-dark">
+    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='menu'">
+    <input type="button" class="btn btn-info" value="Jogos" onclick="javascript: location.href='lstPartidas?id=<?= $id_campeonato ?>'">
     <br><br>
     
     
     <?php if(!$classificacao){ ?>
         <h2>Ainda não há equipes cadastradas</h2>
-        <input type="button" value="Adicionar Equipes" onclick="javascript: location.href='frmAddEquipes?id=<?= $campeonato->getId() ?>'">
+        <input type="button" class="btn btn-outline-info" value="Adicionar Equipes" onclick="javascript: location.href='frmAddEquipes?id=<?= $campeonato->getId() ?>'">
     <?php } else { ?>
-        <table class="table">
-            <thead class="thead-light">
+        <table class="table table-striped table-hover bg-light">
+            <thead class="thead-dark">
                 <tr>
                     <th>#</th>
                     <th>NOME</th>
@@ -58,10 +58,17 @@
                     <th>AGV (%)</th>
                     <th>PONTOS</th>
                 </tr>
+            </thead>
+            <tbody>
                 <?php
                     $i=1; foreach($classificacao as $row) { 
                 ?>
-                <tr>
+                <tr 
+                    <?php if($i==1){ ?>
+                        class="bg-info text-white font-weight-bold"
+                    <?php } ?>
+                >
+                <!-- style="background-color: #000" -->
                     <td><?= $i ?></td>
                     <td><?= strip_tags($row->getEquipe()->getNome()) ?></td>
                     <td><?= $estatisticaController->jogos($row->getId(),$row->getVitoria(),$row->getEmpate(),$row->getDerrota()) ?></td>
@@ -75,7 +82,7 @@
                     <td><?= $estatisticaController->pontos($row->getId(),$row->getVitoria(),$row->getEmpate()) ?></td>
                 </tr>
                 <?php $i++; } ?>
-            </thead>
+            </tbody>
         </table>
     <?php } ?>
 

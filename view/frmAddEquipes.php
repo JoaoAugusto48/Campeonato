@@ -25,7 +25,7 @@
         $nequipes = count($equipes);
         $partidaController->criarPartida($equipes,$nequipes,$id_campeonato,$campeonato->getTurno());
 
-        header('Location: menu');
+        header('Location: lstEstatistica?id='.$id_campeonato);
         die();
     }
 
@@ -39,30 +39,34 @@
     $titulo = $campeonato->getNome();
     require_once('header.php');
  ?>
+
     <h2><?= $campeonato->getNome() ?> - Seleção de Equipes</h2>
     <hr>
-    <p>Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
-    <input type="button" value="Voltar" onclick="javascript: location.href='frmInsCampeonato'">
+    <p class="font-weight-bold">Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
+    <input type="button" class="btn btn-info" value="Voltar" onclick='javascript:history.back()'>
     <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="fvalida">
-    <table>
-        <tr>
-            <th>*</th>
-            <th>NOME</th>
-            <th>SIGLA</th>
-            <th>PAIS</th>
-        </tr>
-        <?php foreach($equipe as $row) { ?>
-        <tr>
-            <td><input type="checkbox" name="chkId[]" value="<?= $row->getId() ?>" onclick="getItensSel(<?= $valor ?>)"></td>
-            <td><?= $row->getNome() ?></td>
-            <td><?= $row->getSigla() ?></td>
-            <td><?= $row->getPais()->getNome() ?></td>
-        </tr>
-        <?php } ?>
-
-        <input type="button" value="Enviar" onclick="valida_estatistica()">
+    <table class="table table-striped text-center mt-1">
+        <thead class="thead-dark">
+            <tr>
+                <th>*</th>
+                <th>NOME</th>
+                <th>SIGLA</th>
+                <th>PAIS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($equipe as $row) { ?>
+            <tr>
+                <td><input type="checkbox" name="chkId[]" value="<?= $row->getId() ?>" onclick="getItensSel(<?= $valor ?>)"></td>
+                <td><?= $row->getNome() ?></td>
+                <td><?= $row->getSigla() ?></td>
+                <td><?= $row->getPais()->getNome() ?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+        <input type="button" class="btn btn-outline-success mt-1" value="Enviar" onclick="valida_estatistica()">
     </form>
-    
+
     <script type="text/javascript" src="js/Estatistica.js"></script>
 
 <?php require_once('footer.php'); ?>
