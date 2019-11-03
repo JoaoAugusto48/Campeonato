@@ -19,30 +19,44 @@
     require_once('header.php');
  ?>
 
-    <h2>Cadastrar nova Equipe</h2>
-    <hr/>
-    <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
-    <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe" method="POST">
-        <div>
-            <label for="lblNome">Equipe</label>
-            <input type="text" name="txtNome" id="txtNome" placeholder="Nome da Equipe" autocomplete="off">
+    <div class="jumbotron bg-white py-4">
+        <h2>Cadastrar nova Equipe</h2>
+        <hr class="bg-dark">
+        <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstEquipe'">    
+        <div class="row justify-content-center">
+            <div class="col-md-11 mt-2">
+                <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+                    <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe" method="POST">
+                        <div class="form-group row">
+                            <label for="lblNome" class="col-md-1 col-form-label text-right">Equipe</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="txtNome" id="txtNome" placeholder="Nome da Equipe" maxlength="30" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblSigla" class="col-md-1 col-form-label text-right">Sigla</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" name="txtSigla" id="txtSigla" placeholder="Sigla" maxlength="4" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblPais" class="col-md-1 col-form-label text-right">País</label>
+                            <div class="col-md-10">
+                                <select name="idPais" class="form-control">
+                                    <?php foreach($pais as $row){ ?>
+                                        <option value="<?= $row->getId() ?>"><?= $row->getNome() ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group offset-md-1">
+                            <input type="button" class="center-block btn btn-outline-light" value="Enviar" onclick="valida_equipe()">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="lblSigla">Sigla</label>
-            <input type="text" name="txtSigla" id="txtSigla" placeholder="Sigla da Equipe" maxlength="4" size="3" autocomplete="off">
-        </div>
-        <div>
-            <label for="lblPais">País</label>
-            <select name="idPais">
-                <?php
-                    foreach($pais as $row){
-                        echo "<option value=". $row->getId() .">". $row->getNome() ."</option>";
-                    }
-                ?>
-            </select>
-        </div>
-        <input type="button" value="Enviar" onclick="valida_equipe()">
-    </form>
+    </div>
 
     <script type="text/javascript" src="js/Equipe.js"></script>
 

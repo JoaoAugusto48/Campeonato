@@ -2,6 +2,10 @@
 
     require_once('../DAO/EstatisticaDAO.php');
     require_once('../Controller/PartidaController.php');
+    require_once('UsuarioController.php');
+
+    $usuario = new UsuarioController();
+    $usuario->sessao();
 
     class EstatisticaController{
 

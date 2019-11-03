@@ -1,6 +1,10 @@
 <?php
 
     require_once('../DAO/PartidaDAO.php');
+    require_once('UsuarioController.php');
+
+    $usuario = new UsuarioController();
+    $usuario->sessao();
 
     class PartidaController{
 

@@ -7,6 +7,7 @@
         $equipeController = new EquipeController();
         $equipe = $equipeController->listarPorId($id_equipe);
     }
+
     if(isset($_POST['txtNome'])){
         $id_equipe = $_POST['txtId'];
         var_dump($id_equipe);
@@ -19,26 +20,50 @@
     $titulo = $equipe->getNome();
     require_once('header.php');
 ?>
-    <h2>Remover - <?= $equipe->getNome() ?></h2>
-    <hr/>
-    <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
-    <form id="frmRemEquipe" name="frmRemEquipe" action="frmRemEquipe?id=<?= $id_equipe ?>" method="POST">
-    <div>
-            <label for="lblNome">Equipe: <?= $equipe->getId() ?></label>
-            <input type="hidden" name="txtId" value="<?= $equipe->getId() ?>">
+    
+    <div class="jumbotron bg-white py-4">
+        <h2>Remover - <?= $equipe->getNome() ?></h2>
+        <hr class="bg-dark"/>
+        <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
+        <div class="row justify-content-center">
+            <div class="col-md-11 mt-2">
+                <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+                    <form name="fRemEquipe" action="frmRemEquipe?id=<?= $id_equipe ?>" method="POST">
+                        <div class="form-group row">
+                            <label for="lblId" class="col-md-1 col-form-label text-right">ID</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="txtId" id="txtId" value="<?= $equipe->getId() ?>">
+                                <input type="text" class="form-control" value="<?= $equipe->getId() ?>" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblNome" class="col-md-1 col-form-label text-right">Equipe</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="txtNome" value="<?= $equipe->getNome() ?>">
+                                <input type="text" class="form-control" value="<?= $equipe->getNome() ?>" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblSigla" class="col-md-1 col-form-label text-right">Sigla</label>
+                            <div class="col-md-10">
+                                <input type="hidden" name="txtSigla" value="<?= $equipe->getSigla() ?>">
+                                <input type="text" class="form-control" value="<?= $equipe->getSigla() ?>" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblPais" class="col-md-1 col-form-label text-right">País</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control" value="<?= $equipe->getPais()->getNome() ?>" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group offset-md-1">
+                            <input type="submit" class="center-block btn btn-outline-light" value="Remover">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="lblNome">Equipe: <?= $equipe->getNome() ?></label>
-            <input type="hidden" name="txtNome" value="<?= $equipe->getNome() ?>">
-        </div>
-        <div>
-            <label for="lblSigla">Sigla: <?= $equipe->getSigla() ?></label>
-        </div>
-        <div>
-            <label for="lblPais">País: <?= $equipe->getPais()->getNome() ?></label>
-        </div>
-        <input type="submit" value="Remover">
-    </form>
+    </div>
 
 
 <?php require_once('footer.php'); ?>

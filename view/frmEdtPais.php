@@ -7,6 +7,7 @@
         $paisController = new PaisController(); 
         $pais = $paisController->selecionarPais($id);
     }
+    
     //Editar registro
     if(isset($_POST['txtNome']) && isset($_POST['txtId'])){
         $id = trim($_POST['txtId']);
@@ -20,20 +21,35 @@
     require_once('header.php');
  ?>
 
-        <h2>Editar País</h2>
-        <hr/>
-        <input type="button" value="Voltar" onclick="javascript: location.href='lstPais'">
-        <form name="fvalida" action="frmEdtPais" method="POST">
-            <div>
-                <label for="lblId">ID: <?= $pais->getId() ?></label>
-                <input type="hidden" name="txtId" value="<?= $pais->getId() ?>">
-            </div>            
-            <div>
-                <label for="lblNome">Nacionalidade: </label>
-                <input type="text" name="txtNome" id="txtNome" value="<?= $pais->getNome() ?>" placeholder="Nome do Pais" autocomplete="off">
+    <div class="jumbotron bg-white py-4">
+        <h2>Editar - <?= $pais->getNome() ?></h2>
+        <hr class="bg-dark"/>
+        <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
+        <div class="row justify-content-center">
+            <div class="col-md-11 mt-2">
+                <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+                <form name="fvalida" action="frmEdtPais.php" method="POST">
+                    <div class="form-group row">
+                        <label for="lblNome" class="col-md-2 col-form-label text-right">ID</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" value="<?= $pais->getId() ?>" disabled>
+                            <input type="hidden" class="form-control" name="txtId" value="<?= $pais->getId() ?>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lblNome" class="col-md-2 col-form-label text-right">Nacionalidade</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="txtNome" value="<?= $pais->getNome() ?>" placeholder="Nome do País" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group offset-md-2">
+                        <input type="button" class="center-block btn btn-outline-light" value="Editar" onclick="valida_pais()">
+                    </div>
+                </form>
+                </div>
             </div>
-            <input type="button" value="Enviar" onclick="valida_pais()">
-        </form>
+        </div>
+    </div>
  
         <script type="text/javascript" src="js/Pais.js"></script>
 

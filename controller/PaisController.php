@@ -1,6 +1,10 @@
 <?php
 
     require_once('../DAO/PaisDAO.php');
+    require_once('UsuarioController.php');
+
+    $usuario = new UsuarioController();
+    $usuario->sessao();
 
     class PaisController{
 

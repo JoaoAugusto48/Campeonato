@@ -1,6 +1,10 @@
 <?php
 
     require_once('../DAO/EquipeDAO.php');
+    require_once('UsuarioController.php');
+
+    $usuario = new UsuarioController();
+    $usuario->sessao();
 
     class EquipeController{
         
