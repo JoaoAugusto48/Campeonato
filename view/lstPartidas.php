@@ -54,99 +54,44 @@
         for($i=0;$i < $rodadas;$i++){
             $partida = $partidaController->listarPartidas($campeonato->getId(),$i);
     ?>
-    <h3 id="<?= $i+1 ?>" class="mt-2">Rodada <?= $i+1 ?></h3>
+        <h3 id="<?= $i+1 ?>" class="mt-2">Rodada <?= $i+1 ?></h3>
 
-    <table class="table">       
-        <?php foreach($partida as $key => $row){ 
-            $casa = $equipeController->listarPorId($row->getTimeCasa());
-            $visitante = $equipeController->listarPorId($row->getTimeVisitante());
+        <table class="table mb-1">       
+            <?php foreach($partida as $key => $row){ 
+                $casa = $equipeController->listarPorId($row->getTimeCasa());
+                $visitante = $equipeController->listarPorId($row->getTimeVisitante());
 
-            // não mostra valores ainda não inseridos
-            if(!$row->getStatus()){
-                $mandante = '';
-                $fora = '';
-            }else{
-                $mandante = $row->getNGolCasa();
-                $fora = $row->getNGolVisitante();
-            }
-        ?>
-        
-        <tr>
-            <form action="lstPartidas?id=<?= $id_campeonato ?>#<?= $i+1 ?>" method="post">
-                <input type="hidden" name="idpartida" value="<?= $row->getId() ?>" class="rodada<?=$i?>">
-                <input type="hidden" name="equipecasa" value="<?= $row->getTimeCasa() ?>" class="rodada<?=$i?>">
-                <input type="hidden" name="equipevisitante" value="<?= $row->getTimeVisitante() ?>" class="rodada<?=$i?>">
-                <input type="hidden" name="statuspartida" value="<?= $row->getStatus() ?>">
-
-                <td class="text-right"><?= $casa->getNome() ?></td>
-                <td class="text-center" style="width: 15%;">
-                    <input type="text" name="casa" style="text-align: center" maxlength="2" size="1" value="<?= $mandante ?>" autocomplete="off" class="rodada<?=$i?>">
-                        x 
-                    <input type="text" name="visitante" style="text-align: center" maxlength="2" size="1" value="<?= $fora ?>" autocomplete="off" class="rodada<?=$i?>">
-                </td>
-                <td class="text-left"><?= $visitante->getNome() ?></td>
-                <td><input type="submit" value="Gravar"></td>
-            </form>
-        </tr>
-        <?php } ?>
-
-        <button class="btn btn-success" onclick="teste<?=$i?>()"><i class="fa fa-check-circle"></i> Enviar toda a categoria</button>
-        <script>
-
-            function teste<?=$i?>(){
-                const arr = $('.rodada<?=$i?>');
-                let partidas = [];
-                let idPartidaAtual;
-
-                for (let i = 0; i < arr.length; i++) {
-                // for (let i = 0; i < arr.length; i++) {                
-                    const campo = arr[i];
-
-                    if (campo.name === 'idpartida') {
-                        partidas[campo.value] = {
-                            equipecasa: undefined,
-                            equipevisitante: undefined,
-                            casa: undefined,
-                            visitante: undefined
-                        };
-                        idPartidaAtual = campo.value;
-                    }
-                    else if (campo.name === 'equipecasa') {
-                        partidas[idPartidaAtual].equipecasa = campo.value;
-                    }
-                    else if (campo.name === 'equipevisitante') {
-                        partidas[idPartidaAtual].equipevisitante = campo.value;
-                    }
-                    else if (campo.name === 'casa') {
-                        partidas[idPartidaAtual].casa = campo.value;
-                    }
-                    else if (campo.name === 'visitante') {
-                        partidas[idPartidaAtual].visitante = campo.value;
-                    }
+                // não mostra valores ainda não inseridos
+                if(!$row->getStatus()){
+                    $mandante = '';
+                    $fora = '';
+                }else{
+                    $mandante = $row->getNGolCasa();
+                    $fora = $row->getNGolVisitante();
                 }
+            ?>
+            
+            <tr>
+                <form action="lstPartidas?id=<?= $id_campeonato ?>#<?= $i+1 ?>" method="post">
+                    <input type="hidden" name="idpartida" value="<?= $row->getId() ?>" class="rodada<?=$i?>">
+                    <input type="hidden" name="equipecasa" value="<?= $row->getTimeCasa() ?>" class="rodada<?=$i?>">
+                    <input type="hidden" name="equipevisitante" value="<?= $row->getTimeVisitante() ?>" class="rodada<?=$i?>">
+                    <input type="hidden" name="statuspartida" value="<?= $row->getStatus() ?>">
 
-               /* for(var j = 0; j < partidas.length; j++){
-                    if(!partidas[j]){
-                        partidas = partidas.slice(j);
-                    }
-                }
-                */
-                console.log(partidas);
-
-                $.ajax({
-                type: "POST",
-                url: "./api.php?idRodada=<?=$i?>",
-                data: JSON.stringify(partidas),
-                success: alert('deu certo!!!!!!!!!!!!!'),
-                dataType: 'json',
-                contentType: "application/json"  
-                });
-                
-            }
-        </script>
-    </table>
-    <p>botão Executar Rodada</p>
-    <a href="#0"><input type="button" class="btn btn-primary" value="Voltar Topo"></a>
+                    <td class="text-right"><?= $casa->getNome() ?></td>
+                    <td class="text-center" style="width: 15%;">
+                        <input type="text" name="casa" style="text-align: center" maxlength="2" size="1" value="<?= $mandante ?>" autocomplete="off" class="rodada<?=$i?>">
+                            x 
+                        <input type="text" name="visitante" style="text-align: center" maxlength="2" size="1" value="<?= $fora ?>" autocomplete="off" class="rodada<?=$i?>">
+                    </td>
+                    <td class="text-left"><?= $visitante->getNome() ?></td>
+                    <td><input type="submit" class="btn btn-outline-dark" value="Gravar"></td>
+                </form>
+            </tr>
+            <?php } ?>
+        </table>
+        <p>botão Executar Rodada</p>
+        <a href="#0"><input type="button" class="btn btn-primary" value="Voltar Topo"></a>
     <?php } ?>
     <!-- fim impressão das rodadas -->
 <?php require_once('footer.php'); ?>

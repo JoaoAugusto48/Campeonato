@@ -14,8 +14,7 @@
             
             $_SESSION['name']=$sessao->getNome();
             $_SESSION['user']=$sessao->getUser();
-            // var_dump($_SESSION['user']);
-            // var_dump($_SESSION['name']);
+            
             header('Location: menu');
             die();
         }   
