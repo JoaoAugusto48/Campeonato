@@ -1,6 +1,6 @@
 <?php
-    require_once('../Sql.php');
-    require_once('../model/Usuario.php');
+    require_once(__ROOT__.'/Sql.php');
+    require_once(__ROOT__.'/model/Usuario.php');
 
     class UsuarioDAO{
         private $sql;

@@ -1,6 +1,6 @@
 <?php
-    require_once('../Sql.php');
-    require_once('../model/Pais.php');
+    require_once(__ROOT__.'/Sql.php');
+    require_once(__ROOT__.'/model/Pais.php');
     
     class PaisDAO{
         private $sql;

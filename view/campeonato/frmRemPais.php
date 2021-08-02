@@ -1,32 +1,33 @@
 <?php
-    require_once('../controller/PaisController.php');
-    //acesso a página
-    if(isset($_GET['id'])){
-        $id = trim($_GET['id']);
-        
-        $paisController = new PaisController(); 
-        $pais = $paisController->selecionarPais($id);
-    }
-    //Remover Logicamente registro
-    if(isset($_POST['txtNome'])){
-        $id = trim($_POST['txtId']);
-        $paisController = new PaisController();
-        $paisController->remLogPais($id);
-        header('Location: lstPais');
-        die();
-    }
+define('__ROOT__', '../..');
+require_once(__ROOT__.'/controller/PaisController.php');
+//acesso a página
+if (isset($_GET['id'])) {
+    $id = trim($_GET['id']);
 
-    $titulo = 'Remover País';
-    require_once('header.php');
+    $paisController = new PaisController();
+    $pais = $paisController->selecionarPais($id);
+}
+//Remover Logicamente registro
+if (isset($_POST['txtNome'])) {
+    $id = trim($_POST['txtId']);
+    $paisController = new PaisController();
+    $paisController->remLogPais($id);
+    header('Location: lstPais');
+    die();
+}
+
+$titulo = 'Remover País';
+require_once(__ROOT__.'/view/layout/header.php');
 ?>
 
-    <div class="jumbotron bg-white py-4">
-        <h2>Remover - <?= $pais->getNome() ?></h2>
-        <hr class="bg-dark"/>
-        <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
-        <div class="row justify-content-center">
-            <div class="col-md-11 mt-2">
-                <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+<div class="jumbotron bg-white py-4">
+    <h2>Remover - <?= $pais->getNome() ?></h2>
+    <hr class="bg-dark" />
+    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
+    <div class="row justify-content-center">
+        <div class="col-md-11 mt-2">
+            <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
                 <form name="frmRemPais" action="frmRemPais.php" method="POST">
                     <div class="form-group row">
                         <label for="lblNome" class="col-md-2 col-form-label text-right">ID</label>
@@ -46,10 +47,10 @@
                         <input type="submit" class="center-block btn btn-outline-light" value="Remover">
                     </div>
                 </form>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
 
-<?php require_once('footer.php'); ?>
+<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>

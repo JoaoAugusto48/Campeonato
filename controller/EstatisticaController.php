@@ -1,7 +1,7 @@
 <?php
 
-    require_once('../DAO/EstatisticaDAO.php');
-    require_once('../Controller/PartidaController.php');
+    require_once(__ROOT__.'/DAO/EstatisticaDAO.php');
+    require_once(__ROOT__.'/Controller/PartidaController.php');
     require_once('UsuarioController.php');
 
     $usuario = new UsuarioController();

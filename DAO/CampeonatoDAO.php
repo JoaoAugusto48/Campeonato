@@ -1,6 +1,6 @@
 <?php
-    require_once('../Sql.php');
-    require_once('../model/Campeonato.php');
+    require_once(__ROOT__.'/Sql.php');
+    require_once(__ROOT__.'/model/Campeonato.php');
 
     class CampeonatoDAO{
         private $sql;

@@ -1,33 +1,34 @@
 <?php
-    require_once('../controller/PaisController.php');
-    //acesso a página
-    if(isset($_GET['id'])){
-        $id = trim($_GET['id']);
-        
-        $paisController = new PaisController(); 
-        $pais = $paisController->selecionarPais($id);
-    }
-    
-    //Editar registro
-    if(isset($_POST['txtNome']) && isset($_POST['txtId'])){
-        $id = trim($_POST['txtId']);
-        $nome = trim($_POST['txtNome']);
-        $paisController = new PaisController();
-        $paisController->edtPais($id,$nome);
-        header('Location: lstPais');
-        die();
-    }
-    $titulo = 'Editar País';
-    require_once('header.php');
- ?>
+define('__ROOT__', '../..');
+require_once('../controller/PaisController.php');
+//acesso a página
+if (isset($_GET['id'])) {
+    $id = trim($_GET['id']);
 
-    <div class="jumbotron bg-white py-4">
-        <h2>Editar - <?= $pais->getNome() ?></h2>
-        <hr class="bg-dark"/>
-        <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
-        <div class="row justify-content-center">
-            <div class="col-md-11 mt-2">
-                <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+    $paisController = new PaisController();
+    $pais = $paisController->selecionarPais($id);
+}
+
+//Editar registro
+if (isset($_POST['txtNome']) && isset($_POST['txtId'])) {
+    $id = trim($_POST['txtId']);
+    $nome = trim($_POST['txtNome']);
+    $paisController = new PaisController();
+    $paisController->edtPais($id, $nome);
+    header('Location: lstPais');
+    die();
+}
+$titulo = 'Editar País';
+require_once(__ROOT__.'/view/layout/header.php');
+?>
+
+<div class="jumbotron bg-white py-4">
+    <h2>Editar - <?= $pais->getNome() ?></h2>
+    <hr class="bg-dark" />
+    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
+    <div class="row justify-content-center">
+        <div class="col-md-11 mt-2">
+            <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
                 <form name="fvalida" action="frmEdtPais.php" method="POST">
                     <div class="form-group row">
                         <label for="lblNome" class="col-md-2 col-form-label text-right">ID</label>
@@ -46,11 +47,11 @@
                         <input type="button" class="center-block btn btn-outline-light" value="Editar" onclick="valida_pais()">
                     </div>
                 </form>
-                </div>
             </div>
         </div>
     </div>
- 
-        <script type="text/javascript" src="js/Pais.js"></script>
+</div>
 
-<?php require_once('footer.php'); ?>
+<script type="text/javascript" src="js/Pais.js"></script>
+
+<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>

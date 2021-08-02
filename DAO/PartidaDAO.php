@@ -1,6 +1,6 @@
 <?php
-    require_once('../Sql.php');
-    require_once('../model/Partida.php');
+    require_once(__ROOT__.'/Sql.php');
+    require_once(__ROOT__.'/model/Partida.php');
 
     class PartidaDAO{
         private $sql;

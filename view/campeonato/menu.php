@@ -1,11 +1,12 @@
 <?php
-    require_once('../controller/CampeonatoController.php');
+    define('__ROOT__', '../..');
+    require_once(__ROOT__.'/controller/CampeonatoController.php');
    $campeonatoController = new CampeonatoController();
    
    $campeonato = $campeonatoController->listarCampeonato();
    
    $titulo = 'Página Principal';
-   require_once('header.php');
+   require_once(__ROOT__.'/view/layout/header.php');
 ?>
 
     <h1 class="text-dark">Campeonato</h1>
@@ -40,4 +41,4 @@
     </table>
 
 
-<?php require_once('footer.php'); ?>
+<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>

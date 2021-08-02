@@ -1,6 +1,6 @@
 <?php
-    require_once('../Sql.php');
-    require_once('../model/Estatistica.php');
+    require_once(__ROOT__.'/Sql.php');
+    require_once(__ROOT__.'/model/Estatistica.php');
 
     class EstatisticaDAO{
         private $sql;

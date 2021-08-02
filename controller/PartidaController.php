@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../DAO/PartidaDAO.php');
+    require_once(__ROOT__.'/DAO/PartidaDAO.php');
     require_once('UsuarioController.php');
 
     $usuario = new UsuarioController();
