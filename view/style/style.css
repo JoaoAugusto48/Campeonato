@@ -31,49 +31,6 @@ html {
   
   /* STRUCTURE */
   
-  .wrapper {
-    display: flex;
-    align-items: center;
-    flex-direction: column; 
-    justify-content: center;
-    width: 100%;
-    min-height: 100%;
-    padding: 20px;
-  }
-  
-  #formheader {
-    background-color: #404040;
-    /* border-top: 1px solid #dce8f1; */
-    margin: 0;
-    padding: 0 12.7% 2.5% 10.8%px;
-    text-align: center;
-    -webkit-border-radius: 0 0 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-  }
-
-  #formContent {
-    -webkit-border-radius: 10px 10px 10px 10px;
-    border-radius: 10px 10px 10px 10px;
-    background: #FFF;
-    padding: 30px;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    padding: 0px;
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
-  }
-  
-  #formFooter {
-    background-color: #404040;
-    border-top: 1px solid #dce8f1;
-    padding: 25px;
-    text-align: center;
-    -webkit-border-radius: 0 0 10px 10px;
-    border-radius: 0 0 10px 10px;
-  }
-  
   
   
   /* TABS */
