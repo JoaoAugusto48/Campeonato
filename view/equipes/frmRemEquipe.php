@@ -1,6 +1,6 @@
 <?php
 define('__ROOT__', '../..');
-require_once('../controller/EquipeController.php');
+require_once(__ROOT__.'/controller/EquipeController.php');
 
 if (isset($_GET['id'])) {
     $id_equipe = $_GET['id'];
@@ -14,7 +14,7 @@ if (isset($_POST['txtNome'])) {
     var_dump($id_equipe);
     $equipeController = new EquipeController();
     $equipeController->removerEquipe($id_equipe);
-    header('Location: lstEquipe');
+    header('Location: '.__ROOT__.'/view/lstEquipe.php');
     die();
 }
 
@@ -25,11 +25,11 @@ require_once(__ROOT__.'/view/layout/header.php');
 <div class="jumbotron bg-white py-4">
     <h2>Remover - <?= $equipe->getNome() ?></h2>
     <hr class="bg-dark" />
-    <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
+    <a href="<?= __ROOT__ ?>/view/equipes/lstEquipe.php" class="btn btn-info">Voltar</a>
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
-                <form name="fRemEquipe" action="frmRemEquipe?id=<?= $id_equipe ?>" method="POST">
+                <form name="fRemEquipe" action="frmRemEquipe.php?id=<?= $id_equipe ?>" method="POST">
                     <div class="form-group row">
                         <label for="lblId" class="col-md-1 col-form-label text-right">ID</label>
                         <div class="col-md-10">

@@ -40,7 +40,7 @@ require_once(__ROOT__.'/view/layout/header.php');
 ?>
 <h2 id="0"><?= $campeonato->getNome() ?> - Jogos</h2>
 <hr>
-<input type="button" value="Voltar" class="btn btn-info" onclick="javascript: location.href='lstEstatistica?id=<?= $id_campeonato ?>'">
+<a href="<?= __ROOT__ ?>/view/campeonato/lstEstatistica.php?id=<?= $id_campeonato ?>" class="btn btn-info">Voltar</a>
 <br><br>
 <!-- inicio botão das rodadas -->
 <div class="text text-left">

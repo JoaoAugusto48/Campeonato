@@ -11,9 +11,9 @@
 
     <h1 class="text-dark">Campeonato</h1>
 
-    <input type="button" class="btn btn-info" value="Equipes" onclick="javascript: location.href='lstEquipe'">
-    <input type="button" class="btn btn-info" value="Países" onclick="javascript: location.href='lstPais'">
-    <input type="button" class="btn btn-info" value="Novo Campeonato" onclick="javascript: location.href='frmInsCampeonato'">
+    <a href="<?= __ROOT__ ?>/view/equipes/lstEquipe.php" class="btn btn-info">Equipes</a>
+    <a href="<?= __ROOT__ ?>/view/paises/lstPais.php" class="btn btn-info">Países</a>
+    <a href="<?= __ROOT__ ?>/view/campeonato/frmInsCampeonato.php" class="btn btn-info">Novo Campeonato</a>
     
     <hr class="bg-secondary">
     <h3>Campeonatos recorrentes</h3>
@@ -30,7 +30,7 @@
             <?php foreach($campeonato as $row) { ?>
             <tr>
                 <td scope="row" class="text-center">
-                    <input type="button" class="btn btn-outline-dark" value="<?= strip_tags($row->getNome()) ?>" onclick="javascript: location.href='lstEstatistica?id=<?= $row->getId() ?>'">
+                    <input type="button" class="btn btn-outline-dark" value="<?= strip_tags($row->getNome()) ?>" onclick="javascript: location.href='lstEstatistica.php?id=<?= $row->getId() ?>'">
                 </td>
                 <td scope="row" class="text-center">E: <?= $row->getNEquipe() ?></td>
                 <td scope="row" class="text-center">R: <?= $campeonatoController->numeroRodadas($row->getNEquipe(),$row->getTurno()) ?></td>

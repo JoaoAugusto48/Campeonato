@@ -13,7 +13,7 @@ if (isset($_POST['txtNome'])) {
     $id = trim($_POST['txtId']);
     $paisController = new PaisController();
     $paisController->remLogPais($id);
-    header('Location: lstPais');
+    header('Location: '.__ROOT__.'/view/paises/lstPais.php');
     die();
 }
 

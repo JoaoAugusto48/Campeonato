@@ -1,6 +1,6 @@
 <?php
 define('__ROOT__', '../..');
-require_once('../controller/PaisController.php');
+require_once(__ROOT__.'/controller/PaisController.php');
 $paisController = new PaisController();
 
 $pais = $paisController->listarPais();

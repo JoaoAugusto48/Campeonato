@@ -1,7 +1,7 @@
 <?php
 define('__ROOT__', '../..');
-require_once('../controller/EquipeController.php');
-require_once('../controller/PaisController.php');
+require_once(__ROOT__.'/controller/EquipeController.php');
+require_once(__ROOT__.'/controller/PaisController.php');
 
 $paisController = new PaisController();
 $pais = $paisController->listarPais();
@@ -12,7 +12,7 @@ if (isset($_POST['txtNome']) && isset($_POST['txtSigla']) && isset($_POST['idPai
     $idpais = $_POST['idPais'];
     $equipe = new EquipeController();
     $equipe->insEquipe($nome, $sigla, $idpais);
-    header('Location: lstEquipe');
+    header('Location: '.__ROOT__.'/view/equipes/lstEquipe.php');
     die();
 }
 
@@ -23,11 +23,11 @@ require_once(__ROOT__.'/view/layout/header.php');
 <div class="jumbotron bg-white py-4">
     <h2>Cadastrar nova Equipe</h2>
     <hr class="bg-dark">
-    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstEquipe'">
+    <a href="<?= __ROOT__ ?>/view/equipes/lstEquipe.php" class="btn btn-info">Voltar</a>
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
-                <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe" method="POST">
+                <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe.php" method="POST">
                     <div class="form-group row">
                         <label for="lblNome" class="col-md-1 col-form-label text-right">Equipe</label>
                         <div class="col-md-10">
@@ -51,7 +51,7 @@ require_once(__ROOT__.'/view/layout/header.php');
                         </div>
                     </div>
                     <div class="form-group offset-md-1">
-                        <input type="button" class="center-block btn btn-outline-light" value="Enviar" onclick="valida_equipe()">
+                        <button type="submit" class="center-block btn btn-outline-light" value="Enviar" onclick="valida_equipe()">Enviar</button>
                     </div>
                 </form>
             </div>

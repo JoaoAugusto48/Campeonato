@@ -37,8 +37,8 @@ require_once(__ROOT__.'/view/layout/header.php');
 
 <h2><?= $campeonato->getNome() . $timeCampeao ?></h2>
 <hr class="bg-dark">
-<input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='menu'">
-<input type="button" class="btn btn-info" value="Jogos" onclick="javascript: location.href='lstPartidas?id=<?= $id_campeonato ?>'">
+<a href="<?= __ROOT__ ?>/view/campeonato/menu.php" class="btn btn-info">Menu</a>
+<a href="<?= __ROOT__ ?>/view/campeonato/lstPartidas.php?id=<?= $id_campeonato ?>" class="btn btn-info">Jogos</a>
 <br><br>
 
 

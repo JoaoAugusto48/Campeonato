@@ -1,9 +1,9 @@
 <?php
 define('__ROOT__', '../..');
-require_once(__ROOT__.'/controller/EquipeController.php');
-require_once(__ROOT__.'/controller/CampeonatoController.php');
-require_once(__ROOT__.'/controller/EstatisticaController.php');
-require_once(__ROOT__.'/controller/PartidaController.php');
+require_once(__ROOT__ . '/controller/EquipeController.php');
+require_once(__ROOT__ . '/controller/CampeonatoController.php');
+require_once(__ROOT__ . '/controller/EstatisticaController.php');
+require_once(__ROOT__ . '/controller/PartidaController.php');
 
 $equipeController = new EquipeController();
 $campeonatoController = new CampeonatoController();
@@ -26,7 +26,7 @@ if (isset($_POST['chkId'])) {
     $nequipes = count($equipes);
     $partidaController->criarPartida($equipes, $nequipes, $id_campeonato, $campeonato->getTurno());
 
-    header('Location: '.__ROOT__.'/view/campeonato/lstEstatistica?id=' . $id_campeonato);
+    header('Location: ' . __ROOT__ . '/view/campeonato/lstEstatistica.php?id=' . $id_campeonato);
     die();
 }
 
@@ -38,13 +38,13 @@ $valor = $campeonato->getNEquipe();
 
 
 $titulo = $campeonato->getNome();
-require_once(__ROOT__.'/view/layout/header.php');
+require_once(__ROOT__ . '/view/layout/header.php');
 ?>
 
 <h2><?= $campeonato->getNome() ?> - Seleção de Equipes</h2>
 <hr>
 <p class="font-weight-bold">Países a selecionar: <span id='total'><?= $valor ?></span>/<?= $campeonato->getNEquipe() ?></p>
-<input type="button" class="btn btn-info" value="Voltar" onclick='javascript:history.back()'>
+<button class="btn btn-info" onclick="history.back()">Voltar</button>
 <form action="frmAddEquipes?id=<?= $id_campeonato ?>" method="post" id="frmInsCampeonato" name="fvalida">
     <table class="table table-striped text-center mt-1">
         <thead class="thead-dark">
@@ -65,9 +65,9 @@ require_once(__ROOT__.'/view/layout/header.php');
                 </tr>
             <?php } ?>
         </tbody>
-        <input type="button" class="btn btn-outline-success mt-1" value="Enviar" onclick="valida_estatistica()">
+        <button type="button" class="btn btn-outline-success mt-1" value="Enviar" onclick="valida_estatistica()">
 </form>
 
 <script type="text/javascript" src="js/Estatistica.js"></script>
 
-<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>
+<?php require_once(__ROOT__ . '/view/layout/footer.php'); ?>

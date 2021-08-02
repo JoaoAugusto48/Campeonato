@@ -1,6 +1,6 @@
 <?php
 define('__ROOT__', '../..');
-require_once(__ROOT__.'/controller/CampeonatoController.php');
+require_once(__ROOT__ . '/controller/CampeonatoController.php');
 
 if (isset($_POST['txtNome']) && isset($_POST['nEquipe'])) {
     $nome = $_POST['txtNome'];
@@ -9,18 +9,19 @@ if (isset($_POST['txtNome']) && isset($_POST['nEquipe'])) {
 
     $campeonatoController = new CampeonatoController();
     $campeonato = $campeonatoController->inserirCampeonato($nome, $nEquipe, $turno);
-    header('Location: frmAddEquipes?id=' . $campeonato);
+    header('Location: frmAddEquipes.php?id=' . $campeonato);
     die();
 }
 
 $titulo = 'Campeonato - Criar';
-require_once(__ROOT__.'/view/layout/header.php');
+require_once(__ROOT__ . '/view/layout/header.php');
 ?>
 
 <div class="jumbotron bg-white py-4">
     <h2>Criação de Campeonato</h2>
     <hr class="bg-dark" />
-    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='menu'">
+    <a href="<?= __ROOT__ ?>/view/campeonato/menu.php" class="btn btn-info">Menu</a>
+
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
@@ -54,4 +55,4 @@ require_once(__ROOT__.'/view/layout/header.php');
 
 <script type="text/javascript" src="js/Campeonato.js"></script>
 
-<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>
+<?php require_once(__ROOT__ . '/view/layout/footer.php'); ?>

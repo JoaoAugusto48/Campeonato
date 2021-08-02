@@ -1,12 +1,12 @@
 <?php
 define('__ROOT__', '../..');
-require_once('../controller/PaisController.php');
+require_once(__ROOT__.'/controller/PaisController.php');
 
 if (isset($_POST['txtNome'])) {
     $nome = trim($_POST['txtNome']);
     $paisController = new PaisController;
     $paisController->addPais($nome);
-    header('Location: lstPais');
+    header('Location: '.__ROOT__.'/view/paises/lstPais.php');
     die();
 }
 $titulo = 'Inserir País';

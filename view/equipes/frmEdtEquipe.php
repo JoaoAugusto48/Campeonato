@@ -1,7 +1,7 @@
 <?php
 define('__ROOT__', '../..');
-require_once('../controller/EquipeController.php');
-require_once('../controller/PaisController.php');
+require_once(__ROOT__.'/controller/EquipeController.php');
+require_once(__ROOT__.'/controller/PaisController.php');
 //Acesso a página
 if (isset($_GET['id'])) {
     $id = trim($_GET['id']);
@@ -23,7 +23,7 @@ if (isset($_POST['txtId']) && isset($_POST['txtNome']) && isset($_POST['txtSigla
     $equipeController = new EquipeController();
     $equipeController->editarEquipe($id, $nome, $sigla, $idpais);
 
-    header('Location: lstEquipe');
+    header('Location: '.__ROOT__.'/view/equipes/lstEquipe.php');
     die();
 }
 
@@ -33,7 +33,7 @@ require_once(__ROOT__.'/view/layout/header.php');
 <div class="jumbotron bg-white py-4">
     <h2>Editar - <?= $equipe->getNome() ?></h2>
     <hr class="bg-dark" />
-    <input type="button" value="Voltar" onclick="javascript: location.href='lstEquipe'">
+    <a href="<?= __ROOT__ ?>/view/equipes/lstEquipe.php" class="btn btn-info">Voltar</a>
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
