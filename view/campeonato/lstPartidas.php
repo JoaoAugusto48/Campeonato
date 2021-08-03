@@ -45,7 +45,7 @@ require_once(__ROOT__.'/view/layout/header.php');
 <!-- inicio botão das rodadas -->
 <div class="text text-left">
     <?php for ($i = 0; $i < $rodadas; $i++) { ?>
-        <a href="#<?= $i + 1 ?>"><input type="button" class="btn btn-outline-primary col-md-1 mt-1" value="Rodada <?= $i + 1 ?>"></a>
+        <a href="#<?= $i+1 ?>" class="btn btn-outline-primary col-md-1 mt-1">Rodada <?= $i+1 ?></a>
     <?php } ?>
 </div>
 <!-- fim botão das rodadas -->
@@ -92,7 +92,7 @@ for ($i = 0; $i < $rodadas; $i++) {
         <?php } ?>
     </table>
     <p>botão Executar Rodada</p>
-    <a href="#0"><input type="button" class="btn btn-primary" value="Voltar Topo"></a>
+    <a href="#0" class="btn btn-primary">Voltar Topo</a>
 <?php } ?>
 <!-- fim impressão das rodadas -->
 <?php require_once(__ROOT__.'/view/layout/footer.php'); ?>

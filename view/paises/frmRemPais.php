@@ -24,7 +24,7 @@ require_once(__ROOT__.'/view/layout/header.php');
 <div class="jumbotron bg-white py-4">
     <h2>Remover - <?= $pais->getNome() ?></h2>
     <hr class="bg-dark" />
-    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
+    <a href="<?= __ROOT__ ?>/view/pais/lstPais.php" class="btn btn-info">Voltar</a>
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">

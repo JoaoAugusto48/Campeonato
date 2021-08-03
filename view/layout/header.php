@@ -31,7 +31,9 @@ $usuario->sessao();
                             <td class="align-middle">
                                 <h6 class="m-0">Olá <?= $_SESSION['name'] ?></h6>
                             </td>
-                            <td class="align-middle"><input type="button" class="btn btn-outline-danger" value="Log Out" onclick="javascript: location.href='logout'"></td>
+                            <td class="align-middle">
+                                <a href="<?= __ROOT__ ?>/view/sessao/logout.php" class="btn btn-outline-danger">Logout</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

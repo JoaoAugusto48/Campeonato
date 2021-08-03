@@ -1,21 +1,21 @@
 <?php
 define('__ROOT__', '../..');
-require_once(__ROOT__.'/controller/PaisController.php');
+require_once(__ROOT__ . '/controller/PaisController.php');
 
 if (isset($_POST['txtNome'])) {
     $nome = trim($_POST['txtNome']);
     $paisController = new PaisController;
     $paisController->addPais($nome);
-    header('Location: '.__ROOT__.'/view/paises/lstPais.php');
+    header('Location: ' . __ROOT__ . '/view/paises/lstPais.php');
     die();
 }
 $titulo = 'Inserir País';
-require_once(__ROOT__.'/view/layout/header.php');
+require_once(__ROOT__ . '/view/layout/header.php');
 ?>
 <div class="jumbotron bg-white py-4">
     <h2>Cadastrar novo País</h2>
     <hr class="bg-dark" />
-    <input type="button" class="btn btn-info" value="Voltar" onclick="javascript: location.href='lstPais'">
+    <a href="<?= __ROOT__ ?>/view/paises/lstPais.php" class="btn btn-info">Voltar</a>
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
             <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
@@ -27,7 +27,7 @@ require_once(__ROOT__.'/view/layout/header.php');
                         </div>
                     </div>
                     <div class="form-group offset-md-2">
-                        <input type="button" class="center-block btn btn-outline-light" value="Enviar" onclick="valida_pais()">
+                        <button type="button" class="center-block btn btn-outline-light" onclick="valida_pais()">Enviar</button>
                     </div>
                 </form>
             </div>
@@ -37,4 +37,4 @@ require_once(__ROOT__.'/view/layout/header.php');
 
 <script type="text/javascript" src="js/Pais.js"></script>
 
-<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>
+<?php require_once(__ROOT__ . '/view/layout/footer.php'); ?>

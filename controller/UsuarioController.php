@@ -23,7 +23,7 @@
                 session_start();
             }
             if(!isset($_SESSION['user'])){
-                header("Location: index.html");
+                header("Location: ".__ROOT__."/index.php");
             }
             //var_dump($_SESSION['name']);
             //var_dump($_SESSION['user']);
@@ -33,7 +33,7 @@
             session_start();
             session_destroy();
 
-            header('Location: index.html');
+            header('Location: '.__ROOT__.'/index.php');
             exit();
         }
         //Modificar

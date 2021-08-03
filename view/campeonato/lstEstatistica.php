@@ -1,8 +1,8 @@
 <?php
 define('__ROOT__', '../..');
-require_once(__ROOT__.'/controller/EstatisticaController.php');
-require_once(__ROOT__.'/controller/CampeonatoController.php');
-require_once(__ROOT__.'/controller/EquipeController.php');
+require_once(__ROOT__ . '/controller/EstatisticaController.php');
+require_once(__ROOT__ . '/controller/CampeonatoController.php');
+require_once(__ROOT__ . '/controller/EquipeController.php');
 
 $id_campeonato = $_GET['id'];
 
@@ -32,7 +32,7 @@ if ($classificacao) {
 }
 
 $titulo = $campeonato->getNome();
-require_once(__ROOT__.'/view/layout/header.php');
+require_once(__ROOT__ . '/view/layout/header.php');
 ?>
 
 <h2><?= $campeonato->getNome() . $timeCampeao ?></h2>
@@ -44,7 +44,7 @@ require_once(__ROOT__.'/view/layout/header.php');
 
 <?php if (!$classificacao) { ?>
     <h2>Ainda não há equipes cadastradas</h2>
-    <input type="button" class="btn btn-outline-info" value="Adicionar Equipes" onclick="javascript: location.href='frmAddEquipes?id=<?= $campeonato->getId() ?>'">
+    <a href="<?= __ROOT__ ?>/view/equipes/frmAddEquipes.php?id=<?= $campeonato->getId() ?>" class="btn btn-info">Adicionar Equipes</a>
 <?php } else { ?>
     <table class="table table-striped table-hover bg-light">
         <thead class="thead-dark">
@@ -85,4 +85,4 @@ require_once(__ROOT__.'/view/layout/header.php');
     </table>
 <?php } ?>
 
-<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>
+<?php require_once(__ROOT__ . '/view/layout/footer.php'); ?>

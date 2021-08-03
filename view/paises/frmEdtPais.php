@@ -44,7 +44,7 @@ require_once(__ROOT__.'/view/layout/header.php');
                         </div>
                     </div>
                     <div class="form-group offset-md-2">
-                        <input type="button" class="center-block btn btn-outline-light" value="Editar" onclick="valida_pais()">
+                        <button type="button" class="center-block btn btn-outline-light" onclick="valida_pais()">Editar</button>
                     </div>
                 </form>
             </div>
