@@ -73,7 +73,7 @@ for ($i = 0; $i < $rodadas; $i++) {
         ?>
 
             <tr>
-                <form action="lstPartidas?id=<?= $id_campeonato ?>#<?= $i + 1 ?>" method="post">
+                <form action="lstPartidas.php?id=<?= $id_campeonato ?>#<?= $i + 1 ?>" method="post">
                     <input type="hidden" name="idpartida" value="<?= $row->getId() ?>" class="rodada<?= $i ?>">
                     <input type="hidden" name="equipecasa" value="<?= $row->getTimeCasa() ?>" class="rodada<?= $i ?>">
                     <input type="hidden" name="equipevisitante" value="<?= $row->getTimeVisitante() ?>" class="rodada<?= $i ?>">

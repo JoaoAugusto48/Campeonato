@@ -1,7 +1,7 @@
 <?php
 define('__ROOT__', '../..');
-require_once(__ROOT__.'/controller/EquipeController.php');
-require_once(__ROOT__.'/controller/PaisController.php');
+require_once(__ROOT__ . '/controller/EquipeController.php');
+require_once(__ROOT__ . '/controller/PaisController.php');
 
 $paisController = new PaisController();
 $pais = $paisController->listarPais();
@@ -12,21 +12,23 @@ if (isset($_POST['txtNome']) && isset($_POST['txtSigla']) && isset($_POST['idPai
     $idpais = $_POST['idPais'];
     $equipe = new EquipeController();
     $equipe->insEquipe($nome, $sigla, $idpais);
-    header('Location: '.__ROOT__.'/view/equipes/lstEquipe.php');
+    header('Location: ' . __ROOT__ . '/view/equipes/lstEquipe.php');
     die();
 }
 
 $titulo = 'Inserir Equipe';
-require_once(__ROOT__.'/view/layout/header.php');
+require_once(__ROOT__ . '/view/layout/header.php');
 ?>
 
-<div class="jumbotron bg-white py-4">
+<div class="bg-white py-4">
     <h2>Cadastrar nova Equipe</h2>
     <hr class="bg-dark">
+    
     <a href="<?= __ROOT__ ?>/view/equipes/lstEquipe.php" class="btn btn-info">Voltar</a>
+    
     <div class="row justify-content-center">
         <div class="col-md-11 mt-2">
-            <div class="jumbotron bg-secondary pt-5 pb-3 border border-white text-white font-weight-bold">
+            <div class="bg-secondary border border-white text-white font-weight-bold">
                 <form id="frmInsEquipe" name="fequipe" action="frmInsEquipe.php" method="POST">
                     <div class="form-group row">
                         <label for="lblNome" class="col-md-1 col-form-label text-right">Equipe</label>
@@ -34,12 +36,14 @@ require_once(__ROOT__.'/view/layout/header.php');
                             <input type="text" class="form-control" name="txtNome" id="txtNome" placeholder="Nome da Equipe" maxlength="30" autocomplete="off">
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label for="lblSigla" class="col-md-1 col-form-label text-right">Sigla</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="txtSigla" id="txtSigla" placeholder="Sigla" maxlength="4" autocomplete="off">
                         </div>
                     </div>
+                    
                     <div class="form-group row">
                         <label for="lblPais" class="col-md-1 col-form-label text-right">País</label>
                         <div class="col-md-10">
@@ -61,4 +65,4 @@ require_once(__ROOT__.'/view/layout/header.php');
 
 <script type="text/javascript" src="js/Equipe.js"></script>
 
-<?php require_once(__ROOT__.'/view/layout/footer.php'); ?>
+<?php require_once(__ROOT__ . '/view/layout/footer.php'); ?>

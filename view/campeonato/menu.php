@@ -30,7 +30,7 @@
             <?php foreach($campeonato as $row) { ?>
             <tr>
                 <td scope="row" class="text-center">
-                    <a href="lstEstatistica.phpid=<?= $row->getId() ?>" class="btn btn-outline-dark"><?= strip_tags($row->getNome()) ?></a>
+                    <a href="lstEstatistica.php?id=<?= $row->getId() ?>" class="btn btn-outline-dark"><?= strip_tags($row->getNome()) ?></a>
                 </td>
                 <td scope="row" class="text-center">E: <?= $row->getNEquipe() ?></td>
                 <td scope="row" class="text-center">R: <?= $campeonatoController->numeroRodadas($row->getNEquipe(),$row->getTurno()) ?></td>

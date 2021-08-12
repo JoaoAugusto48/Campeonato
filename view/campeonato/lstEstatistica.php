@@ -48,7 +48,7 @@ require_once(__ROOT__ . '/view/layout/header.php');
 <?php } else { ?>
     <table class="table table-striped table-hover bg-light">
         <thead class="thead-dark">
-            <tr>
+            <tr class="text-center">
                 <th>#</th>
                 <th>NOME</th>
                 <th>JOGOS</th>
@@ -60,7 +60,7 @@ require_once(__ROOT__ . '/view/layout/header.php');
                 <th>PONTOS</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="text-center">
             <?php
             $i = 1;
             foreach ($classificacao as $row) {
@@ -68,7 +68,7 @@ require_once(__ROOT__ . '/view/layout/header.php');
                 <tr <?php if ($i == 1) { ?> class="bg-info text-white font-weight-bold" <?php } ?>>
                     <!-- style="background-color: #000" -->
                     <td><?= $i ?></td>
-                    <td><?= strip_tags($row->getEquipe()->getNome()) ?></td>
+                    <td class="text-start"><?= strip_tags($row->getEquipe()->getNome()) ?></td>
                     <td><?= $estatisticaController->jogos($row->getId(), $row->getVitoria(), $row->getEmpate(), $row->getDerrota()) ?></td>
                     <td><?= $row->getVitoria() ?></td>
                     <td><?= $row->getEmpate() ?></td>

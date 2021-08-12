@@ -20,4 +20,4 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
         die();
     }
 }
-header('Location: '.__ROOT__.'/index.html');
+header('Location: '.__ROOT__.'/index.php');

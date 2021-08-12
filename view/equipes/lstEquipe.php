@@ -33,10 +33,8 @@ require_once(__ROOT__ . '/view/layout/header.php');
                 <td><?= $row->getSigla() ?></td>
                 <td><?= $row->getPais()->getNome() ?></td>
                 <th>
-                    <a href="<?= __ROOT__ ?>/view/equipes/frmEdtEquipe.php?id=<?= $row->getId() ?>" class="btn btn-info">Editar</a>
-                    <a href="<?= __ROOT__ ?>/view/equipes/frmRemEquipe.php?id=<?= $row->getId() ?>" class="btn btn-info">Remover</a>
-                    <input type="button" class="btn btn-outline-primary" value="Editar" onclick="javascript: location.href='frmEdtEquipe?id='+<?= $row->getId() ?>">
-                    <input type="button" class="btn btn-outline-warning" value="Remover" onclick="javascript: location.href='frmRemEquipe?id='+<?= $row->getId() ?>">
+                    <a href="<?= __ROOT__ ?>/view/equipes/frmEdtEquipe.php?id=<?= $row->getId() ?>" class="btn btn-warning">Editar</a>
+                    <a href="<?= __ROOT__ ?>/view/equipes/frmRemEquipe.php?id=<?= $row->getId() ?>" class="btn btn-danger">Remover</a>
                 </th>
             </tr>
         <?php } ?>
