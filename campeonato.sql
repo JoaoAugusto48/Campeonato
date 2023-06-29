@@ -19,47 +19,47 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `campeonato`
+-- Banco de dados: `campeonatos`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `campeonato`
+-- Estrutura da tabela `campeonatos`
 --
 
-CREATE TABLE `campeonato` (
+CREATE TABLE IF NOT EXISTS `campeonatos` (
   `id` int(11) NOT NULL,
-  `nequipe` int(11) NOT NULL,
+  `qtde_equipes` int(11) NOT NULL,
   `turno` tinyint(1) NOT NULL,
   `nome` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `campeonato`
+-- Extraindo dados da tabela `campeonatos`
 --
 
-INSERT INTO `campeonato` (`id`, `nequipe`, `turno`, `nome`) VALUES
+INSERT INTO `campeonatos` (`id`, `qtde_equipes`, `turno`, `nome`) VALUES
 (1, 8, 1, 'Brasileirão');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `equipe`
+-- Estrutura da tabela `equipes`
 --
 
-CREATE TABLE `equipe` (
+CREATE TABLE IF NOT EXISTS `equipes` (
   `id` int(11) NOT NULL,
   `nome` varchar(30) NOT NULL,
   `sigla` varchar(3) NOT NULL,
-  `idpais` int(11) NOT NULL
+  `pais_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `equipe`
+-- Extraindo dados da tabela `equipes`
 --
 
-INSERT INTO `equipe` (`id`, `nome`, `sigla`, `idpais`) VALUES
+INSERT INTO `equipes` (`id`, `nome`, `sigla`, `pais_id`) VALUES
 (1, 'Corinthians', 'COR', 1),
 (2, 'São Paulo', 'SPO', 1),
 (5, 'Juventus', 'JUV', 7),
@@ -79,25 +79,25 @@ INSERT INTO `equipe` (`id`, `nome`, `sigla`, `idpais`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `estatistica`
+-- Estrutura da tabela `estatisticas`
 --
 
-CREATE TABLE `estatistica` (
+CREATE TABLE IF NOT EXISTS `estatisticas` (
   `id` int(11) NOT NULL,
-  `vitoria` int(2) NOT NULL,
-  `empate` int(2) NOT NULL,
-  `derrota` int(2) NOT NULL,
-  `golpro` int(3) NOT NULL,
-  `golcontra` int(3) NOT NULL,
-  `idequipe` int(11) NOT NULL,
-  `idcampeonato` int(11) NOT NULL
+  `vitorias` int(2) NOT NULL,
+  `empates` int(2) NOT NULL,
+  `derrotas` int(2) NOT NULL,
+  `gols_pro` int(3) NOT NULL,
+  `gols_contra` int(3) NOT NULL,
+  `equipes_id` int(11) NOT NULL,
+  `campeonatos_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `estatistica`
+-- Extraindo dados da tabela `estatisticas`
 --
 
-INSERT INTO `estatistica` (`id`, `vitoria`, `empate`, `derrota`, `golpro`, `golcontra`, `idequipe`, `idcampeonato`) VALUES
+INSERT INTO `estatisticas` (`id`, `vitorias`, `empates`, `derrotas`, `gols_pro`, `gols_contra`, `equipes_id`, `campeonatos_id`) VALUES
 (1, 0, 0, 0, 0, 0, 6, 1),
 (2, 0, 0, 0, 0, 0, 17, 1),
 (3, 0, 0, 0, 0, 0, 1, 1),
@@ -113,9 +113,10 @@ INSERT INTO `estatistica` (`id`, `vitoria`, `empate`, `derrota`, `golpro`, `golc
 -- Estrutura da tabela `pais`
 --
 
-CREATE TABLE `pais` (
+CREATE TABLE IF NOT EXISTS `pais` (
   `id` int(11) NOT NULL,
   `nome` varchar(25) NOT NULL,
+  `sigla` varchar(3) NOT NULL,
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -123,36 +124,36 @@ CREATE TABLE `pais` (
 -- Extraindo dados da tabela `pais`
 --
 
-INSERT INTO `pais` (`id`, `nome`, `status`) VALUES
-(1, 'Brasil', 1),
-(2, 'Argentina', 1),
-(5, 'Alemanha', 1),
-(6, 'Espanha', 1),
-(7, 'Itália', 1),
-(8, 'Uruguai', 1),
-(9, 'Portugal', 1),
-(10, 'Japão', 1),
-(11, 'Paraguai', 1),
-(15, 'Colombia', 1),
-(16, 'Croacia', 1),
-(17, 'Finlandia', 1),
-(18, 'Venezuela', 1),
-(29, 'Republica Tcheca', 1),
-(33, 'Chile', 1),
-(34, 'Teste', 1),
-(35, 'teste2', 0),
-(36, 'teste3', 1),
-(37, 'teste2', 1),
-(38, 'test4', 0),
-(39, 'Egito', 1),
-(40, 'Bolivia', 1),
-(41, 'teste05', 0),
-(42, 'teste06', 0),
-(43, 'teste aksaks', 0),
-(44, 'asdasfafs', 0),
-(45, 'mais um', 1),
-(46, 'teste, errei', 1),
-(47, 'Estados Unidos', 1);
+INSERT INTO `pais` (`id`, `nome`, `sigla`, `status`) VALUES
+(1, 'Brasil', 'BRA', 1),
+(2, 'Argentina', 'ARG', 1),
+(5, 'Alemanha', 'ALE', 1),
+(6, 'Espanha', 'ESP', 1),
+(7, 'Itália', 'ITA', 1),
+(8, 'Uruguai', 'URU', 1),
+(9, 'Portugal', 'POR', 1),
+(10, 'Japão', 'JAP', 1),
+(11, 'Paraguai', 'PAR', 1),
+(15, 'Colombia', 'COL', 1),
+(16, 'Croacia', 'CRO', 1),
+(17, 'Finlandia', 'FIN', 1),
+(18, 'Venezuela', 'VEN', 1),
+(29, 'Republica Tcheca', 'TCH', 1),
+(33, 'Chile', 'CHI', 1),
+(34, 'Teste', '', 1),
+(35, 'teste2', '', 0),
+(36, 'teste3', '', 1),
+(37, 'teste2', '', 1),
+(38, 'test4', '', 0),
+(39, 'Egito', 'EGI', 1),
+(40, 'Bolivia', 'BOL', 1),
+(41, 'teste05', '', 0),
+(42, 'teste06', '', 0),
+(43, 'teste aksaks', '', 0),
+(44, 'asdasfafs', '', 0),
+(45, 'mais um', '', 1),
+(46, 'teste, errei', '', 1),
+(47, 'Estados Unidos', 'EUA', 1);
 
 -- --------------------------------------------------------
 
@@ -160,13 +161,13 @@ INSERT INTO `pais` (`id`, `nome`, `status`) VALUES
 -- Estrutura da tabela `partida`
 --
 
-CREATE TABLE `partida` (
+CREATE TABLE IF NOT EXISTS `partida` (
   `id` int(11) NOT NULL,
-  `idcampeonato` int(11) NOT NULL,
-  `timecasa` int(11) NOT NULL,
-  `timevisitante` int(11) NOT NULL,
-  `ngolcasa` int(2) NOT NULL,
-  `ngolvisitante` int(2) NOT NULL,
+  `campeonatos_id` int(11) NOT NULL,
+  `time_casa` int(11) NOT NULL,
+  `time_visitante` int(11) NOT NULL,
+  `num_gols_casa` int(2) NOT NULL,
+  `num_gols_visitante` int(2) NOT NULL,
   `rodada` int(2) NOT NULL,
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -175,7 +176,7 @@ CREATE TABLE `partida` (
 -- Extraindo dados da tabela `partida`
 --
 
-INSERT INTO `partida` (`id`, `idcampeonato`, `timecasa`, `timevisitante`, `ngolcasa`, `ngolvisitante`, `rodada`, `status`) VALUES
+INSERT INTO `partida` (`id`, `campeonatos_id`, `time_casa`, `time_visitante`, `num_gols_casa`, `num_gols_visitante`, `rodada`, `status`) VALUES
 (1, 1, 18, 8, 0, 0, 0, 0),
 (2, 1, 16, 2, 0, 0, 0, 0),
 (3, 1, 1, 6, 0, 0, 0, 0),
@@ -238,25 +239,25 @@ INSERT INTO `partida` (`id`, `idcampeonato`, `timecasa`, `timevisitante`, `ngolc
 --
 
 --
--- Índices para tabela `campeonato`
+-- Índices para tabela `campeonatos`
 --
-ALTER TABLE `campeonato`
+ALTER TABLE `campeonatos`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `equipe`
+-- Índices para tabela `equipes`
 --
-ALTER TABLE `equipe`
+ALTER TABLE `equipes`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idpais` (`idpais`);
+  ADD KEY `pais_id` (`pais_id`);
 
 --
--- Índices para tabela `estatistica`
+-- Índices para tabela `estatisticas`
 --
-ALTER TABLE `estatistica`
+ALTER TABLE `estatisticas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idcampeonato` (`idcampeonato`),
-  ADD KEY `idtime` (`idequipe`);
+  ADD KEY `campeonatos_id` (`campeonatos_id`),
+  ADD KEY `equipes_id` (`equipes_id`);
 
 --
 -- Índices para tabela `pais`
@@ -269,30 +270,30 @@ ALTER TABLE `pais`
 --
 ALTER TABLE `partida`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idcampeonato` (`idcampeonato`),
-  ADD KEY `timecasa` (`timecasa`),
-  ADD KEY `timevisitante` (`timevisitante`);
+  ADD KEY `campeonatos_id` (`campeonatos_id`),
+  ADD KEY `time_casa` (`time_casa`),
+  ADD KEY `time_visitante` (`time_visitante`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT de tabela `campeonato`
+-- AUTO_INCREMENT de tabela `campeonatos`
 --
-ALTER TABLE `campeonato`
+ALTER TABLE `campeonatos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `equipe`
+-- AUTO_INCREMENT de tabela `equipes`
 --
-ALTER TABLE `equipe`
+ALTER TABLE `equipes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT de tabela `estatistica`
+-- AUTO_INCREMENT de tabela `estatisticas`
 --
-ALTER TABLE `estatistica`
+ALTER TABLE `estatisticas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
@@ -312,25 +313,25 @@ ALTER TABLE `partida`
 --
 
 --
--- Limitadores para a tabela `equipe`
+-- Limitadores para a tabela `equipes`
 --
-ALTER TABLE `equipe`
-  ADD CONSTRAINT `equipe_ibfk_1` FOREIGN KEY (`idpais`) REFERENCES `pais` (`id`);
+ALTER TABLE `equipes`
+  ADD CONSTRAINT `equipes_ibfk_1` FOREIGN KEY (`pais_id`) REFERENCES `pais` (`id`);
 
 --
--- Limitadores para a tabela `estatistica`
+-- Limitadores para a tabela `estatisticas`
 --
-ALTER TABLE `estatistica`
-  ADD CONSTRAINT `estatistica_ibfk_1` FOREIGN KEY (`idcampeonato`) REFERENCES `campeonato` (`id`),
-  ADD CONSTRAINT `estatistica_ibfk_2` FOREIGN KEY (`idequipe`) REFERENCES `equipe` (`id`);
+ALTER TABLE `estatisticas`
+  ADD CONSTRAINT `estatisticas_ibfk_1` FOREIGN KEY (`campeonatos_id`) REFERENCES `campeonatos` (`id`),
+  ADD CONSTRAINT `estatisticas_ibfk_2` FOREIGN KEY (`equipes_id`) REFERENCES `equipes` (`id`);
 
 --
 -- Limitadores para a tabela `partida`
 --
 ALTER TABLE `partida`
-  ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`idcampeonato`) REFERENCES `campeonato` (`id`),
-  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`timecasa`) REFERENCES `equipe` (`id`),
-  ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`timevisitante`) REFERENCES `equipe` (`id`);
+  ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`campeonatos_id`) REFERENCES `campeonatos` (`id`),
+  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`time_casa`) REFERENCES `equipes` (`id`),
+  ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`time_visitante`) REFERENCES `equipes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
