@@ -14,6 +14,8 @@ $diContainer = require_once __DIR__ . '/../config/dependencies.php';
 $pathInfo = $_SERVER['PATH_INFO'] ?? '/';
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 
+session_start();
+
 $key = "$httpMethod|$pathInfo";
 if(array_key_exists($key, $routes)) {
     $controllerClass = $routes["$httpMethod|$pathInfo"];

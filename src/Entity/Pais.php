@@ -11,7 +11,7 @@ class Pais{
         string $nome,
         string $sigla
     ) {
-        $this->nome = $nome;
+        $this->validaNome($nome);
         $this->validaSigla($sigla);
     }
 
@@ -20,16 +20,51 @@ class Pais{
         $this->id = $id;
     }
 
+    /**
+     * @throws \PDOException
+     */
     private function validaSigla(string $sigla): void 
     {
-        if(strlen($sigla) !== 3 && $sigla != null) {
-            throw new \InvalidArgumentException('Sigla precisa ter 3 caracteres.');
-        }
+        // $size = 3;
+        // if(strlen($sigla) > $size) {
+        //     throw new \PDOException("Sigla só pode ter até $size caracteres.");
+        // }
 
         $this->sigla = $sigla;
     }
 
-    public function __toString(): string {
+    private function validaNome(string $nome): void
+    {
+        // if(is_null($nome) || strlen($nome) === 0){
+        //     throw new \RangeException('O nome não pode ser nulo.');
+        // }
+
+        $this->nome = $nome;
+    }
+
+    public function __toString(): string 
+    {
         return "{$this->sigla} - {$this->nome}";
     }
+
+    public function paisShowSelect(): string
+    {
+        return "{$this->sigla} - {$this->nome}";
+    }
+
+    public function paisEncode(): string 
+    {
+        return htmlspecialchars(json_encode($this));
+    }
+
+    public static function paisDecode(string $stringPais): Pais
+    {
+        $paisData = json_decode($stringPais, true);
+
+        $pais = new Pais($paisData['nome'], $paisData['sigla']);
+        $pais->setId($paisData['id']);
+
+        return $pais;
+    }
+
 }

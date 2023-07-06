@@ -3,41 +3,40 @@ $this->layout('layout');
 /** @var \App\Http\Entity\Pais|null $pais */
 ?>
 
-<h2>Cadastrar novo País</h2>
-<hr class="bg-dark" />
+<h2>Novo País</h2>
+<hr class="border border-dark border-1 opacity-75"/>
 <a href="/paises" class="btn btn-info">Voltar</a>
+
+<?= $this->insert('components/messages/error-message') ?>
+
 <div class="row justify-content-center">
     <div class="col-md-11 mt-2">
         <form method="POST">
-            <div class="form-group row">
-                <label for="lblNome" class="col-md-2 col-form-label text-right">Nacionalidade</label>
-                <div class="col-md-10">
-                    <input 
-                        type="text" 
-                        value="<?= $pais?->nome; ?>"
-                        class="form-control" 
-                        name="nome" 
-                        id="nome" 
-                        placeholder="Nome do País" 
-                        autocomplete="off">
-                </div>
+            <div class="mb-3">
+                <label for="inputNacionalidade">Nacionalidade</label>
+                <input 
+                    type="text" 
+                    value="<?= $pais?->nome; ?>"
+                    class="form-control" 
+                    name="nome" 
+                    id="inputNacionalidade" 
+                    placeholder="Nome do País" 
+                    autocomplete="off"
+                >
             </div>
-            <div class="form-group row">
-                <label for="lblNome" class="col-md-2 col-form-label text-right">Sigla</label>
-                <div class="col-md-10">
-                    <input 
-                        type="text"
-                        value="<?= $pais?->sigla; ?>" 
-                        class="form-control" 
-                        name="sigla" 
-                        id="sigla" 
-                        placeholder="Sigla do País" 
-                        autocomplete="off">
-                </div>
+            <div class="mb-3">
+                <label for="inputSigla">Sigla</label>
+                <input 
+                    type="text"
+                    value="<?= $pais?->sigla; ?>" 
+                    class="form-control" 
+                    name="sigla" 
+                    id="sigla" 
+                    placeholder="Sigla do País" 
+                    autocomplete="off"
+                >
             </div>
-            <div class="form-group offset-md-2">
-                <button type="submit" class="center-block btn btn-dark">Enviar</button>
-            </div>
+            <button type="submit" class="btn btn-dark">Enviar</button>
         </form>
     </div>
 </div>

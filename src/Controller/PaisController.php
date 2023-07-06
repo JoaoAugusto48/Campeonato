@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controller;
 
 use App\Http\Entity\Pais;
-use App\Http\Repository\PaisRepository;
+use App\Http\Service\PaisService;
 use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -15,14 +15,14 @@ class PaisController extends Controller
 {
 
     public function __construct(
-        private PaisRepository $paisRepository,
+        private PaisService $paisService,
         private Engine $templates
     ) {
     }
 
     public function index(): ResponseInterface
     {
-        $paisList = $this->paisRepository->listOrderedByNome();
+        $paisList = $this->paisService->findAll();
         return new Response(302, [], 
             $this->templates->render(
                 'pais/pais-list', 
@@ -44,26 +44,28 @@ class PaisController extends Controller
 
     public function store(ServerRequestInterface $request): ResponseInterface
     {
-        $paisData = $request->getParsedBody();
-        $pais = new Pais(
-            $paisData['nome'],
-            $paisData['sigla']
-        );
-        
-        $success = $this->paisRepository->add($pais);
-        if($success === false){
-            return new Response(302, [
-                    'method' => 'GET'
-                ], 
-            $this->templates->render(
-                'paises/create',
-                ['error' => $success]
-            ));
-        }
+        try {
+            $paisData = $request->getParsedBody();
+            $pais = new Pais($paisData['nome'], $paisData['sigla']);
+            
+            $result = $this->paisService->insert($pais);
+            if(!$result){
+                throw new \RuntimeException('Ocorreu um erro e não foi possível adicionar o País.');
+            }
 
-        return new Response(302, [
-            'Location' => '/paises'
-        ]);
+            return new Response(302, [
+                'Location' => '/paises',
+                'method' => 'GET'
+            ]);
+        } catch (\RuntimeException $e) {
+            
+            $this->addErrorMessage($e->getMessage());
+            return new Response(302, [
+                    'Location' => '/paises/create', 
+                    'method' => 'GET'
+                ]
+            );
+        }
     } 
 
     public function show(ServerRequestInterface $request): ResponseInterface
@@ -74,7 +76,7 @@ class PaisController extends Controller
     public function edit(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         /** @var ?Pais $pais */
-        $pais = $this->paisRepository->findById($id);
+        $pais = $this->paisService->findById($id);
 
         return new Response(302, [], 
             $this->templates->render(
@@ -86,38 +88,49 @@ class PaisController extends Controller
 
     public function update(ServerRequestInterface $request, int $id): ResponseInterface
     {
-        $paisData = $request->getParsedBody();
-        $pais = new Pais(
-            $paisData['nome'],
-            $paisData['sigla']
-        );
-        $pais->setId($id);
-        
-        $this->paisRepository->update($pais);
-        
-        return new Response(302, [
-            'Location' => '/paises'
-        ]);
+        try {
+            $paisData = $request->getParsedBody();
+            $pais = new Pais($paisData['nome'], $paisData['sigla']);
+            $pais->setId($id);
+            
+            $result = $this->paisService->update($pais);
+            if(!$result){
+                throw new \RuntimeException();
+            }
+            
+            $this->addSuccessMessage('País atualizado com sucesso.');
+            return new Response(302, [
+                'Location' => '/paises',
+                'method' => 'GET'
+            ]);
+        } catch (\Throwable $th) {
+            
+            $this->addErrorMessage($th->getMessage());
+            return new Response(302, [
+                'Location' => '/paises/edit?id=' . $id,
+                'method' => 'GET'
+            ]);
+        }
     } 
 
     public function destroy(int $id): ResponseInterface
     {
-        $pais = $this->paisRepository->findById($id);
-        
-        $removed = false;
-        if(!is_null($pais)){
-            $removed = $this->paisRepository->delete($id);
-        }
-        
-        if($removed === false) {
+        try {
+            $result = $this->paisService->delete($id);
+
+            if(!$result) {
+                throw new \RuntimeException();
+            }
+            
+            $this->addSuccessMessage("País deletado com sucesso.");
+        } catch (\Throwable) {
             // não removeu
-            return new Response(302, [
-                'Location' => '/paises'
-            ]);
+            $this->addErrorMessage("Não foi possível deletar o País.");
         }
-        
+
         return new Response(302, [
-            'Location' => '/paises'
+            'Location' => '/paises',
+            'method' => 'GET'
         ]);
     } 
 

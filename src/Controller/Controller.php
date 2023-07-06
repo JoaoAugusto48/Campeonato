@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
+use App\Http\Helper\InvalidMessageTrait;
+use App\Http\Helper\SuccessMessageTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 abstract class Controller implements RequestHandlerInterface
 {
+    use InvalidMessageTrait;
+    use SuccessMessageTrait;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -18,10 +22,19 @@ abstract class Controller implements RequestHandlerInterface
         
         // var_dump(str_contains($request->getServerParams()['PATH_INFO'], '/create'));
         // var_dump($request->getQueryParams());
-        // var_dump($request);
+        // var_dump($request->getUri()->getPath());
         // exit;
 
+        // Main - Methods
+        if($request->getUri()->getPath() === '/') {
+            if($request->getMethod() === 'GET') {
+                return $this->index();
+            }
+        }
+
+        // 'GET' - Methods
         if($request->getMethod() === 'GET') {
+
             if(str_contains($request->getServerParams()['PATH_INFO'], '/create')) {
                 return $this->create($request);
             }
@@ -34,7 +47,9 @@ abstract class Controller implements RequestHandlerInterface
             return $this->index();
         }
 
+        // 'POST' - Methods
         if($request->getMethod() === 'POST') {
+
             if(str_contains($request->getServerParams()['PATH_INFO'], '/create')) {
                 return $this->store($request);
             }
