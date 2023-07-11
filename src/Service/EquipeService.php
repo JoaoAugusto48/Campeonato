@@ -26,7 +26,16 @@ class EquipeService
         return $this->equipeRepository->findById($id);
     }
 
-    public function insert(Equipe $equipe): bool
+    public function save(Equipe $equipe): bool
+    {
+        if(isset($equipe->id)){
+            return $this->update($equipe);
+        }
+
+        return $this->insert($equipe);
+    }
+
+    private function insert(Equipe $equipe): bool
     {
         $pais = $this->paisService->findById($equipe->pais->id);
         
@@ -37,7 +46,7 @@ class EquipeService
         return $this->equipeRepository->add($equipe);   
     }
 
-    public function update(Equipe $equipe): bool
+    private function update(Equipe $equipe): bool
     {
         $pais = $this->paisService->findById($equipe->pais->id);
 

@@ -21,7 +21,7 @@ $this->layout('layout');
                     class="form-control" 
                     name="nome" 
                     id="inputNacionalidade" 
-                    placeholder="Nome do País" 
+                    placeholder="ex: Juventude" 
                     autocomplete="off"
                 >
             </div>
@@ -33,7 +33,7 @@ $this->layout('layout');
                     class="form-control" 
                     name="sigla" 
                     id="sigla" 
-                    placeholder="Sigla do País" 
+                    placeholder="ex: JUV" 
                     autocomplete="off"
                 >
             </div>
@@ -44,9 +44,9 @@ $this->layout('layout');
                     <option value="" selected disabled>Selecione uma opção</option>
                     <?php foreach ($paisList as $key => $pais): ?>
                         <?php if($pais->id == $equipe->pais->id): ?>
-                            <option value="<?= $pais->paisEncode() ?>" selected><?= $pais->paisShowSelect() ?></option>
+                            <option value="<?= $pais->paisEncode() ?>" selected><?= $pais ?></option>
                         <?php endif; ?>
-                        <option value="<?= $pais->paisEncode() ?>"><?= $pais->paisShowSelect() ?></option>
+                        <option value="<?= $pais->paisEncode() ?>"><?= $pais ?></option>
                     <?php endforeach; ?>
                   </select>
                 </div>

@@ -20,7 +20,7 @@ $this->layout('layout');
                     class="form-control" 
                     name="nome" 
                     id="inputNacionalidade" 
-                    placeholder="Nome do País" 
+                    placeholder="ex: Brasil" 
                     autocomplete="off"
                 >
             </div>
@@ -32,7 +32,7 @@ $this->layout('layout');
                     class="form-control" 
                     name="sigla" 
                     id="sigla" 
-                    placeholder="Sigla do País" 
+                    placeholder="ex: BRA" 
                     autocomplete="off"
                 >
             </div>

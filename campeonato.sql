@@ -30,17 +30,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `campeonatos` (
   `id` int(11) NOT NULL,
-  `qtde_equipes` int(11) NOT NULL,
-  `turno` tinyint(1) NOT NULL,
-  `nome` varchar(30) NOT NULL
+  `num_equipes` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `regiao` varchar(25) NOT NULL,
+  `num_fases` int(2) NOT NULL,
+  `rodadas` int(3),
+  `num_turnos` int(2),
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `campeonatos`
 --
 
-INSERT INTO `campeonatos` (`id`, `qtde_equipes`, `turno`, `nome`) VALUES
-(1, 8, 1, 'Brasileirão');
+INSERT INTO `campeonatos` (`id`, `num_equipes`, `nome`, `regiao`, `num_fases`, `rodadas`, `num_turnos`) VALUES
+(1, 8, 'Brasileirão', 'Nacional', 1, 16, 2);
 
 -- --------------------------------------------------------
 

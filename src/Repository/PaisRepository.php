@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace App\Http\Repository;
 
 use App\Http\Entity\Pais;
+use App\Http\Repository\Sql\PaisSql;
 use PDO;
 
 class PaisRepository
 {
 
-    public function __construct(private PDO $pdo)
-    {
+    public function __construct(
+        private PDO $pdo,
+        private PaisSql $sql
+    ){
     }
 
     public function add(Pais $pais): bool
     {
-        $sql = 'INSERT INTO pais (nome, sigla, status) VALUE (:nome, :sigla, :status)';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($this->sql->insert());
         $stmt->bindValue(':nome', $pais->nome);
         $stmt->bindValue(':sigla', $pais->sigla);
         $stmt->bindValue(':status', true);
@@ -28,8 +30,7 @@ class PaisRepository
 
     public function update(Pais $pais): bool
     {
-        $sql = 'UPDATE pais SET nome=:nome, sigla=:sigla WHERE id=:id';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($this->sql->update());
         $stmt->bindValue(':nome', $pais->nome);
         $stmt->bindValue(':sigla', $pais->sigla);
         $stmt->bindValue(':id', $pais->id);
@@ -40,8 +41,7 @@ class PaisRepository
 
     public function delete(int $id): bool
     {
-        $sql = 'UPDATE pais SET status=:status WHERE id=:id';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($this->sql->delete());
         $stmt->bindValue(':status', 0);
         $stmt->bindValue(':id', $id);
         $result = $stmt->execute();
@@ -51,9 +51,8 @@ class PaisRepository
 
     public function findById(int $id): Pais
     {
-        $sql = 'SELECT * FROM pais WHERE id=?';
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(1, $id);
+        $stmt = $this->pdo->prepare($this->sql->findById());
+        $stmt->bindValue(':id', $id);
         $stmt->execute();
 
         return $this->hydratePais($stmt->fetch(PDO::FETCH_ASSOC));
@@ -62,8 +61,7 @@ class PaisRepository
     /** @return \App\Http\Entity\Pais[] */
     public function listOrderedByNome(): array
     {
-        $sql = 'SELECT * FROM pais WHERE status=1 ORDER BY nome';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
         return $this->hydratePaisList($stmt);
@@ -77,9 +75,7 @@ class PaisRepository
         $paisList = [];
 
         foreach($paisDataList as $paisData) {
-            $pais = new Pais($paisData['nome'], $paisData['sigla']);
-            $pais->setId($paisData['id']);
-            $paisList[] = $pais;
+            $paisList[] = Pais::fromArray($paisData);
         }
 
         return $paisList;
@@ -87,10 +83,7 @@ class PaisRepository
 
     private function hydratePais(array $paisData): Pais
     {
-        $pais = new Pais($paisData['nome'], $paisData['sigla']);
-        $pais->setId($paisData['id']);
-
-        return $pais;
+        return Pais::fromArray($paisData);
     }
 
 }

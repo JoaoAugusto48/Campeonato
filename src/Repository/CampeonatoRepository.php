@@ -5,18 +5,30 @@ declare(strict_types=1);
 namespace App\Http\Repository;
 
 use App\Http\Entity\Campeonato;
+use App\Http\Repository\Sql\CampeonatoSql;
 use PDO;
 
 class CampeonatoRepository
 {
 
-    public function __construct(private PDO $pdo) 
-    {
+    public function __construct(
+        private PDO $pdo,
+        private CampeonatoSql $sql
+    ) {
     }
 
-    public function add($example): bool
+    public function add(Campeonato $campeonato): bool
     {
-        return false;
+        $stmt = $this->pdo->prepare($this->sql->insert());
+        $stmt->bindValue(':nome', $campeonato->nome);
+        $stmt->bindValue(':regiao', $campeonato->regiao);
+        $stmt->bindValue(':num_fases', $campeonato->numFases);
+        $stmt->bindValue(':num_equipes', $campeonato->numEquipes);
+        $stmt->bindValue(':rodadas', $campeonato->rodadas);
+        $stmt->bindValue(':num_turnos', $campeonato->numTurnos);
+        $result = $stmt->execute();
+        
+        return $result;
     }
 
     public function update($example): bool
@@ -51,9 +63,7 @@ class CampeonatoRepository
         $campeonatoList = [];
 
         foreach($campeonatoDataList as $campeonatoData) {
-            $campeonato = new Campeonato($campeonatoData['nome'], $campeonatoData['turno'], $campeonatoData['qtde_equipes']);
-            $campeonato->setId($campeonatoData['id']);
-            $campeonatoList[] = $campeonato;
+            $campeonatoList[] = Campeonato::fromArray($campeonatoData);
         }
 
         return $campeonatoList;

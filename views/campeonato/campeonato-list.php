@@ -1,5 +1,6 @@
 <?php
-$this->layout('layout')
+$this->layout('layout');
+/** @var \App\Http\Entity\Campeonato[] $campeonatoList */
 ?>
 
 <div class="row">
@@ -7,7 +8,7 @@ $this->layout('layout')
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col-lg-3">
-        <a href="/campeontato/create" class="btn btn-info">Criar campeonato</a>
+        <a href="/campeonatos/create" class="btn btn-info">Criar campeonato</a>
     </div>
 </div>
 
@@ -20,15 +21,20 @@ $this->layout('layout')
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nome</th>
-                    <th scope="col">Nº Equipes</th>
+                    <th scope="col">Região</th>
                     <th scope="col">Operações</th>
                 </tr>
             </thead>
             <tbody class="">
                 <?php foreach($campeonatoList as $key => $campeonato): ?>
                     <tr>
-                        <td><?= $campeonato->nome ?></td>
-                        <td><?= $campeonato->qtdeEquipe ?></td>
+                        <td>
+                            <?= $campeonato->nome ?>
+                            <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-title="Número de Times">
+                                <?= $campeonato->numEquipes ?>
+                            </span>
+                        </td>
+                        <td><?= $campeonato->regiao ?></td>
                         <td></td>
                     </tr>
                 <?php endforeach; ?>

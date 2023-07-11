@@ -21,8 +21,7 @@ class EquipeController extends Controller
         private Engine $templates,
 
         private PaisService $paisService
-    ) 
-    {
+    ) {
     }
 
     public function index(): ResponseInterface
@@ -41,7 +40,7 @@ class EquipeController extends Controller
     {
         $equipe = null;
         $paisList = $this->paisService->findAll();
-
+        
         return new Response(302, [],
             $this->templates->render(
                 'equipe/equipe-form',
@@ -56,16 +55,17 @@ class EquipeController extends Controller
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $equipeData = $request->getParsedBody();            
+            $equipeData = $request->getParsedBody();          
             $pais = Pais::paisDecode($equipeData['pais']);
 
+            // $equipe = Equipe::fromList($equipeData, pais: '')
             $equipe = new Equipe(
                 $equipeData['nome'],
                 $equipeData['sigla'],
                 $pais
             );
 
-            $result = $this->equipeService->insert($equipe);
+            $result = $this->equipeService->save($equipe);
 
             if(!$result){
                 throw new \RuntimeException();
@@ -119,11 +119,11 @@ class EquipeController extends Controller
             $equipe = new Equipe(
                 $equipeData['nome'],
                 $equipeData['sigla'],
-                $pais
+                $pais,
+                $id,
             );
-            $equipe->setId($id);
 
-            $result = $this->equipeService->update($equipe);
+            $result = $this->equipeService->save($equipe);
             if(!$result){
                 throw new \RuntimeException();
             }

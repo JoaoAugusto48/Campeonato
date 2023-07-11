@@ -6,6 +6,7 @@ namespace App\Http\Service;
 
 use App\Http\Entity\Pais;
 use App\Http\Repository\PaisRepository;
+use App\Http\Service\Validation\PaisValidation;
 
 class PaisService
 {
@@ -26,13 +27,25 @@ class PaisService
         return $this->paisRepository->findById($id);
     }
 
-    public function insert(Pais $pais): bool
+    public function save(Pais $pais): bool
     {
+        PaisValidation::validatePais($pais);
+        if(isset($pais->id)){
+            return $this->update($pais);
+        }
+
+        return $this->insert($pais);
+    }
+
+    private function insert(Pais $pais): bool
+    {
+        // validation rules
         return $this->paisRepository->add($pais);
     }
 
-    public function update(Pais $pais): bool
+    private function update(Pais $pais): bool
     {
+        // validation rules
         return $this->paisRepository->update($pais);
     }
 

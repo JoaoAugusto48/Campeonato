@@ -26,12 +26,21 @@
 //         return false;
 //     }
 
-//     public function insert(Example $example): bool
+    // public function save(Example $example): bool
+    // {
+    //     if(isset($example->id)){
+    //         return $this->update($example);
+    //     }
+
+    //     return $this->save($example);
+    // }
+
+//     private function insert(Example $example): bool
 //     {
 //         return false;
 //     }
 
-//     public function update(Example $example): bool
+//     private function update(Example $example): bool
 //     {
 //         return false;
 //     }

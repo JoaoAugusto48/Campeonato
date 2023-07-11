@@ -23,12 +23,21 @@ class CampeonatoService
 
     public function findById(int $id): Campeonato
     {
-        return new Campeonato('',0,0);
+        return new Campeonato('', '', 0,0,0);
+    }
+
+    public function save(Campeonato $campeonato): bool
+    {
+        if(isset($campeonato->id)){
+            return $this->update($campeonato);
+        }
+
+        return $this->insert($campeonato);
     }
 
     public function insert(Campeonato $campeonato): bool
     {
-        return false;
+        return $this->campeonatoRepository->add($campeonato);
     }
 
     public function update(Campeonato $campeonato): bool

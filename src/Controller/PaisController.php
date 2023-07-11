@@ -46,13 +46,14 @@ class PaisController extends Controller
     {
         try {
             $paisData = $request->getParsedBody();
-            $pais = new Pais($paisData['nome'], $paisData['sigla']);
+            $pais = new Pais(nome: $paisData['nome'], sigla: $paisData['sigla']);
             
-            $result = $this->paisService->insert($pais);
+            $result = $this->paisService->save($pais);
             if(!$result){
                 throw new \RuntimeException('Ocorreu um erro e não foi possível adicionar o País.');
             }
 
+            $this->addSuccessMessage("País '{$pais->nome}' criado com sucesso.");
             return new Response(302, [
                 'Location' => '/paises',
                 'method' => 'GET'
@@ -90,15 +91,14 @@ class PaisController extends Controller
     {
         try {
             $paisData = $request->getParsedBody();
-            $pais = new Pais($paisData['nome'], $paisData['sigla']);
-            $pais->setId($id);
+            $pais = new Pais($paisData['nome'], $paisData['sigla'], $id);
             
-            $result = $this->paisService->update($pais);
+            $result = $this->paisService->save($pais);
             if(!$result){
                 throw new \RuntimeException();
             }
             
-            $this->addSuccessMessage('País atualizado com sucesso.');
+            $this->addSuccessMessage("País '{$pais->nome}' atualizado com sucesso.");
             return new Response(302, [
                 'Location' => '/paises',
                 'method' => 'GET'
