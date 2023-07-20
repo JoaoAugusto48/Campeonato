@@ -33,7 +33,7 @@ class ExampleController extends Controller
         return new Response;
     }
 
-    public function show(ServerRequestInterface $request): ResponseInterface
+    public function show(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         return new Response;
     }

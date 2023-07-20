@@ -6,6 +6,7 @@ namespace App\Http\Service;
 
 use App\Http\Entity\Campeonato;
 use App\Http\Repository\CampeonatoRepository;
+use App\Http\Service\Validation\CampeonatoValidation;
 
 class CampeonatoService
 {
@@ -23,11 +24,12 @@ class CampeonatoService
 
     public function findById(int $id): Campeonato
     {
-        return new Campeonato('', '', 0,0,0);
+        return $this->campeonatoRepository->findById($id);
     }
 
     public function save(Campeonato $campeonato): bool
     {
+        CampeonatoValidation::validadeCampeonato($campeonato);
         if(isset($campeonato->id)){
             return $this->update($campeonato);
         }
@@ -42,12 +44,12 @@ class CampeonatoService
 
     public function update(Campeonato $campeonato): bool
     {
-        return false;
+        return $this->campeonatoRepository->update($campeonato);
     }
 
     public function delete(int $id): bool
     {
-        return false;
+        return $this->campeonatoRepository->delete($id);
     }
 
 }

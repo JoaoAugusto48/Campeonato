@@ -1,5 +1,5 @@
 <?php 
-$this->layout('layout')
+$this->layout('layout');
 /** @var \App\Http\Entity\Equipe[] $equipeList */
 ?>
 <div class="row">
@@ -7,8 +7,11 @@ $this->layout('layout')
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col-lg-3">
-        <a href="/" class="btn btn-info">Voltar</a>
-        <a href="/equipes/create" class="btn btn-info">Inserir Equipe</a>
+        <?= $this->insert('components/buttons/button-link-voltar', ['rota' => '/']) ?>
+        <?= $this->insert('components/buttons/button-link-pattern', [
+            'rota' => '/equipes/create',
+            'nome' => 'Inserir Equipe'
+        ]) ?>
     </div>
 </div>
 

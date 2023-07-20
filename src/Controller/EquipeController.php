@@ -55,16 +55,13 @@ class EquipeController extends Controller
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $equipeData = $request->getParsedBody();          
-            $pais = Pais::paisDecode($equipeData['pais']);
-
-            // $equipe = Equipe::fromList($equipeData, pais: '')
+            $equipeData = $request->getParsedBody();
+            
             $equipe = new Equipe(
                 $equipeData['nome'],
                 $equipeData['sigla'],
-                $pais
+                intval($equipeData['pais'])
             );
-
             $result = $this->equipeService->save($equipe);
 
             if(!$result){
@@ -88,7 +85,7 @@ class EquipeController extends Controller
         }
     }
 
-    public function show(ServerRequestInterface $request): ResponseInterface
+    public function show(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         return new Response;
     }
@@ -114,12 +111,11 @@ class EquipeController extends Controller
     {
         try {
             $equipeData = $request->getParsedBody();            
-            $pais = Pais::paisDecode($equipeData['pais']);
-
+            
             $equipe = new Equipe(
                 $equipeData['nome'],
                 $equipeData['sigla'],
-                $pais,
+                intval($equipeData['pais']),
                 $id,
             );
 

@@ -21,7 +21,7 @@ class ExampleRepository
         return false;
     }
 
-    public function delete($example): bool
+    public function delete(int $id): bool
     {
         return false;
     }

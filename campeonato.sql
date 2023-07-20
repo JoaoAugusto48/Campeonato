@@ -34,16 +34,18 @@ CREATE TABLE IF NOT EXISTS `campeonatos` (
   `nome` varchar(30) NOT NULL,
   `regiao` varchar(25) NOT NULL,
   `num_fases` int(2) NOT NULL,
+  `temporada` int(3),
   `rodadas` int(3),
   `num_turnos` int(2),
+  `ativado` boolean,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `campeonatos`
 --
 
-INSERT INTO `campeonatos` (`id`, `num_equipes`, `nome`, `regiao`, `num_fases`, `rodadas`, `num_turnos`) VALUES
-(1, 8, 'Brasileirão', 'Nacional', 1, 16, 2);
+INSERT INTO `campeonatos` (`id`, `num_equipes`, `nome`, `temporada`, `regiao`, `num_fases`, `rodadas`, `num_turnos`, `ativado`) VALUES
+(1, 8, 'Brasileirão', '2023', 'Nacional', 1, 16, 2, 1);
 
 -- --------------------------------------------------------
 

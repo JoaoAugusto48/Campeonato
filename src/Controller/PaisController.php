@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
+use App\Http\DTO\PaisFormDTO;
 use App\Http\Entity\Pais;
 use App\Http\Service\PaisService;
 use League\Plates\Engine;
@@ -23,6 +24,7 @@ class PaisController extends Controller
     public function index(): ResponseInterface
     {
         $paisList = $this->paisService->findAll();
+
         return new Response(302, [], 
             $this->templates->render(
                 'pais/pais-list', 
@@ -33,11 +35,11 @@ class PaisController extends Controller
 
     public function create(ServerRequestInterface $request): ResponseInterface
     {
-        $pais = null;
+        
         return new Response(302, [], 
             $this->templates->render(
                 'pais/pais-form', 
-                ['pais' => $pais]
+                ['pais' => null]
             )
         );
     } 
@@ -45,8 +47,8 @@ class PaisController extends Controller
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $paisData = $request->getParsedBody();
-            $pais = new Pais(nome: $paisData['nome'], sigla: $paisData['sigla']);
+            $paisData = new PaisFormDTO($request->getParsedBody());
+            $pais = new Pais($paisData->nome, $paisData->sigla);
             
             $result = $this->paisService->save($pais);
             if(!$result){
@@ -69,7 +71,7 @@ class PaisController extends Controller
         }
     } 
 
-    public function show(ServerRequestInterface $request): ResponseInterface
+    public function show(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         return new Response();
     }
@@ -90,8 +92,8 @@ class PaisController extends Controller
     public function update(ServerRequestInterface $request, int $id): ResponseInterface
     {
         try {
-            $paisData = $request->getParsedBody();
-            $pais = new Pais($paisData['nome'], $paisData['sigla'], $id);
+            $paisData = new PaisFormDTO($request->getParsedBody(), $id);
+            $pais = new Pais($paisData->nome, $paisData->sigla, $paisData->id);
             
             $result = $this->paisService->save($pais);
             if(!$result){

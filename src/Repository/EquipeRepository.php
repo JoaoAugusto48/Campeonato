@@ -26,7 +26,7 @@ class EquipeRepository
         $stmt = $this->pdo->prepare($this->sql->insert());
         $stmt->bindValue(':nome', $equipe->nome);
         $stmt->bindValue(':sigla', $equipe->sigla);
-        $stmt->bindValue(':pais_id', $equipe->pais->id);
+        $stmt->bindValue(':pais_id', $equipe->paisId);
         $result = $stmt->execute();
         
         return $result;
@@ -37,7 +37,7 @@ class EquipeRepository
         $stmt = $this->pdo->prepare($this->sql->update());
         $stmt->bindValue(':nome', $equipe->nome);
         $stmt->bindValue(':sigla', $equipe->sigla);
-        $stmt->bindValue(':pais_id', $equipe->pais->id);
+        $stmt->bindValue(':pais_id', $equipe->paisId);
         $stmt->bindValue(':id', $equipe->id);
         $result = $stmt->execute();
 
@@ -90,7 +90,7 @@ class EquipeRepository
     private function hydrateEquipe(array $equipeData): Equipe
     {
         $equipeData['pais'] = $this->paisService->findById($equipeData['pais_id']);
-        
+
         return Equipe::fromList($equipeData);
     }
     

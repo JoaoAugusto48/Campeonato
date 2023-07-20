@@ -37,7 +37,7 @@ class EquipeService
 
     private function insert(Equipe $equipe): bool
     {
-        $pais = $this->paisService->findById($equipe->pais->id);
+        $pais = $this->paisService->findById($equipe->paisId);
         
         if(is_null($pais)) {
             return false;
@@ -48,8 +48,8 @@ class EquipeService
 
     private function update(Equipe $equipe): bool
     {
-        $pais = $this->paisService->findById($equipe->pais->id);
-
+        $pais = $this->paisService->findById($equipe->paisId);
+        
         if(is_null($pais)) {
             return false;
         }

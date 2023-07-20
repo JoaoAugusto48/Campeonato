@@ -44,6 +44,11 @@ abstract class Controller implements RequestHandlerInterface
                 return $this->edit($request, $id);
             }
 
+            if(str_contains($request->getServerParams()['PATH_INFO'], '/show')) {
+                $id = filter_var($request->getQueryParams()['id'] ?? '', FILTER_VALIDATE_INT);
+                return $this->show($request, $id);
+            }
+
             return $this->index();
         }
 
@@ -75,7 +80,7 @@ abstract class Controller implements RequestHandlerInterface
 
     abstract function store(ServerRequestInterface $request): ResponseInterface;
     
-    abstract function show(ServerRequestInterface $request): ResponseInterface;
+    abstract function show(ServerRequestInterface $request, ?int $id): ResponseInterface;
 
     abstract function edit(ServerRequestInterface $request, ?int $id): ResponseInterface;
     

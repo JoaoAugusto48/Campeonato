@@ -5,24 +5,29 @@ namespace App\Http\Entity;
 use App\Http\Entity\Pais;
 use App\Http\Service\PaisService;
 
-class Equipe{
-    public ?int $id;
+class Equipe
+{
+    public readonly ?int $id;
     public readonly string $nome;
     public readonly string $sigla;
-    public readonly Pais $pais;
+    public readonly int $paisId;
+    public readonly ?Pais $pais;
     private bool $status;
     
     
     public function __construct(
         string $nome,
         string $sigla,
-        Pais $pais,
+        int $paisId,
         ?int $id = null,
+        ?Pais $pais = null,
     ){
         $this->nome = $nome;
         $this->sigla = $this->configureSigla($sigla);
-        $this->pais = $pais;
+        $this->paisId = $paisId;
         $this->id = $id;
+        
+        $this->pais = $pais;
     }
 
     public function setId(int $id): void
@@ -38,13 +43,14 @@ class Equipe{
         $this->status = $status;
     }
 
-    public static function fromList(array $equipeData, string $nome = 'nome', string $sigla = 'sigla', string $pais = 'pais', ?string $id = 'id'): Equipe
+    public static function fromList(array $equipeData, string $nome = 'nome', string $sigla = 'sigla', string $paisId = 'pais_id', ?string $id = 'id', ?string $pais = 'pais'): Equipe
     {
         $equipe = new Equipe(
             $equipeData[$nome], 
             $equipeData[$sigla], 
+            $equipeData[$paisId],
+            $equipeData[$id],
             $equipeData[$pais],
-            $equipeData[$id]
         );
 
         return $equipe;

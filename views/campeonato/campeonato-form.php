@@ -1,10 +1,16 @@
 <?php
-$this->layout('layout')
+$this->layout('layout');
+/** @var \App\Http\Entity\Campeonato|null $campeonato */
 ?>
 
-<h2>Novo Campeonato</h2>
-<hr class="border border-dark border-1 opacity-75"/>
-<a href="/" class="btn btn-info">Voltar</a>
+<div class="row">
+    <h2>Novo Campeonato</h2>
+    <hr class="border border-dark border-1 opacity-75"/>
+    
+    <div class="col-lg-3">
+        <?= $this->insert('components/buttons/button-link-voltar', ['rota' => '/']) ?>
+    </div>
+</div>
 
 <?= $this->insert('components/messages/error-message') ?>
 
@@ -12,54 +18,68 @@ $this->layout('layout')
     <div class="col-md-11 mt-2">
         <form method="POST">
             <div class="row"> 
-                <div class="col-12 mb-3">
-                    <label for="inputNome">Nome</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        name="nome" 
-                        id="inputNome" 
-                        placeholder="ex: Brasileirão" 
-                        autocomplete="off"
-                    >
+                <div class="col-9">
+                    <?= $this->insert('components/inputs/input-text', [
+                        'descricao' => 'Nome',
+                        'name' => 'nome',
+                        'value' => $campeonato?->nome,
+                        'dica' => 'ex: Brasileirão',
+                        'autocomplete' => 'off',
+                        'classes' => null,
+                        'required' => true,
+                    ]) ?>
                 </div>
-                <div class="col-6 mb-3">
-                    <label for="inputRegiao">Região</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        name="regiao" 
-                        id="inputRegiao" 
-                        placeholder="ex: Nacional" 
-                        autocomplete="off"
-                    >
+                <div class="col-3">
+                    <?= $this->insert('components/inputs/input-text', [
+                        'descricao' => 'Temporada',
+                        'name' => 'temporada',
+                        'value' => is_null($campeonato?->temporada) ? date('Y') : $campeonato->temporada,
+                        'dica' => 'ex: 2012',
+                        'autocomplete' => 'off',
+                        'classes' => null,
+                        'required' => true,
+                    ]) ?>
+                    
                 </div>
-                <div class="col-3 mb-3">
-                    <label for="inputTimes">Nº de equipes</label>
-                    <input 
-                        type="number"
-                        class="form-control" 
-                        name="equipes"
-                        id="inputEquipes" 
-                        placeholder="ex: 20"
-                        min="2" 
-                        autocomplete="off"
-                    >
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="inputRegiao">Região</label>
+                        <select class="form-control" name="regiao" id="inputRegiao" required>
+                            <option selected disabled value="">Selecione uma opção</option>
+                            <?php foreach($regiaoList as $regiao) : ?>
+                                <option <?= ($regiao->name === $campeonato?->regiao) ? 'selected' : '' ?>>
+                                    <?= $regiao->name ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-3 mb-3">
-                    <label for="inputTurnos">Nº de Turnos</label>
-                    <input 
-                        type="number"
-                        class="form-control" 
-                        name="turnos" 
-                        id="inputTurnos" 
-                        placeholder="ex: 2"
-                        min="1"
-                        autocomplete="off"
-                    >
+                <div class="col-3">
+                    <?= $this->insert('components/inputs/input-number', [
+                        'descricao' => 'Nº de equipes',
+                        'name' => 'equipes',
+                        'value' => $campeonato?->numEquipes,
+                        'dica' => 'ex: 20',
+                        'classes' => null,
+                        'required' => true,
+                        'valorMin' => 2,
+                        'valorMax' => 1000,
+                    ]) ?>
+                </div>
+                <div class="col-3">
+                    <?= $this->insert('components/inputs/input-number', [
+                        'descricao' => 'Nº de turnos',
+                        'name' => 'turnos',
+                        'value' => $campeonato?->numTurnos,
+                        'dica' => 'ex: 2',
+                        'classes' => null,
+                        'required' => true,
+                        'valorMin' => 1,
+                        'valorMax' => 10,
+                    ]) ?>
                 </div>
             </div>
-            <button type="submit" class="btn btn-dark">Enviar</button>
+            <?= $this->insert('components/buttons/button-submit') ?>
         </form>
     </div>
 </div>

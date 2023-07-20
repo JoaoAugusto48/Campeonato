@@ -8,7 +8,10 @@ $this->layout('layout');
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col-lg-3">
-        <a href="/campeonatos/create" class="btn btn-info">Criar campeonato</a>
+        <?= $this->insert('components/buttons/button-link-pattern', [
+            'rota' => '/campeonatos/create', 
+            'nome' => 'Criar campeonato'
+        ]) ?>
     </div>
 </div>
 
@@ -21,6 +24,7 @@ $this->layout('layout');
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Nome</th>
+                    <th scope="col">Temporada</th>
                     <th scope="col">Região</th>
                     <th scope="col">Operações</th>
                 </tr>
@@ -29,13 +33,40 @@ $this->layout('layout');
                 <?php foreach($campeonatoList as $key => $campeonato): ?>
                     <tr>
                         <td>
-                            <?= $campeonato->nome ?>
+                            <a href="/campeonatos/show?id=<?= $campeonato->id ?>" 
+                                class="link-dark 
+                                        link-underline-primary 
+                                        link-offset-2 link-underline-opacity-50 
+                                        link-opacity-75-hover 
+                                        link-underline-opacity-100-hover" 
+                            ><?= $campeonato->nome ?></a>
                             <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-title="Número de Times">
                                 <?= $campeonato->numEquipes ?>
                             </span>
                         </td>
+                        <td><?= $campeonato->temporada ?></td>
                         <td><?= $campeonato->regiao ?></td>
-                        <td></td>
+                        <td>
+                            <?= $this->insert('components/buttons/button-link', [
+                                'rota' => '/campeonatos/edit?id=' . $campeonato->id,
+                                'classes' => 'warning btn-sm',
+                                'nome' => 'Editar'
+                            ]) ?>
+
+                            <?= $this->insert('components/buttons/button-modal', [
+                                'classes' => 'danger btn-sm',
+                                'key' => $key,
+                                'nome' => 'Remover'
+                            ]) ?>
+                            
+                            <?= $this->insert('/components/modals/modal-delete-form', [
+                                'action' => '/campeonatos/delete',
+                                'key' => $key,
+                                'object' => 'Campeonato',
+                                'name' => $campeonato->nome,
+                                'id' => $campeonato->id 
+                            ]) ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

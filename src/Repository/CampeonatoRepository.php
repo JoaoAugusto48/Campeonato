@@ -26,31 +26,50 @@ class CampeonatoRepository
         $stmt->bindValue(':num_equipes', $campeonato->numEquipes);
         $stmt->bindValue(':rodadas', $campeonato->rodadas);
         $stmt->bindValue(':num_turnos', $campeonato->numTurnos);
+        $stmt->bindValue(':temporada', $campeonato->temporada);
         $result = $stmt->execute();
         
         return $result;
     }
 
-    public function update($example): bool
+    public function update(Campeonato $campeonato): bool
     {
-        return false;
+        $stmt = $this->pdo->prepare($this->sql->update());
+        $stmt->bindValue(':nome', $campeonato->nome);
+        $stmt->bindValue(':regiao', $campeonato->regiao);
+        $stmt->bindValue(':num_fases', $campeonato->numFases);
+        $stmt->bindValue(':num_equipes', $campeonato->numEquipes);
+        $stmt->bindValue(':rodadas', $campeonato->rodadas);
+        $stmt->bindValue(':num_turnos', $campeonato->numTurnos);
+        $stmt->bindValue(':temporada', $campeonato->temporada);
+        $stmt->bindValue(':id', $campeonato->id);
+        $result = $stmt->execute();
+
+        return $result;
     }
 
-    public function delete($example): bool
+    public function delete(int $id): bool
     {
-        return false;
+        $stmt = $this->pdo->prepare($this->sql->delete());
+        $stmt->bindValue(':id', $id);
+        $result = $stmt->execute();
+        
+        return $result;
     }
 
-    public function findById(int $id)
+    public function findById(int $id): Campeonato
     {
-        return;
+        $stmt = $this->pdo->prepare($this->sql->findById());
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        return $this->hydrateCampeonato($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Campeonato[] */
     public function list(): array
     {
-        $sql = 'SELECT * FROM campeonatos;';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
         return $this->hydrateCampeonatoList($stmt);
@@ -67,6 +86,11 @@ class CampeonatoRepository
         }
 
         return $campeonatoList;
+    }
+
+    private function hydrateCampeonato(array $campeonatoData): Campeonato
+    {
+        return Campeonato::fromArray($campeonatoData);
     }
     
 

@@ -2,7 +2,8 @@
 
 namespace App\Http\Entity;
 
-final class Pais{
+final class Pais
+{
     public readonly ?int $id;
     public readonly string $nome;
     public readonly string $sigla;
