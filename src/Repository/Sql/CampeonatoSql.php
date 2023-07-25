@@ -58,7 +58,8 @@ class CampeonatoSql
                     regiao, 
                     num_fases, 
                     num_equipes, 
-                    rodadas, 
+                    rodadas,
+                    rodada_atual, 
                     num_turnos,
                     temporada,
                     ativado
@@ -72,7 +73,8 @@ class CampeonatoSql
                     regiao, 
                     num_fases, 
                     num_equipes, 
-                    rodadas, 
+                    rodadas,
+                    rodada_atual,
                     num_turnos,
                     temporada,
                     ativado

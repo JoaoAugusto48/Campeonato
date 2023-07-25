@@ -10,10 +10,11 @@ class Campeonato{
     public readonly int $numEquipes;
     public readonly string $temporada;
     public readonly ?int $rodadas;
+    public readonly ?int $rodadaAtual;
     public readonly int $numTurnos;
     public readonly bool $ativado;
 
-    public function __construct(string $nome, string $regiao, int $numFases, int $numEquipes, int $numTurnos, string $temporada, ?int $rodadas = null, ?int $id = null, ?bool $ativado = null) 
+    public function __construct(string $nome, string $regiao, int $numFases, int $numEquipes, int $numTurnos, string $temporada, ?int $rodadas = null, ?int $rodadaAtual = 1, ?int $id = null, ?bool $ativado = null) 
     {
         $this->nome = $nome;
         $this->regiao = $regiao;
@@ -22,6 +23,7 @@ class Campeonato{
         $this->numTurnos = $numTurnos;
         $this->temporada = $temporada;
         $this->rodadas = is_null($rodadas) ? $this->defineRodadas($numTurnos, $numEquipes) : $rodadas;
+        $this->rodadaAtual = $rodadaAtual;
         $this->id = $id;
         $this->ativado = $ativado;
     }
@@ -46,6 +48,7 @@ class Campeonato{
         string $numTurnos = 'num_turnos', 
         string $temporada = 'temporada', 
         string $rodadas = 'rodadas', 
+        string $rodadaAtual = 'rodada_atual', 
         ?string $id = 'id',
         ?string $ativado = 'ativado',
     ): Campeonato
@@ -58,6 +61,7 @@ class Campeonato{
                 $campeonatoData[$numTurnos], 
                 $campeonatoData[$temporada], 
                 $campeonatoData[$rodadas],
+                $campeonatoData[$rodadaAtual],
                 $campeonatoData[$id],
                 $campeonatoData[$ativado],
             );

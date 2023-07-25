@@ -17,14 +17,6 @@ abstract class Controller implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        // var_dump($request->getServerParams()['PATH_INFO']);
-        // var_dump($request->getMethod());
-        
-        // var_dump(str_contains($request->getServerParams()['PATH_INFO'], '/create'));
-        // var_dump($request->getQueryParams());
-        // var_dump($request->getUri()->getPath());
-        // exit;
-
         // Main - Methods
         if($request->getUri()->getPath() === '/') {
             if($request->getMethod() === 'GET') {

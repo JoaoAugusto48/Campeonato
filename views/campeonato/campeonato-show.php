@@ -1,7 +1,9 @@
 <?php
 $this->layout('layout');
 /** @var \App\Http\Entity\Campeonato $campeonato
- *  @var \App\Http\Entity\Estatistica[] $estatisticaList */
+ *  @var \App\Http\Entity\Estatistica[] $estatisticaList 
+ *  @var \App\Http\DTO\RodadaDTO[] $partidasMap
+ * */
 ?>
 
 <div class="row">
@@ -22,35 +24,38 @@ $this->layout('layout');
         <table class="table table-sm table-striped align-middle">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Equipe</th>
-                    <th scope="col">J</th>
-                    <th scope="col">V</th>
-                    <th scope="col">E</th>
-                    <th scope="col">D</th>
-                    <th scope="col">Gols</th>
-                    <th scope="col">Pts</th>
+                    <th class="text-center" scope="col">#</th>
+                    <th class="text-center" scope="col">Equipe</th>
+                    <th class="text-center" scope="col">J</th>
+                    <th class="text-center" scope="col">V</th>
+                    <th class="text-center" scope="col">E</th>
+                    <th class="text-center" scope="col">D</th>
+                    <th class="text-center" scope="col">Gols</th>
+                    <th class="text-center" scope="col">Pts</th>
                 </tr>
             </thead>
             <tbody class="">
                 <?php foreach($estatisticaList as $key => $estatistica): ?>
                     <tr>
-                        <td><?= $key+1 ?></td>
-                        <td><?= $estatistica->equipe->nome ?></td>
-                        <td><?= $estatistica->jogos ?></td>
-                        <td><?= $estatistica->vitorias ?></td>
-                        <td><?= $estatistica->empates ?></td>
-                        <td><?= $estatistica->derrotas ?></td>
-                        <td>
+                        <td class="text-center"><?= $key+1 ?></td>
+                        <td class="text-start"><?= $estatistica->equipe->nome ?></td>
+                        <td class="text-center"><?= $estatistica->jogos ?></td>
+                        <td class="text-center"><?= $estatistica->vitorias ?></td>
+                        <td class="text-center"><?= $estatistica->empates ?></td>
+                        <td class="text-center"><?= $estatistica->derrotas ?></td>
+                        <td class="text-center">
                             <span data-bs-toggle="tooltip" data-bs-title="<?= $estatistica->saldoGols ?>">
                                 <?= $estatistica->golsPro ?>:<?= $estatistica->golsContra ?>
                             </span>
                         </td>
-                        <td><?= $estatistica->pontos ?></td>
+                        <td class="text-center"><?= $estatistica->pontos ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+
+        <?= $this->insert('campeonato/card-table-jogos', ['campeonato' => $campeonato, 'partidasMap' => $partidasMap]); ?>
+
     <?php else: ?>
         <div class="row">
             <div class="col-lg-6 mb-3 mb-sm-0">

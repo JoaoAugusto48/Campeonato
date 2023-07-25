@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controller;
 
 use App\Http\DTO\CampeonatoFormDTO;
+use App\Http\DTO\RodadaDTO;
 use App\Http\Entity\Campeonato;
 use App\Http\Enum\RegiaoEnum;
 use App\Http\Service\CampeonatoService;
 use App\Http\Service\EstatisticaService;
+use App\Http\Service\PartidaService;
 use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
@@ -22,6 +24,7 @@ class CampeonatoController extends Controller
         private Engine $templates,
 
         private EstatisticaService $estatisticaService,
+        private PartidaService $partidaService,
     ) {
     }
 
@@ -92,13 +95,17 @@ class CampeonatoController extends Controller
     {
         $campeonato = $this->campeonatoService->findById($id);
         $estatisticaList = $this->estatisticaService->findByCampeonatoId($campeonato->id);
+        $partidaList = $this->partidaService->findAllByCampeonatoId($campeonato->id);
+        
+        $partidasMap = RodadaDTO::fillPartidaMap($partidaList);
 
         return new Response(302, [],
             $this->templates->render(
                 'campeonato/campeonato-show',
                 [
                     'campeonato' => $campeonato,
-                    'estatisticaList' => $estatisticaList
+                    'estatisticaList' => $estatisticaList,
+                    'partidasMap' => $partidasMap,
                 ]
             )
         );

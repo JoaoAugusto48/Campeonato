@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `campeonatos` (
   `num_fases` int(2) NOT NULL,
   `temporada` int(3),
   `rodadas` int(3),
+  `rodada_atual` int(3),
   `num_turnos` int(2),
   `ativado` boolean,
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -44,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `campeonatos` (
 -- Extraindo dados da tabela `campeonatos`
 --
 
-INSERT INTO `campeonatos` (`id`, `num_equipes`, `nome`, `temporada`, `regiao`, `num_fases`, `rodadas`, `num_turnos`, `ativado`) VALUES
-(1, 8, 'Brasileirão', '2023', 'Nacional', 1, 16, 2, 1);
+INSERT INTO `campeonatos` (`id`, `num_equipes`, `nome`, `temporada`, `regiao`, `num_fases`, `rodadas`, `rodada_atual`, `num_turnos`, `ativado`) VALUES
+(1, 8, 'Brasileirão', '2023', 'Nacional', 1, 14, 1, 2, 1);
 
 -- --------------------------------------------------------
 

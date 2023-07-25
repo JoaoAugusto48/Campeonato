@@ -36,8 +36,7 @@ class EstatisticaRepository
 
         foreach ($estatisticaDataList as $estatisticaData) {
             
-            $estatisticaData['pais'] = null;
-            $estatisticaData['equipe'] = Equipe::fromList($estatisticaData, 'equipe_nome', 'equipe_sigla', 'equipe_pais_id', 'equipe_id');
+            $estatisticaData['equipe'] = Equipe::fromArray($estatisticaData, 'equipe_nome', 'equipe_sigla', 'equipe_pais_id', 'equipe_id');
             
             $estatisticaList[] = Estatistica::fromArray($estatisticaData);
         }

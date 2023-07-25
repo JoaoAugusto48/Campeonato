@@ -3,7 +3,6 @@
 namespace App\Http\Entity;
 
 use App\Http\Entity\Pais;
-use App\Http\Service\PaisService;
 
 class Equipe
 {
@@ -13,7 +12,6 @@ class Equipe
     public readonly int $paisId;
     public readonly ?Pais $pais;
     private bool $status;
-    
     
     public function __construct(
         string $nome,
@@ -43,8 +41,19 @@ class Equipe
         $this->status = $status;
     }
 
-    public static function fromList(array $equipeData, string $nome = 'nome', string $sigla = 'sigla', string $paisId = 'pais_id', ?string $id = 'id', ?string $pais = 'pais'): Equipe
+    public static function fromArray(
+        array $equipeData, 
+        string $nome = 'nome', 
+        string $sigla = 'sigla', 
+        string $paisId = 'pais_id', 
+        ?string $id = 'id', 
+        ?string $pais = 'pais'
+    ): Equipe
     {
+        if(!isset($equipeData[$pais])) {
+            $equipeData[$pais] = null;
+        }        
+
         $equipe = new Equipe(
             $equipeData[$nome], 
             $equipeData[$sigla], 

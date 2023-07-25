@@ -15,13 +15,13 @@
     <label for="input<?= $descricao ?>"><?= $descricao ?></label>
     <input 
         type="number" 
-        id="input<?= $descricao ?>" 
+        id="input<?= str_replace(' ', '_', $descricao) ?>" 
         name="<?= $name ?>" 
-        value="<?= $value ?>"
-        class="form-control <?= $classes ?>" 
-        placeholder="<?= $dica ?>" 
+        value="<?= isset($value) ? $value : 0 ?>"
+        class="form-control <?= isset($classes) ? $classes : '' ?>" 
+        placeholder="<?= isset($dica) ? $dica : '' ?>" 
         required="<?= (is_null($required) || !$required) ? 'false' : 'true' ?>"
-        min="<?= $valorMin ?>"
-        max="<?= $valorMax ?>"
+        min="<?= isset($valorMin) ? $valorMin : 0 ?>"
+        max="<?= isset($valorMax) ? $valorMax : 1000 ?>"
     >
 </div>

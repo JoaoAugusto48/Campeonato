@@ -79,6 +79,10 @@ class Estatistica
         ?string $equipe = 'equipe',
     ): Estatistica
     {
+        if(!isset($estatisticaData[$equipe])) {
+            $estatisticaData[$equipe] = null;
+        } 
+
         return new Estatistica(
             $estatisticaData[$vitorias],
             $estatisticaData[$empates],

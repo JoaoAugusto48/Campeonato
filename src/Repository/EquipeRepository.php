@@ -81,7 +81,7 @@ class EquipeRepository
             $pais = Pais::fromArray($equipeData, 'pais_nome', 'pais_sigla', 'pais_id'); 
             $equipeData['pais'] = $pais;
 
-            $equipeList[] = Equipe::fromList($equipeData); 
+            $equipeList[] = Equipe::fromArray($equipeData); 
         }
 
         return $equipeList;
@@ -91,7 +91,7 @@ class EquipeRepository
     {
         $equipeData['pais'] = $this->paisService->findById($equipeData['pais_id']);
 
-        return Equipe::fromList($equipeData);
+        return Equipe::fromArray($equipeData);
     }
     
 

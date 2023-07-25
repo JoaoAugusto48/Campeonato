@@ -52,7 +52,7 @@ $this->layout('layout');
                   </select>
                 </div>
             </div>
-            <button type="submit" class="btn btn-dark">Enviar</button>
+            <?= $this->insert('components/buttons/button-submit'); ?>
         </form>
     </div>
 </div>

@@ -1,9 +1,8 @@
 <?php
     /**
      * @var ?string $classes
-     * @var ?string $nome
      */
 ?>
-<button type="submit" class="btn btn-dark">
+<button type="submit" class="btn btn-dark <?= isset($classes)? $classes : '' ?>">
     Enviar
 </button>
