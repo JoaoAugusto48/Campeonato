@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -15,10 +15,9 @@ class EstatisticaRepository
     public function __construct(
         private PDO $pdo,
         private EstatisticaSql $sql,
-    ) {
+    ){
     }
 
-    /** @return \App\Http\Entity\Estatistica[] */
     public function findAllByCampeonatoId(int $campId): array
     {
         $stmt = $this->pdo->prepare($this->sql->findAllByChampionshipId());
@@ -29,17 +28,17 @@ class EstatisticaRepository
     }
 
     /** @return \App\Http\Entity\Estatistica[] */
-    private function hydrateEstatisticaList(\PDOStatement $stmt): array
+    public function hydrateEstatisticaList(\PDOStatement $stmt): array
     {
         $estatisticaDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $estatisticaList = [];
 
-        foreach ($estatisticaDataList as $estatisticaData) {
-            
+        foreach ($estatisticaDataList as $estatisticaData){
             $estatisticaData['equipe'] = Equipe::fromArray($estatisticaData, 'equipe_nome', 'equipe_sigla', 'equipe_pais_id', 'equipe_id');
-            
+
             $estatisticaList[] = Estatistica::fromArray($estatisticaData);
         }
+
         return $estatisticaList;
     }
 }
