@@ -14,8 +14,8 @@ class PaisSql
 
     public function update(): string
     {
-        return 'UPDATE pais SET 
-                    nome=:nome, 
+        return 'UPDATE pais 
+                SET nome=:nome, 
                     sigla=:sigla 
                 WHERE 
                     id=:id;';

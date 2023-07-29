@@ -72,13 +72,12 @@ class CampeonatoRepository
         $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
-        return $this->hydrateCampeonatoList($stmt);
+        return $this->hydrateCampeonatoList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /**  @return \App\Http\Entity\Campeonato[] */
-    private function hydrateCampeonatoList(\PDOStatement $stmt): array
+    private function hydrateCampeonatoList(array $campeonatoDataList): array
     {
-        $campeonatoDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $campeonatoList = [];
 
         foreach($campeonatoDataList as $campeonatoData) {

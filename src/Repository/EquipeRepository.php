@@ -68,13 +68,12 @@ class EquipeRepository
         $stmt = $this->pdo->prepare($this->sql->findAllWithPais());
         $stmt->execute();
 
-        return $this->hydrateEquipeList($stmt);
+        return $this->hydrateEquipeList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Equipe[] */
-    private function hydrateEquipeList(\PDOStatement $stmt): array
+    private function hydrateEquipeList(array $equipeDataList): array
     {
-        $equipeDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $equipeList = [];
 
         foreach ($equipeDataList as $equipeData) {

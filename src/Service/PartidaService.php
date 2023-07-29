@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Service;
 
+use App\Http\Entity\Estatistica;
 use App\Http\Entity\Partida;
 use App\Http\Repository\PartidaRepository;
 
@@ -11,7 +12,8 @@ class PartidaService
 {
 
     public function __construct(
-        private PartidaRepository $partidaRepository
+        private PartidaRepository $partidaRepository,
+        private EstatisticaService $estatisticaService,
     ) {
 
     }
@@ -24,7 +26,7 @@ class PartidaService
 
     public function findById(int $id): Partida
     {
-        return new Partida(0, 0, 0, 0, 0, 0);
+        return $this->partidaRepository->findById($id);
     }
 
     public function save(Partida $partida): bool
@@ -43,7 +45,32 @@ class PartidaService
 
     private function update(Partida $partida): bool
     {
-        return false;
+        $equipesEstatistica = $this->estatisticaService->findByCampeonatoEquipeId($partida->campeonatoId, $partida->timeCasaId, $partida->timeVisitanteId);
+        
+        $estatEquipeCasa = $equipesEstatistica[0];
+        $estatEquipeVisitante = $equipesEstatistica[1];
+        if($equipesEstatistica[1]->equipeId === $partida->timeCasaId) {
+            $estatEquipeCasa = $equipesEstatistica[1];
+            $estatEquipeVisitante = $equipesEstatistica[0];
+        }
+
+        $partidaResult = new Partida(
+            $partida->campeonatoId,
+            $estatEquipeCasa->equipeId,
+            $estatEquipeVisitante->equipeId,
+            $partida->rodada,
+            $partida->numGolCasa,
+            $partida->numGolVisitante,
+            $partida->id
+        );
+
+        $this->estatisticaService->defineEstatistica($partidaResult, $estatEquipeCasa, $estatEquipeVisitante);
+        
+        var_dump(json_encode($estatEquipeCasa));
+        var_dump(json_encode($equipesEstatistica));
+        exit;
+        
+        return $this->partidaRepository->update($partida);
     }
 
     public function delete(int $id): bool

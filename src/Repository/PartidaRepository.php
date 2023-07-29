@@ -23,9 +23,22 @@ class PartidaRepository
         return false;
     }
 
-    public function update($example): bool
+    public function update(Partida $partida): bool
     {
-        return false;
+        // var_dump($partida);
+        // exit;
+        $stmt = $this->pdo->prepare($this->sql->update());
+        $stmt->bindValue(':campeonatos_id', $partida->campeonatoId);
+        $stmt->bindValue(':time_casa', $partida->timeCasaId);
+        $stmt->bindValue(':time_visitante', $partida->timeVisitanteId);
+        $stmt->bindValue(':num_gols_casa', $partida->numGolCasa);
+        $stmt->bindValue(':num_gols_visitante', $partida->numGolVisitante);
+        $stmt->bindValue(':rodada', $partida->rodada);
+        $stmt->bindValue(':status', $partida->status);
+        $stmt->bindValue(':id', $partida->id);
+        $result = $stmt->execute();
+        
+        return $result;
     }
 
     public function delete(int $id): bool
@@ -35,7 +48,11 @@ class PartidaRepository
 
     public function findById(int $id)
     {
-        return;
+        $stmt = $this->pdo->prepare($this->sql->findPartidaById());
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        return $this->hydratePartida($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -45,7 +62,7 @@ class PartidaRepository
         $stmt->bindValue(':campeonatoId', $campId);
         $stmt->execute();
 
-        return $this->hydratePartidaList($stmt);
+        return $this->hydratePartidaList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -55,9 +72,8 @@ class PartidaRepository
     }
 
     /** @return \App\Http\Entity\Partida[] */
-    private function hydratePartidaList(\PDOStatement $stmt): array
+    private function hydratePartidaList(array $partidaDataList): array
     {
-        $partidaDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $partidaList = [];
 
         foreach ($partidaDataList as $partidaData) {
@@ -68,6 +84,11 @@ class PartidaRepository
         }
 
         return $partidaList;
+    }
+
+    private function hydratePartida(array $partidaData): Partida
+    {
+        return Partida::fromArray($partidaData);
     }
     
 }

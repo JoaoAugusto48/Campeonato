@@ -11,7 +11,7 @@ class Partida
     public readonly int $numGolCasa;
     public readonly int $numGolVisitante;
     public readonly int $rodada;
-    public readonly bool $status;
+    public readonly ?bool $status;
     public readonly ?Equipe $timeCasa;
     public readonly ?Equipe $timeVisitante;
     
@@ -22,8 +22,8 @@ class Partida
         int $rodada,
         ?int $numGolCasa = null,
         ?int $numGolVisitante = null,
-        ?int $status = null,
         ?int $id = null,
+        ?bool $status = true,
         ?Equipe $timeCasa = null,
         ?Equipe $timeVisitante = null,
     ) 
@@ -49,8 +49,8 @@ class Partida
        string $rodada = 'rodada', 
        ?string $numGolCasa = 'num_gols_casa', 
        ?string $numGolVisitante = 'num_gols_visitante', 
+       ?string $id = 'id',
        ?string $status = 'status', 
-       ?string $id = 'id', 
        ?string $timeCasa = 'equipeCasa', 
        ?string $timeVisitante = 'equipeVisitante', 
     ): Partida
@@ -78,8 +78,8 @@ class Partida
             $partidaData[$rodada],
             $partidaData[$numGolCasa],
             $partidaData[$numGolVisitante],
-            $partidaData[$status],
             $partidaData[$id],
+            $partidaData[$status],
             $partidaData[$timeCasa],
             $partidaData[$timeVisitante],
         );

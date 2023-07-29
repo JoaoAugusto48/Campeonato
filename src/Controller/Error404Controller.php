@@ -11,6 +11,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class Error404Controller implements RequestHandlerInterface
 {
+    public static function getInstance(): Error404Controller
+    {
+        return new Error404Controller();
+    }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

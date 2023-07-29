@@ -24,13 +24,23 @@ class EstatisticaRepository
         $stmt->bindValue(':campeonato_id', $campId);
         $stmt->execute();
 
-        return $this->hydrateEstatisticaList($stmt);
+        return $this->hydrateEstatisticaList($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public function findByCampeonatoEquipesId(int $campId, int $equipe1Id, int $equipe2Id): array
+    {
+        $stmt = $this->pdo->prepare($this->sql->findByChampionshipAndEquipesId());
+        $stmt->bindValue(':campeonato_id', $campId);
+        $stmt->bindValue(':equipe1_id', $equipe1Id);
+        $stmt->bindValue(':equipe2_id', $equipe2Id);
+        $stmt->execute();
+
+        return $this->hydrateEstatisticaList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Estatistica[] */
-    public function hydrateEstatisticaList(\PDOStatement $stmt): array
+    public function hydrateEstatisticaList(array $estatisticaDataList): array
     {
-        $estatisticaDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $estatisticaList = [];
 
         foreach ($estatisticaDataList as $estatisticaData){

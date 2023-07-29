@@ -64,14 +64,13 @@ class PaisRepository
         $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
-        return $this->hydratePaisList($stmt);
+        return $this->hydratePaisList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     
-    /**  @return Pais[] */
-    private function hydratePaisList(\PDOStatement $stmt): array
+    /**  @return \App\Http\Entity\Pais[] */
+    private function hydratePaisList(array $paisDataList): array
     {
-        $paisDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $paisList = [];
 
         foreach($paisDataList as $paisData) {
