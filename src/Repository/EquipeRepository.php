@@ -24,9 +24,9 @@ class EquipeRepository
     public function add(Equipe $equipe): bool
     {
         $stmt = $this->pdo->prepare($this->sql->insert());
-        $stmt->bindValue(':nome', $equipe->nome);
-        $stmt->bindValue(':sigla', $equipe->sigla);
-        $stmt->bindValue(':pais_id', $equipe->paisId);
+        $stmt->bindValue(':nome', $equipe->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':sigla', $equipe->sigla, PDO::PARAM_STR);
+        $stmt->bindValue(':pais_id', $equipe->paisId, PDO::PARAM_INT);
         $result = $stmt->execute();
         
         return $result;
@@ -35,10 +35,10 @@ class EquipeRepository
     public function update(Equipe $equipe): bool
     {
         $stmt = $this->pdo->prepare($this->sql->update());
-        $stmt->bindValue(':nome', $equipe->nome);
-        $stmt->bindValue(':sigla', $equipe->sigla);
-        $stmt->bindValue(':pais_id', $equipe->paisId);
-        $stmt->bindValue(':id', $equipe->id);
+        $stmt->bindValue(':nome', $equipe->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':sigla', $equipe->sigla, PDO::PARAM_STR);
+        $stmt->bindValue(':pais_id', $equipe->paisId, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $equipe->id, PDO::PARAM_INT);
         $result = $stmt->execute();
 
         return $result;
@@ -47,7 +47,7 @@ class EquipeRepository
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare($this->sql->delete());
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $result = $stmt->execute();
 
         return $result;
@@ -56,7 +56,7 @@ class EquipeRepository
     public function findById(int $id): Equipe
     {
         $stmt = $this->pdo->prepare($this->sql->findById());
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
         return $this->hydrateEquipe($stmt->fetch(PDO::FETCH_ASSOC));

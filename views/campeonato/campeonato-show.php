@@ -17,6 +17,9 @@ $this->layout('layout');
     </div>
 </div>
 
+<?= $this->insert('components/messages/success-message') ?>
+<?= $this->insert('components/messages/error-message') ?>
+
 <div class="row mt-3 justify-content-md-center">
     <div class="col-10">
     <?php if(!empty($estatisticaList)) : ?>
@@ -31,6 +34,7 @@ $this->layout('layout');
                     <th class="text-center" scope="col">E</th>
                     <th class="text-center" scope="col">D</th>
                     <th class="text-center" scope="col">Gols</th>
+                    <th class="text-center" scope="col">SG</th>
                     <th class="text-center" scope="col">Pts</th>
                 </tr>
             </thead>
@@ -48,6 +52,7 @@ $this->layout('layout');
                                 <?= $estatistica->golsPro ?>:<?= $estatistica->golsContra ?>
                             </span>
                         </td>
+                        <td class="text-center"><?= $estatistica->saldoGols ?></td>
                         <td class="text-center"><?= $estatistica->pontos ?></td>
                     </tr>
                 <?php endforeach; ?>

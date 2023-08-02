@@ -6,13 +6,16 @@ namespace App\Http\Service;
 
 use App\Http\Entity\Campeonato;
 use App\Http\Repository\CampeonatoRepository;
+use App\Http\Repository\PartidaRepository;
 use App\Http\Service\Validation\CampeonatoValidation;
 
 class CampeonatoService
 {
 
     public function __construct(
-        private CampeonatoRepository $campeonatoRepository
+        private CampeonatoRepository $campeonatoRepository,
+
+        private PartidaRepository $partidaRepository,
     ) {
     }
 
@@ -50,6 +53,32 @@ class CampeonatoService
     public function delete(int $id): bool
     {
         return $this->campeonatoRepository->delete($id);
+    }
+
+    public function defineProximaRodada(int $campeonatoId, int $rodada)
+    {
+        $partidasList = $this->partidaRepository->findAllNotPlayedByCampeonatoIdRound($campeonatoId, $rodada);
+        $campeonato = $this->findById($campeonatoId);
+        
+        if((sizeof($partidasList) === 0) && ($campeonato->rodadaAtual !== $campeonato->rodadas) && ($rodada === $campeonato->rodadaAtual)) {
+
+            $newCampeonato = new Campeonato(
+                $campeonato->nome,
+                $campeonato->regiao,
+                $campeonato->numEquipes,
+                $campeonato->numEquipes,
+                $campeonato->numTurnos,
+                $campeonato->temporada,
+                $campeonato->rodadas,
+                $campeonato->rodadaAtual + 1,
+                $campeonato->id,
+                $campeonato->ativado
+            );
+
+            return $this->save($newCampeonato);
+        }
+
+        return false;
     }
 
 }

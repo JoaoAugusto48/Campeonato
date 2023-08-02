@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Service;
 
-use App\Http\Entity\Estatistica;
 use App\Http\Entity\Partida;
 use App\Http\Repository\PartidaRepository;
+use DI\ContainerBuilder;
 
 class PartidaService
 {
@@ -14,8 +14,8 @@ class PartidaService
     public function __construct(
         private PartidaRepository $partidaRepository,
         private EstatisticaService $estatisticaService,
+        private CampeonatoService $campeonatoService,
     ) {
-
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -35,7 +35,7 @@ class PartidaService
             return $this->update($partida);
         }
 
-        return $this->save($partida);
+        return $this->insert($partida);
     }
 
     private function insert(Partida $partida): bool
@@ -46,7 +46,8 @@ class PartidaService
     private function update(Partida $partida): bool
     {
         $equipesEstatistica = $this->estatisticaService->findByCampeonatoEquipeId($partida->campeonatoId, $partida->timeCasaId, $partida->timeVisitanteId);
-        
+        $oldPartida = $this->partidaRepository->findById($partida->id);
+
         $estatEquipeCasa = $equipesEstatistica[0];
         $estatEquipeVisitante = $equipesEstatistica[1];
         if($equipesEstatistica[1]->equipeId === $partida->timeCasaId) {
@@ -64,13 +65,18 @@ class PartidaService
             $partida->id
         );
 
-        $this->estatisticaService->defineEstatistica($partidaResult, $estatEquipeCasa, $estatEquipeVisitante);
-        
-        var_dump(json_encode($estatEquipeCasa));
-        var_dump(json_encode($equipesEstatistica));
-        exit;
-        
-        return $this->partidaRepository->update($partida);
+        $estatResult = false;
+        // melhorar
+        if($oldPartida->status) {
+            $estatResult = $this->estatisticaService->defineEstatistica($partidaResult, $estatEquipeCasa, $estatEquipeVisitante, $oldPartida);
+        } else {
+            $estatResult = $this->estatisticaService->defineEstatistica($partidaResult, $estatEquipeCasa, $estatEquipeVisitante);
+        }
+
+        $partidaResult = $estatResult ? $this->partidaRepository->update($partida) : false;
+        $this->campeonatoService->defineProximaRodada($partida->campeonatoId, $partida->rodada);
+
+        return $estatResult && $partidaResult;
     }
 
     public function delete(int $id): bool
@@ -82,6 +88,14 @@ class PartidaService
     public function findAllByCampeonatoId(int $campId): array
     {
         return $this->partidaRepository->findAllByCampeonatoId($campId);
+    }
+
+    /** 
+     * @return \App\Http\Entity\Partida[] 
+     * */
+    public function findAllNotPlayedByCampeonatoIdRound(int $campId, int $round): array
+    {
+        return $this->partidaRepository->findAllNotPlayedByCampeonatoIdRound($campId, $round);
     } 
 
 }

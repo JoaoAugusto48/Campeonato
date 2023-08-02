@@ -19,9 +19,6 @@
     <?php foreach($partidasMap as $rodada => $partidas): ?>
     <div class="<?= $rodada !== $campeonato->rodadaAtual ? 'd-none' : 'd-inline' ?> games-list" id="<?= $rodada ?>">
         <div class="card-body">
-            <!-- <p class="card-text mb-0 mt-3">
-                Rodada <?= $rodada ?>
-            </p> -->
             
             <table class="table table-hover table-borderless card-text">
                 <tr>
@@ -39,7 +36,7 @@
                             <?= $this->insert('components/buttons/button-modal', 
                                 [
                                     'classes' => 'info btn-sm',
-                                    'key' => $key,
+                                    'key' => $rodada . $key,
                                     'nome' => 'Atualizar'
                                 ]);
                             ?>   
@@ -49,7 +46,7 @@
                 <?= $this->insert('components/modals/modal-update-jogo-form', 
                     [
                         'action' => '',
-                        'key' => $key,
+                        'key' => $rodada . $key,
                         'rodada' => $rodada,
                         'partidaId' => $equipe->partidaId,
                         'timeCasa' => $equipe->equipeCasa,

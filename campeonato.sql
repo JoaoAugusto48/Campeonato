@@ -164,10 +164,10 @@ INSERT INTO `pais` (`id`, `nome`, `sigla`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `partida`
+-- Estrutura da tabela `partidas`
 --
 
-CREATE TABLE IF NOT EXISTS `partida` (
+CREATE TABLE IF NOT EXISTS `partidas` (
   `id` int(11) NOT NULL,
   `campeonatos_id` int(11) NOT NULL,
   `time_casa` int(11) NOT NULL,
@@ -179,10 +179,10 @@ CREATE TABLE IF NOT EXISTS `partida` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Extraindo dados da tabela `partida`
+-- Extraindo dados da tabela `partidas`
 --
 
-INSERT INTO `partida` (`id`, `campeonatos_id`, `time_casa`, `time_visitante`, `num_gols_casa`, `num_gols_visitante`, `rodada`, `status`) VALUES
+INSERT INTO `partidas` (`id`, `campeonatos_id`, `time_casa`, `time_visitante`, `num_gols_casa`, `num_gols_visitante`, `rodada`, `status`) VALUES
 (1, 1, 18, 8, 0, 0, 0, 0),
 (2, 1, 16, 2, 0, 0, 0, 0),
 (3, 1, 1, 6, 0, 0, 0, 0),
@@ -272,9 +272,9 @@ ALTER TABLE `pais`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices para tabela `partida`
+-- Índices para tabela `partidas`
 --
-ALTER TABLE `partida`
+ALTER TABLE `partidas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `campeonatos_id` (`campeonatos_id`),
   ADD KEY `time_casa` (`time_casa`),
@@ -309,9 +309,9 @@ ALTER TABLE `pais`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
--- AUTO_INCREMENT de tabela `partida`
+-- AUTO_INCREMENT de tabela `partidas`
 --
-ALTER TABLE `partida`
+ALTER TABLE `partidas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
@@ -332,12 +332,12 @@ ALTER TABLE `estatisticas`
   ADD CONSTRAINT `estatisticas_ibfk_2` FOREIGN KEY (`equipes_id`) REFERENCES `equipes` (`id`);
 
 --
--- Limitadores para a tabela `partida`
+-- Limitadores para a tabela `partidas`
 --
-ALTER TABLE `partida`
-  ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`campeonatos_id`) REFERENCES `campeonatos` (`id`),
-  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`time_casa`) REFERENCES `equipes` (`id`),
-  ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`time_visitante`) REFERENCES `equipes` (`id`);
+ALTER TABLE `partidas`
+  ADD CONSTRAINT `partidas_ibfk_1` FOREIGN KEY (`campeonatos_id`) REFERENCES `campeonatos` (`id`),
+  ADD CONSTRAINT `partidas_ibfk_2` FOREIGN KEY (`time_casa`) REFERENCES `equipes` (`id`),
+  ADD CONSTRAINT `partidas_ibfk_3` FOREIGN KEY (`time_visitante`) REFERENCES `equipes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

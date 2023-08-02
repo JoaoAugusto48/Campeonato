@@ -20,9 +20,9 @@ class PaisRepository
     public function add(Pais $pais): bool
     {
         $stmt = $this->pdo->prepare($this->sql->insert());
-        $stmt->bindValue(':nome', $pais->nome);
-        $stmt->bindValue(':sigla', $pais->sigla);
-        $stmt->bindValue(':status', true);
+        $stmt->bindValue(':nome', $pais->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':sigla', $pais->sigla, PDO::PARAM_STR);
+        $stmt->bindValue(':status', true, PDO::PARAM_BOOL);
         $result = $stmt->execute();
 
         return $result;
@@ -31,9 +31,9 @@ class PaisRepository
     public function update(Pais $pais): bool
     {
         $stmt = $this->pdo->prepare($this->sql->update());
-        $stmt->bindValue(':nome', $pais->nome);
-        $stmt->bindValue(':sigla', $pais->sigla);
-        $stmt->bindValue(':id', $pais->id);
+        $stmt->bindValue(':nome', $pais->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':sigla', $pais->sigla, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $pais->id, PDO::PARAM_INT);
         $result = $stmt->execute();
 
         return $result;
@@ -42,8 +42,8 @@ class PaisRepository
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare($this->sql->delete());
-        $stmt->bindValue(':status', 0);
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':status', false, PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $result = $stmt->execute();
 
         return $result;
@@ -52,7 +52,7 @@ class PaisRepository
     public function findById(int $id): Pais
     {
         $stmt = $this->pdo->prepare($this->sql->findById());
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
         return $this->hydratePais($stmt->fetch(PDO::FETCH_ASSOC));

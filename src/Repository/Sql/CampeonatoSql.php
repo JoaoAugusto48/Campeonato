@@ -41,7 +41,8 @@ class CampeonatoSql
                     num_equipes=:num_equipes,
                     rodadas=:rodadas,
                     num_turnos=:num_turnos,
-                    temporada=:temporada
+                    temporada=:temporada,
+                    rodada_atual=:rodada_atual
                 WHERE
                     id=:id;';
     }

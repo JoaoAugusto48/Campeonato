@@ -20,13 +20,13 @@ class CampeonatoRepository
     public function add(Campeonato $campeonato): bool
     {
         $stmt = $this->pdo->prepare($this->sql->insert());
-        $stmt->bindValue(':nome', $campeonato->nome);
-        $stmt->bindValue(':regiao', $campeonato->regiao);
-        $stmt->bindValue(':num_fases', $campeonato->numFases);
-        $stmt->bindValue(':num_equipes', $campeonato->numEquipes);
-        $stmt->bindValue(':rodadas', $campeonato->rodadas);
-        $stmt->bindValue(':num_turnos', $campeonato->numTurnos);
-        $stmt->bindValue(':temporada', $campeonato->temporada);
+        $stmt->bindValue(':nome', $campeonato->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':regiao', $campeonato->regiao, PDO::PARAM_STR);
+        $stmt->bindValue(':num_fases', $campeonato->numFases, PDO::PARAM_INT);
+        $stmt->bindValue(':num_equipes', $campeonato->numEquipes, PDO::PARAM_INT);
+        $stmt->bindValue(':rodadas', $campeonato->rodadas, PDO::PARAM_INT);
+        $stmt->bindValue(':num_turnos', $campeonato->numTurnos, PDO::PARAM_INT);
+        $stmt->bindValue(':temporada', $campeonato->temporada, PDO::PARAM_STR);
         $result = $stmt->execute();
         
         return $result;
@@ -35,14 +35,15 @@ class CampeonatoRepository
     public function update(Campeonato $campeonato): bool
     {
         $stmt = $this->pdo->prepare($this->sql->update());
-        $stmt->bindValue(':nome', $campeonato->nome);
-        $stmt->bindValue(':regiao', $campeonato->regiao);
-        $stmt->bindValue(':num_fases', $campeonato->numFases);
-        $stmt->bindValue(':num_equipes', $campeonato->numEquipes);
-        $stmt->bindValue(':rodadas', $campeonato->rodadas);
-        $stmt->bindValue(':num_turnos', $campeonato->numTurnos);
-        $stmt->bindValue(':temporada', $campeonato->temporada);
-        $stmt->bindValue(':id', $campeonato->id);
+        $stmt->bindValue(':nome', $campeonato->nome, PDO::PARAM_STR);
+        $stmt->bindValue(':regiao', $campeonato->regiao, PDO::PARAM_STR);
+        $stmt->bindValue(':num_fases', $campeonato->numFases, PDO::PARAM_INT);
+        $stmt->bindValue(':num_equipes', $campeonato->numEquipes, PDO::PARAM_INT);
+        $stmt->bindValue(':rodadas', $campeonato->rodadas, PDO::PARAM_INT);
+        $stmt->bindValue(':num_turnos', $campeonato->numTurnos, PDO::PARAM_INT);
+        $stmt->bindValue(':temporada', $campeonato->temporada, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $campeonato->id, PDO::PARAM_INT);
+        $stmt->bindValue(':rodada_atual', $campeonato->rodadaAtual, PDO::PARAM_INT);
         $result = $stmt->execute();
 
         return $result;
@@ -51,7 +52,7 @@ class CampeonatoRepository
     public function delete(int $id): bool
     {
         $stmt = $this->pdo->prepare($this->sql->delete());
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $result = $stmt->execute();
         
         return $result;
@@ -60,9 +61,9 @@ class CampeonatoRepository
     public function findById(int $id): Campeonato
     {
         $stmt = $this->pdo->prepare($this->sql->findById());
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-
+        
         return $this->hydrateCampeonato($stmt->fetch(PDO::FETCH_ASSOC));
     }
 

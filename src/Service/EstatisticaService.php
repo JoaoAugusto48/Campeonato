@@ -35,11 +35,13 @@ class EstatisticaService
         return false;
     }
 
-    public function defineEstatistica(Partida $partidaResult, Estatistica $estatCasa, Estatistica $estatVisitante)
+    public function defineEstatistica(Partida $partidaResult, Estatistica $estatCasa, Estatistica $estatVisitante, Partida $oldPartida = new Partida(0,0,0,0,0,0,0,false)): bool
     {
         $newVitoriaCasa = 0;
         $newDerrotaCasa = 0;
         $newEmpateCasa = 0;
+        $newGolsCasa = 0;
+        $newGolsVisitante = 0;
 
         if($partidaResult->numGolCasa > $partidaResult->numGolVisitante) {
             $newVitoriaCasa++;
@@ -49,12 +51,27 @@ class EstatisticaService
             $newEmpateCasa++;
         }
 
+        if($oldPartida->status){
+            // Verifica resultado atual com o anterior da equipe
+            if($oldPartida->numGolCasa > $oldPartida->numGolVisitante) {
+                $newVitoriaCasa--;
+            } else if($oldPartida->numGolVisitante > $oldPartida->numGolCasa) {
+                $newDerrotaCasa--;
+            } else {
+                $newEmpateCasa--;
+            }
+        }
+
+        // Define gols feitos e sofridos
+        $newGolsCasa = $partidaResult->numGolCasa - $oldPartida->numGolCasa;
+        $newGolsVisitante = $partidaResult->numGolVisitante - $oldPartida->numGolVisitante;
+
         $novaEstatCasa = new Estatistica(
             $estatCasa->vitorias + $newVitoriaCasa,
             $estatCasa->empates + $newEmpateCasa,
             $estatCasa->derrotas + $newDerrotaCasa,
-            $estatCasa->golsPro + $partidaResult->numGolCasa,
-            $estatCasa->golsContra + $partidaResult->numGolVisitante,
+            $estatCasa->golsPro + $newGolsCasa,
+            $estatCasa->golsContra + $newGolsVisitante,
             $partidaResult->campeonatoId,
             $estatCasa->equipeId,
             $estatCasa->id
@@ -64,24 +81,42 @@ class EstatisticaService
             $estatVisitante->vitorias + $newDerrotaCasa,
             $estatVisitante->empates + $newEmpateCasa,
             $estatVisitante->derrotas + $newVitoriaCasa,
-            $estatVisitante->golsPro + $partidaResult->numGolVisitante,
-            $estatVisitante->golsContra + $partidaResult->numGolCasa,
+            $estatVisitante->golsPro + $newGolsVisitante,
+            $estatVisitante->golsContra + $newGolsCasa,
             $partidaResult->campeonatoId,
             $estatVisitante->equipeId,
             $estatVisitante->id
         );
-
-        var_dump($partidaResult);
-        var_dump($novaEstatCasa);
-        var_dump($novaEstatVisitante);
-        exit;
-
+        
+        $estatList = [$novaEstatCasa, $novaEstatVisitante];
+        $result = $this->estatisticaRepository->updateTwo($estatList);
+        return $result;
     }
 
     /** @return \App\Http\Entity\Estatistica[]  */
     public function findByCampeonatoId(int $champId): array
     {
-        return $this->estatisticaRepository->findAllByCampeonatoId($champId);
+        $classificacao = $this->estatisticaRepository->findAllByCampeonatoId($champId);
+        usort($classificacao, function($equipeA, $equipeB) {
+            
+            if($equipeA->pontos != $equipeB->pontos) {
+                return ($equipeA->pontos < $equipeB->pontos) ? 1 : -1;
+            }  
+            if($equipeA->saldoGols != $equipeB->saldoGols){
+                return ($equipeA->saldoGols < $equipeB->saldoGols) ? 1 : -1;
+            } 
+            
+            if($equipeA->golsPro != $equipeB->golsPro) {
+                return ($equipeA->golsPro < $equipeB->saldoGols) ? 1 : -1;
+            } 
+            if($equipeA->vitorias != $equipeB->vitorias) {
+                return ($equipeA->vitorias < $equipeB->vitorias) ? 1 : -1;
+            }
+    
+            return 0;
+        });
+
+        return $classificacao;
     }
 
     /** @return \App\Http\Entity\Estatistica[]  */
@@ -89,5 +124,4 @@ class EstatisticaService
     {
         return $this->estatisticaRepository->findByCampeonatoEquipesId($champId, $equipe1Id, $equipe2Id);
     }
-
 }
