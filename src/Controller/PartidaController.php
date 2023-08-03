@@ -62,20 +62,16 @@ class PartidaController implements RequestHandlerInterface
             }
 
             $this->addSuccessMessage("Partida atualizada com sucesso!");
-            return new Response(302, [
-                    'Location' => $oldUrl,
-                    'method' => 'GET',
-                ]
-            );
             
         } catch (\Throwable $th) {
             $this->addErrorMessage($th->getTraceAsString());
-            return new Response(302, [
-                    'Location' => $oldUrl,
-                    'method' => 'GET',
-                ]
-            );
         }
+
+        return new Response(302, [
+                'Location' => $oldUrl,
+                'method' => 'GET',
+            ]
+        );
     }
 
 }

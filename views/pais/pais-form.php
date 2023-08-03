@@ -4,7 +4,7 @@ $this->layout('layout');
 ?>
 
 <div class="row">
-    <h2>Novo País</h2>
+    <h2><?php if(!isset($pais->nome)): ?>Novo<?php else: ?>Atualizar<?php endif; ?> País</h2>
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col">

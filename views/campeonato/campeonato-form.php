@@ -4,7 +4,7 @@ $this->layout('layout');
 ?>
 
 <div class="row">
-    <h2>Novo Campeonato</h2>
+    <h2><?php if(!isset($campeonato->nome)): ?>Novo<?php else: ?>Atualizar<?php endif; ?> Campeonato</h2>
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col-lg-3">
@@ -79,6 +79,7 @@ $this->layout('layout');
                     ]) ?>
                 </div>
             </div>
+            <input type="hidden" name="id" value="<?= $campeonato?->id ?>">
             <?= $this->insert('components/buttons/button-submit') ?>
         </form>
     </div>

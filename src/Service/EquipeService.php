@@ -6,6 +6,7 @@ namespace App\Http\Service;
 
 use App\Http\Entity\Equipe;
 use App\Http\Repository\EquipeRepository;
+use App\Http\Service\Validation\EquipeValidation;
 
 class EquipeService
 {
@@ -28,6 +29,7 @@ class EquipeService
 
     public function save(Equipe $equipe): bool
     {
+        // EquipeValidation::validadeEquipe($equipe);
         if(isset($equipe->id)){
             return $this->update($equipe);
         }

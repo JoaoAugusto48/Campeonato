@@ -8,6 +8,7 @@ use App\Http\Entity\Equipe;
 use App\Http\Entity\Estatistica;
 use App\Http\Entity\Partida;
 use App\Http\Repository\EstatisticaRepository;
+use App\Http\Service\Validation\EstatisticaValidation;
 
 class EstatisticaService
 {
@@ -18,6 +19,7 @@ class EstatisticaService
 
     public function save(Estatistica $estatistica): bool
     {
+        // EstatisticaValidation::validaEstatistica($estatistica);
         if(isset($estatistica->id)){
             return $this->update($estatistica);
         }

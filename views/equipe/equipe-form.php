@@ -4,7 +4,7 @@ $this->layout('layout');
 /** @var \App\Http\Entity\Pais $paisList */
 ?>
 <div class="row">
-    <h2>Nova Equipe</h2>
+    <h2><?php if(!isset($equipe->nome)): ?>Nova<?php else: ?>Atualizar<?php endif; ?> Equipe</h2>
     <hr class="border border-dark border-1 opacity-75"/>
     
     <div class="col-lg-3">

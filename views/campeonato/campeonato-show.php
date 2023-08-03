@@ -77,7 +77,10 @@ $this->layout('layout');
                     <div class="card-body">
                         <h5 class="card-title">Iniciar o Campeonato</h5>
                         <p class="card-text">Para iniciar o campeonato é necessário que as vagas dos times estejam preenchidas</p>
-                        <a href="#" class="btn btn-primary">Adicionar</a>
+                        <form action="/campeonatos/activate" method="post">
+                            <input type="hidden" name="id" value="<?= $campeonato->id ?>">
+                            <?= $this->insert('components/buttons/button-submit') ?>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -11,8 +11,8 @@ final class PartidaValidation
 
     public static function validatePartida(Partida $partida): void
     {
-        // self::validateNome($pais->nome);
-        // self::validateSigla($pais->sigla);
+        PatternValidation::validateNegative('Gol casa', $partida->numGolCasa);
+        PatternValidation::validateNegative('Gol fora', $partida->numGolVisitante);
     }
 
 }

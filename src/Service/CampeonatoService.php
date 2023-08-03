@@ -32,7 +32,7 @@ class CampeonatoService
 
     public function save(Campeonato $campeonato): bool
     {
-        CampeonatoValidation::validadeCampeonato($campeonato);
+        // CampeonatoValidation::validadeCampeonato($campeonato);
         if(isset($campeonato->id)){
             return $this->update($campeonato);
         }
@@ -47,7 +47,32 @@ class CampeonatoService
 
     public function update(Campeonato $campeonato): bool
     {
-        return $this->campeonatoRepository->update($campeonato);
+        $camp = $this->findById($campeonato->id);
+
+        if($camp->ativado) {
+            if($camp->numTurnos !== $campeonato->numTurnos) {
+                throw new \InvalidArgumentException('Número de turnos não pode ser alterado, para campeonatos ativados.');
+            }
+
+            if($camp->numEquipes !== $campeonato->numEquipes) {
+                throw new \InvalidArgumentException('Número de equipes não pode ser alterado, para campeonatos ativados.');
+            }
+        }
+
+        $campUpdate = new Campeonato(
+            $campeonato->nome,
+            $campeonato->regiao,
+            $camp->numFases,
+            $camp->numEquipes,
+            $camp->numTurnos,
+            $campeonato->temporada,
+            $camp->rodadas,
+            ($campeonato->rodadaAtual ?? $camp->rodadaAtual),
+            $campeonato->id,
+            $camp->ativado
+        );
+
+        return $this->campeonatoRepository->update($campUpdate);
     }
 
     public function delete(int $id): bool
@@ -74,7 +99,6 @@ class CampeonatoService
                 $campeonato->id,
                 $campeonato->ativado
             );
-
             return $this->save($newCampeonato);
         }
 

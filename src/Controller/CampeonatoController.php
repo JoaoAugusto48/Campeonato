@@ -28,6 +28,21 @@ class CampeonatoController extends Controller
     ) {
     }
 
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $route = parent::handle($request);
+
+        if($request->getMethod() === 'POST') {
+
+            if(str_contains($request->getServerParams()['PATH_INFO'], '/activate')) {
+                $id = filter_var($request->getParsedBody()['id'], FILTER_VALIDATE_INT);
+                return $this->activate($request, $id);
+            }
+        }
+
+        return $route;
+    }
+
     public function index(): ResponseInterface
     {
         $campeonatoList = $this->campeonatoService->findAll();
@@ -140,8 +155,10 @@ class CampeonatoController extends Controller
                 $campData->numTurnos,
                 $campData->temporada,
                 $campData->rodadas,
+                null,
                 $campData->id
             );
+
             $result = $this->campeonatoService->save($camp);
 
             if(!$result){
@@ -181,6 +198,45 @@ class CampeonatoController extends Controller
 
         return new Response(302, [
             'Location' => '/',
+            'method' => 'GET'
+        ]);
+    }
+
+    public function activate(ServerRequestInterface $request, int $id): ResponseInterface
+    {
+        $oldUrl = $request->getServerParams()['HTTP_REFERER'];
+        try {
+            $campData = $this->campeonatoService->findById($id);
+            $equipeList = $this->estatisticaService->findByCampeonatoId($id);
+
+            if($campData->ativado) {
+                throw new \LengthException('Campeonato não pode ser ativado novamente.');
+            }
+
+            if($campData->numEquipes !== sizeof($equipeList)) {
+                throw new \LengthException("Número de equipes cadastradas não é correspondente ao número exigido '{$campData->numEquipes}'.");
+            }
+
+            $campNew = new Campeonato(
+                $campData->nome,
+                $campData->regiao,
+                $campData->numFases,
+                $campData->numEquipes,
+                $campData->numTurnos,
+                $campData->temporada,
+                $campData->rodadas,
+                $campData->rodadaAtual,
+                $campData->id,
+                true
+            );
+
+            $this->addSuccessMessage('Inserir área de ativação do campeonato');
+        } catch (\Throwable $th) {
+            $this->addErrorMessage($th->getMessage());    
+        }
+
+        return new Response(302, [
+            'Location' => $oldUrl,
             'method' => 'GET'
         ]);
     }

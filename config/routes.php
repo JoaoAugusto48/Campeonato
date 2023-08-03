@@ -32,6 +32,7 @@ return [
     'GET|/campeonatos/edit' => \App\Http\Controller\CampeonatoController::class, // edit
     'POST|/campeonatos/edit' => \App\Http\Controller\CampeonatoController::class, // update
     'POST|/campeonatos/delete' => \App\Http\Controller\CampeonatoController::class, // destroy
+    'POST|/campeonatos/activate' => \App\Http\Controller\CampeonatoController::class, // activate
     
     // Partidas
     'POST|/partidas/edit' => \App\Http\Controller\PartidaController::class, // update

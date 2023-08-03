@@ -23,9 +23,9 @@ class Campeonato{
         $this->numTurnos = $numTurnos;
         $this->temporada = $temporada;
         $this->rodadas = is_null($rodadas) ? $this->defineRodadas($numTurnos, $numEquipes) : $rodadas;
-        $this->rodadaAtual = $rodadaAtual;
+        $this->rodadaAtual = is_null($rodadaAtual) ? 1 : $rodadaAtual;
         $this->id = $id;
-        $this->ativado = $ativado;
+        $this->ativado = ($ativado ?? false);
     }
 
     public function setId(int $id): void

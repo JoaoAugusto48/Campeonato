@@ -42,7 +42,8 @@ class CampeonatoSql
                     rodadas=:rodadas,
                     num_turnos=:num_turnos,
                     temporada=:temporada,
-                    rodada_atual=:rodada_atual
+                    rodada_atual=:rodada_atual,
+                    ativado=:ativado
                 WHERE
                     id=:id;';
     }

@@ -24,6 +24,7 @@
                                         'name' => 'golsCasa',
                                         'value' => $timeCasa->gols,
                                         'dica' => 'número de gols',
+                                        'required' => true,
                                     ]) 
                                 ?>
                             </div>
@@ -35,6 +36,7 @@
                                         'name' => 'golsFora',
                                         'value' => $timeFora->gols,
                                         'dica' => 'número de gols',
+                                        'required' => true,
                                     ]) 
                                 ?>
                             </div>

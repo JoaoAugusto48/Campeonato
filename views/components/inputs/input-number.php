@@ -12,7 +12,7 @@
      */
 ?>
 <div class="mb-3">
-    <label for="input<?= $descricao ?>"><?= $descricao ?></label>
+    <label for="input<?= $descricao ?>"><?= $descricao ?><?= (!is_null($required) || $required) ? ' *' : ''?></label>
     <input 
         type="number" 
         id="input<?= str_replace(' ', '_', $descricao) ?>" 

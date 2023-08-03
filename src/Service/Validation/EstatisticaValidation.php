@@ -11,14 +11,10 @@ class EstatisticaValidation
 
     public static function validaEstatistica(Estatistica $estatistica): void
     {
-        self::validateVitorias($estatistica->vitorias);
+        PatternValidation::validateNegative('Vitória', $estatistica->vitorias);
+        PatternValidation::validateNegative('Empate', $estatistica->empates);
+        PatternValidation::validateNegative('Derrota', $estatistica->derrotas);
+        PatternValidation::validateNegative('Gol pró', $estatistica->golsPro);
+        PatternValidation::validateNegative('Gol contra', $estatistica->golsContra);
     }
-
-    private static function validateVitorias(int $vitorias): void
-    {
-        if($vitorias < 0) {
-            throw new \RangeException("Vitórias não podem ser negativas.");
-        }
-    }
-
 }

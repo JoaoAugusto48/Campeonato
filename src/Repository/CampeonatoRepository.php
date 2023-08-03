@@ -44,6 +44,7 @@ class CampeonatoRepository
         $stmt->bindValue(':temporada', $campeonato->temporada, PDO::PARAM_STR);
         $stmt->bindValue(':id', $campeonato->id, PDO::PARAM_INT);
         $stmt->bindValue(':rodada_atual', $campeonato->rodadaAtual, PDO::PARAM_INT);
+        $stmt->bindValue(':ativado', $campeonato->ativado, PDO::PARAM_BOOL);
         $result = $stmt->execute();
 
         return $result;
