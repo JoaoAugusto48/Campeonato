@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 namespace App\Http\Repository;
+use App\Http\Entity\Equipe;
+use App\Http\Entity\Pais;
 use PDO;
 
-class ExampleRepository
+class ExampleRepository implements Repository
 {
 
     public function __construct(private PDO $pdo) 
@@ -36,6 +38,16 @@ class ExampleRepository
     public function list(): array
     {
         return array();
+    }
+
+    public function hydrateObjectList(array $dataList): array
+    {
+        return [];
+    }
+
+    public function hydrateObject(array $data): object
+    {
+        return new Pais('','');
     }
     
 

@@ -9,7 +9,7 @@ use App\Http\Entity\Partida;
 use App\Http\Repository\Sql\PartidaSql;
 use PDO;
 
-class PartidaRepository
+class PartidaRepository implements Repository
 {
 
     public function __construct(
@@ -50,7 +50,7 @@ class PartidaRepository
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $this->hydratePartida($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->hydrateObject($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -60,7 +60,7 @@ class PartidaRepository
         $stmt->bindValue(':campeonatoId', $campId, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $this->hydratePartidaList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -72,7 +72,7 @@ class PartidaRepository
         $stmt->bindValue(':status', false, PDO::PARAM_BOOL);
         $stmt->execute();
 
-        return $this->hydratePartidaList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Partida[] */
@@ -82,7 +82,7 @@ class PartidaRepository
     }
 
     /** @return \App\Http\Entity\Partida[] */
-    private function hydratePartidaList(array $partidaDataList): array
+    public function hydrateObjectList(array $partidaDataList): array
     {
         $partidaList = [];
 
@@ -98,7 +98,7 @@ class PartidaRepository
         return $partidaList;
     }
 
-    private function hydratePartida(array $partidaData): Partida
+    public function hydrateObject(array $partidaData): Partida
     {
         return Partida::fromArray($partidaData);
     }

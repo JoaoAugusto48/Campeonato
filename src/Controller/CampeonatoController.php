@@ -33,13 +33,11 @@ class CampeonatoController extends Controller
         $route = parent::handle($request);
 
         if($request->getMethod() === 'POST') {
-
             if(str_contains($request->getServerParams()['PATH_INFO'], '/activate')) {
                 $id = filter_var($request->getParsedBody()['id'], FILTER_VALIDATE_INT);
                 return $this->activate($request, $id);
             }
         }
-
         return $route;
     }
 
@@ -66,7 +64,8 @@ class CampeonatoController extends Controller
                     'regiaoList' => $regiaoList,
                     'campeonato' => null
                 ]
-            ));
+            )
+        );
     }
 
     public function store(ServerRequestInterface $request): ResponseInterface
@@ -155,8 +154,7 @@ class CampeonatoController extends Controller
                 $campData->numTurnos,
                 $campData->temporada,
                 $campData->rodadas,
-                null,
-                $campData->id
+                id: $campData->id
             );
 
             $result = $this->campeonatoService->save($camp);

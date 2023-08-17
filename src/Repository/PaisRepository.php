@@ -8,7 +8,7 @@ use App\Http\Entity\Pais;
 use App\Http\Repository\Sql\PaisSql;
 use PDO;
 
-class PaisRepository
+class PaisRepository implements Repository
 {
 
     public function __construct(
@@ -55,7 +55,7 @@ class PaisRepository
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $this->hydratePais($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->hydrateObject($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Pais[] */
@@ -64,12 +64,12 @@ class PaisRepository
         $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
-        return $this->hydratePaisList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     
     /**  @return \App\Http\Entity\Pais[] */
-    private function hydratePaisList(array $paisDataList): array
+    public function hydrateObjectList(array $paisDataList): array
     {
         $paisList = [];
 
@@ -80,7 +80,7 @@ class PaisRepository
         return $paisList;
     }
 
-    private function hydratePais(array $paisData): Pais
+    public function hydrateObject(array $paisData): Pais
     {
         return Pais::fromArray($paisData);
     }

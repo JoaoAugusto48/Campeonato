@@ -80,8 +80,8 @@ class Partida
             $partidaData[$numGolVisitante],
             $partidaData[$id],
             $partidaData[$status],
-            $partidaData[$timeCasa],
-            $partidaData[$timeVisitante],
+            timeCasa: $partidaData[$timeCasa],
+            timeVisitante: $partidaData[$timeVisitante],
         );
     }
     

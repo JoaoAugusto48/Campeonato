@@ -22,8 +22,8 @@ class Campeonato{
         $this->numEquipes = $numEquipes;
         $this->numTurnos = $numTurnos;
         $this->temporada = $temporada;
-        $this->rodadas = is_null($rodadas) ? $this->defineRodadas($numTurnos, $numEquipes) : $rodadas;
-        $this->rodadaAtual = is_null($rodadaAtual) ? 1 : $rodadaAtual;
+        $this->rodadas = $this->defineRodadas($numTurnos, $numEquipes, $rodadas);
+        $this->rodadaAtual = $this->defineRodadaAtual($rodadaAtual);
         $this->id = $id;
         $this->ativado = ($ativado ?? false);
     }
@@ -33,11 +33,15 @@ class Campeonato{
         $this->id = $id;
     }
 
-    private function defineRodadas(int $turnos, int $equipes): int
+    private function defineRodadas(int $turnos, int $equipes, ?int $rodadas): int
     {
-        return ($equipes - 1) * $turnos;
+        return ($rodadas ?? (($equipes-1) * $turnos));
     }
 
+    private function defineRodadaAtual(?int $rodadaAtual): ?int
+    {
+        return ($rodadaAtual ?? 1);
+    }
 
     public static function fromArray(
         array $campeonatoData, 
@@ -54,17 +58,17 @@ class Campeonato{
     ): Campeonato
     {
         return new Campeonato(
-                $campeonatoData[$nome], 
-                $campeonatoData[$regiao], 
-                $campeonatoData[$numFases], 
-                $campeonatoData[$numEquipes], 
-                $campeonatoData[$numTurnos], 
-                $campeonatoData[$temporada], 
-                $campeonatoData[$rodadas],
-                $campeonatoData[$rodadaAtual],
-                $campeonatoData[$id],
-                $campeonatoData[$ativado],
-            );
+            $campeonatoData[$nome], 
+            $campeonatoData[$regiao], 
+            $campeonatoData[$numFases], 
+            $campeonatoData[$numEquipes], 
+            $campeonatoData[$numTurnos], 
+            $campeonatoData[$temporada], 
+            $campeonatoData[$rodadas],
+            $campeonatoData[$rodadaAtual],
+            id: $campeonatoData[$id],
+            ativado: $campeonatoData[$ativado],
+        );
     }
 
 }

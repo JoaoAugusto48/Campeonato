@@ -8,7 +8,7 @@ use App\Http\Entity\Campeonato;
 use App\Http\Repository\Sql\CampeonatoSql;
 use PDO;
 
-class CampeonatoRepository
+class CampeonatoRepository implements Repository
 {
 
     public function __construct(
@@ -65,7 +65,7 @@ class CampeonatoRepository
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $this->hydrateCampeonato($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->hydrateObject($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Campeonato[] */
@@ -74,11 +74,11 @@ class CampeonatoRepository
         $stmt = $this->pdo->prepare($this->sql->findAll());
         $stmt->execute();
 
-        return $this->hydrateCampeonatoList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /**  @return \App\Http\Entity\Campeonato[] */
-    private function hydrateCampeonatoList(array $campeonatoDataList): array
+    public function hydrateObjectList(array $campeonatoDataList): array
     {
         $campeonatoList = [];
 
@@ -89,7 +89,7 @@ class CampeonatoRepository
         return $campeonatoList;
     }
 
-    private function hydrateCampeonato(array $campeonatoData): Campeonato
+    public function hydrateObject(array $campeonatoData): Campeonato
     {
         return Campeonato::fromArray($campeonatoData);
     }

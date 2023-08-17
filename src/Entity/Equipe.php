@@ -27,11 +27,6 @@ class Equipe
         
         $this->pais = $pais;
     }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
     
     public function getStatus():int{
         return $this->status;
@@ -54,15 +49,13 @@ class Equipe
             $equipeData[$pais] = null;
         }        
 
-        $equipe = new Equipe(
+        return new Equipe(
             $equipeData[$nome], 
             $equipeData[$sigla], 
             $equipeData[$paisId],
-            $equipeData[$id],
-            $equipeData[$pais],
+            id: $equipeData[$id],
+            pais: $equipeData[$pais],
         );
-
-        return $equipe;
     }
 
     private function configureSigla(string $sigla): string

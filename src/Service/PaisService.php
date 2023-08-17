@@ -39,13 +39,11 @@ class PaisService
 
     private function insert(Pais $pais): bool
     {
-        // validation rules
         return $this->paisRepository->add($pais);
     }
 
     private function update(Pais $pais): bool
     {
-        // validation rules
         return $this->paisRepository->update($pais);
     }
 

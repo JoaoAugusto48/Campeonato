@@ -10,7 +10,7 @@ use App\Http\Repository\Sql\EquipeSql;
 use App\Http\Service\PaisService;
 use PDO;
 
-class EquipeRepository
+class EquipeRepository implements Repository
 {
 
     public function __construct(
@@ -59,7 +59,7 @@ class EquipeRepository
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $this->hydrateEquipe($stmt->fetch(PDO::FETCH_ASSOC));
+        return $this->hydrateObject($stmt->fetch(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Equipe[] */
@@ -68,11 +68,11 @@ class EquipeRepository
         $stmt = $this->pdo->prepare($this->sql->findAllWithPais());
         $stmt->execute();
 
-        return $this->hydrateEquipeList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Equipe[] */
-    private function hydrateEquipeList(array $equipeDataList): array
+    public function hydrateObjectList(array $equipeDataList): array
     {
         $equipeList = [];
 
@@ -86,7 +86,7 @@ class EquipeRepository
         return $equipeList;
     }
 
-    private function hydrateEquipe(array $equipeData): Equipe
+    public function hydrateObject(array $equipeData): Equipe
     {
         $equipeData['pais'] = $this->paisService->findById($equipeData['pais_id']);
 

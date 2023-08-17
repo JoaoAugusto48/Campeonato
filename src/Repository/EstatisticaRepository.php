@@ -8,9 +8,8 @@ use App\Http\Entity\Equipe;
 use App\Http\Entity\Estatistica;
 use App\Http\Repository\Sql\EstatisticaSql;
 use PDO;
-use PDOStatement;
 
-class EstatisticaRepository
+class EstatisticaRepository implements Repository
 {
 
     public function __construct(
@@ -51,7 +50,7 @@ class EstatisticaRepository
         $stmt->bindValue(':campeonato_id', $campId);
         $stmt->execute();
 
-        return $this->hydrateEstatisticaList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function findByCampeonatoEquipesId(int $campId, int $equipe1Id, int $equipe2Id): array
@@ -62,11 +61,11 @@ class EstatisticaRepository
         $stmt->bindValue(':equipe2_id', $equipe2Id, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $this->hydrateEstatisticaList($stmt->fetchAll(PDO::FETCH_ASSOC));
+        return $this->hydrateObjectList($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     /** @return \App\Http\Entity\Estatistica[] */
-    public function hydrateEstatisticaList(array $estatisticaDataList): array
+    public function hydrateObjectList(array $estatisticaDataList): array
     {
         $estatisticaList = [];
 
@@ -78,4 +77,10 @@ class EstatisticaRepository
 
         return $estatisticaList;
     }
+
+    public function hydrateObject(array $estatisticaData): Estatistica
+    {
+        return Estatistica::fromArray($estatisticaData);
+    }
+
 }

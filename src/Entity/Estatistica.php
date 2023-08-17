@@ -91,8 +91,8 @@ class Estatistica
             $estatisticaData[$golsContra],
             $estatisticaData[$campeonatoId],
             $estatisticaData[$equipeId],
-            $estatisticaData[$id],
-            $estatisticaData[$equipe],
+            id: $estatisticaData[$id],
+            equipe: $estatisticaData[$equipe],
         );
     }
 
