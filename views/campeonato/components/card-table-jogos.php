@@ -43,7 +43,7 @@
                         </td>
                     </form>
                 </tr>
-                <?= $this->insert('components/modals/modal-update-jogo-form', 
+                <?= $this->insert('campeonato/components/modal-update-jogo-form', 
                     [
                         'action' => '',
                         'key' => $rodada . $key,

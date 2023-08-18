@@ -9,6 +9,7 @@ use App\Http\DTO\RodadaDTO;
 use App\Http\Entity\Campeonato;
 use App\Http\Enum\RegiaoEnum;
 use App\Http\Service\CampeonatoService;
+use App\Http\Service\EquipeService;
 use App\Http\Service\EstatisticaService;
 use App\Http\Service\PartidaService;
 use League\Plates\Engine;
@@ -25,12 +26,24 @@ class CampeonatoController extends Controller
 
         private EstatisticaService $estatisticaService,
         private PartidaService $partidaService,
+        private EquipeService $equipeService,
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $route = parent::handle($request);
+
+        if(!isset($request->getServerParams()['PATH_INFO'])) {
+            return $route;
+        }
+        
+        if($request->getMethod() === 'GET') {
+            if(str_contains($request->getServerParams()['PATH_INFO'], '/equipes')){
+                $id = filter_var($request->getQueryParams()['id'], FILTER_VALIDATE_INT);
+                return $this->viewAddEquipes($request, $id);
+            }
+        }
 
         if($request->getMethod() === 'POST') {
             if(str_contains($request->getServerParams()['PATH_INFO'], '/activate')) {
@@ -224,9 +237,14 @@ class CampeonatoController extends Controller
                 $campData->temporada,
                 $campData->rodadas,
                 $campData->rodadaAtual,
-                $campData->id,
-                true
+                id: $campData->id,
+                ativado: true
             );
+
+            $result = $this->campeonatoService->activateCampeonato($campNew);
+            if(!$result) {
+                throw new \RuntimeException('Não foi possível ativar o campeonato');
+            }
 
             $this->addSuccessMessage('Inserir área de ativação do campeonato');
         } catch (\Throwable $th) {
@@ -238,5 +256,23 @@ class CampeonatoController extends Controller
             'method' => 'GET'
         ]);
     }
+
+    public function viewAddEquipes(ServerRequestInterface $request, int $id): ResponseInterface
+    {
+        $oldUrl = $request->getServerParams()['HTTP_REFERER'];
+        $campeonato = $this->campeonatoService->findById($id);
+        $equipeList = $this->equipeService->findAll();
+
+        return new Response(302, [], 
+            $this->templates->render(
+                'campeonato/equipes/equipe-add-form',
+                [
+                    'campeonato' => $campeonato,
+                    'lastUrl' => $oldUrl,
+                    'equipeList' => $equipeList,
+                ]
+            )
+        );
+    }   
 
 }

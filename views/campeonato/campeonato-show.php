@@ -59,7 +59,7 @@ $this->layout('layout');
             </tbody>
         </table>
 
-        <?= $this->insert('campeonato/card-table-jogos', ['campeonato' => $campeonato, 'partidasMap' => $partidasMap]); ?>
+        <?= $this->insert('campeonato/components/card-table-jogos', ['campeonato' => $campeonato, 'partidasMap' => $partidasMap]); ?>
 
     <?php else: ?>
         <div class="row">
@@ -68,7 +68,12 @@ $this->layout('layout');
                     <div class="card-body">
                         <h5 class="card-title">Adicionar equipes</h5>
                         <p class="card-text">Esse campeonato possui <?php $campeonato->numEquipes ?> equipes para serem inseridas</p>
-                        <a href="#" class="btn btn-primary">Adicionar</a>
+                        <?= $this->insert('components/buttons/button-link', [
+                            'rota' => '/campeonatos/equipes?id='. $campeonato->id,
+                            'classes' => 'primary',
+                            'nome' => 'Adicionar',
+                        ]) ?>
+                        <!-- <a href="#" class="btn btn-primary">Adicionar</a> -->
                     </div>
                 </div>
             </div>

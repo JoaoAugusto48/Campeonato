@@ -58,7 +58,7 @@ class CampeonatoRepository implements Repository
         
         return $result;
     }
-
+    
     public function findById(int $id): Campeonato
     {
         $stmt = $this->pdo->prepare($this->sql->findById());

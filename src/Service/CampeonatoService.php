@@ -68,8 +68,8 @@ class CampeonatoService
             $campeonato->temporada,
             $camp->rodadas,
             ($campeonato->rodadaAtual ?? $camp->rodadaAtual),
-            $campeonato->id,
-            $camp->ativado
+            id: $campeonato->id,
+            ativado: ($campeonato->ativado ?? $camp->ativado)
         );
 
         return $this->campeonatoRepository->update($campUpdate);
@@ -78,6 +78,11 @@ class CampeonatoService
     public function delete(int $id): bool
     {
         return $this->campeonatoRepository->delete($id);
+    }
+
+    public function activateCampeonato(Campeonato $campeonato): bool
+    {
+        return $this->save($campeonato);
     }
 
     public function defineProximaRodada(int $campeonatoId, int $rodada)

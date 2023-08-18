@@ -12,7 +12,7 @@ class Campeonato{
     public readonly ?int $rodadas;
     public readonly ?int $rodadaAtual;
     public readonly int $numTurnos;
-    public readonly bool $ativado;
+    public readonly ?bool $ativado;
 
     public function __construct(string $nome, string $regiao, int $numFases, int $numEquipes, int $numTurnos, string $temporada, ?int $rodadas = null, ?int $rodadaAtual = 1, ?int $id = null, ?bool $ativado = null) 
     {
