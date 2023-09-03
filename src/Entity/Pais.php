@@ -2,11 +2,22 @@
 
 namespace App\Http\Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+
+#[Entity]
 final class Pais
 {
-    public readonly ?int $id;
-    public readonly string $nome;
-    public readonly string $sigla;
+    #[Id, GeneratedValue, Column]
+    public ?int $id;
+    #[Column(length: 25)]
+    public string $nome;
+    #[Column(length: 3)]
+    public string $sigla;
+    #[Column]
+    public bool $status;
 
     public function __construct(string $nome, string $sigla, ?int $id = null) 
     {

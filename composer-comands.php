@@ -11,3 +11,6 @@ echo 'composer require php-di/php-di';
 echo 'composer require league/plates';
 
 echo 'composer require psr/http-server-handler';
+
+// para instalar pacote de migrations
+echo "composer require doctrine/migrations";
