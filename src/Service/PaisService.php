@@ -39,12 +39,12 @@ class PaisService
 
     private function insert(Pais $pais): bool
     {
-        return $this->paisRepository->add($pais);
+        return $this->paisRepository->add($pais, true);
     }
 
     private function update(Pais $pais): bool
     {
-        return $this->paisRepository->update($pais);
+        return $this->paisRepository->update($pais, true);
     }
 
     public function delete(int $id): bool

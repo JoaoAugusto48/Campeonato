@@ -1,19 +1,49 @@
 <?php
 
 namespace App\Http\Entity;
-    
+
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\Table;
+
+#[Entity]
+#[Table('partidas')]
 class Partida
 {
-    public readonly ?int $id;
-    public readonly int $campeonatoId;
-    public readonly int $timeCasaId;
-    public readonly int $timeVisitanteId;
-    public readonly int $numGolCasa;
-    public readonly int $numGolVisitante;
-    public readonly int $rodada;
-    public readonly ?bool $status;
-    public readonly ?Equipe $timeCasa;
-    public readonly ?Equipe $timeVisitante;
+    #[Id, GeneratedValue, Column]
+    public ?int $id;
+    #[Column('campeonatos_id')]
+    public int $campeonatoId;
+    #[Column('time_casa')]
+    public int $timeCasaId;
+    #[Column('time_visitante')]
+    public int $timeVisitanteId;
+    #[Column('num_gols_casa')]
+    public int $numGolCasa;
+    #[Column('num_gols_visitante')]
+    public int $numGolVisitante;
+    #[Column]
+    public int $rodada;
+    #[Column]
+    public ?bool $status;
+    #[ManyToOne(
+        targetEntity: Equipe::class,
+        inversedBy: 'partidas',
+        // fetch: 'EAGER'
+    )]
+    #[JoinColumn(name: 'time_casa', referencedColumnName: 'id')]
+    public ?Equipe $timeCasa;
+    #[ManyToOne(
+        targetEntity: Equipe::class,
+        inversedBy: 'partidas',
+        // fetch: 'EAGER'
+    )]
+    #[JoinColumn(name: 'time_visitante', referencedColumnName: 'id')]
+    public ?Equipe $timeVisitante;
     
     public function __construct(
         int $campeonatoId,
@@ -40,49 +70,5 @@ class Partida
         $this->timeCasa = $timeCasa;
         $this->timeVisitante = $timeVisitante;
     } 
-
-    public static function fromArray(
-       array $partidaData,
-       string $campeonatoId = 'campeonatos_id', 
-       string $timeCasaId = 'time_casa', 
-       string $timeVisitanteId = 'time_visitante', 
-       string $rodada = 'rodada', 
-       ?string $numGolCasa = 'num_gols_casa', 
-       ?string $numGolVisitante = 'num_gols_visitante', 
-       ?string $id = 'id',
-       ?string $status = 'status', 
-       ?string $timeCasa = 'equipeCasa', 
-       ?string $timeVisitante = 'equipeVisitante', 
-    ): Partida
-    {
-        if(!isset($partidaData[$numGolCasa])) {
-            $partidaData[$numGolCasa] = null;
-        } 
-        if(!isset($partidaData[$numGolVisitante])) {
-            $partidaData[$numGolVisitante] = null;
-        } 
-        if(!isset($partidaData[$timeCasa])) {
-            $partidaData[$timeCasa] = null;
-        } 
-        if(!isset($partidaData[$timeVisitante])) {
-            $partidaData[$timeVisitante] = null;
-        } 
-        if(!isset($partidaData[$status])) {
-            $partidaData[$status] = null;
-        } 
-
-        return new Partida(
-            $partidaData[$campeonatoId],
-            $partidaData[$timeCasaId],
-            $partidaData[$timeVisitanteId],
-            $partidaData[$rodada],
-            $partidaData[$numGolCasa],
-            $partidaData[$numGolVisitante],
-            $partidaData[$id],
-            $partidaData[$status],
-            timeCasa: $partidaData[$timeCasa],
-            timeVisitante: $partidaData[$timeVisitante],
-        );
-    }
     
 }

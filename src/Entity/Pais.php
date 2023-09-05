@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 
 #[Entity]
-final class Pais
+class Pais
 {
     #[Id, GeneratedValue, Column]
     public ?int $id;
@@ -24,15 +24,6 @@ final class Pais
         $this->nome = $nome;
         $this->sigla = $this->configureSigla($sigla);
         $this->id = $id;
-    }
-    
-    public static function fromArray(array $paisData, string $nome = 'nome', string $sigla = 'sigla', ?string $id = 'id'): Pais
-    {
-        return new Pais(
-            $paisData[$nome], 
-            $paisData[$sigla], 
-            id: $paisData[$id]
-        );
     }
 
     public function paisEncode(): string 

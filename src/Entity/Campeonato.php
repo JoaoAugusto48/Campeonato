@@ -2,17 +2,48 @@
 
 namespace App\Http\Entity;
 
-class Campeonato{
-    public readonly ?int $id;
-    public readonly string $nome;
-    public readonly string $regiao;
-    public readonly int $numFases;
-    public readonly int $numEquipes;
-    public readonly string $temporada;
-    public readonly ?int $rodadas;
-    public readonly ?int $rodadaAtual;
-    public readonly int $numTurnos;
-    public readonly ?bool $ativado;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\Table;
+
+#[Entity]
+#[Table(name: 'campeonatos')]
+class Campeonato
+{
+    #[Id, GeneratedValue, Column]
+    public ?int $id;
+    #[Column]
+    public string $nome;
+    #[Column]
+    public string $regiao;
+    #[Column('num_fases')]
+    public int $numFases;
+    #[Column('num_equipes')]
+    public int $numEquipes;
+    #[Column]
+    public string $temporada;
+    #[Column]
+    public ?int $rodadas;
+    #[Column('rodada_atual')]
+    public ?int $rodadaAtual;
+    #[Column('num_turnos')]
+    public int $numTurnos;
+    #[Column]
+    public ?bool $ativado;
+
+    #[ManyToMany(Equipe::class, mappedBy: 'campeonatos')]
+    private Collection $equipes;
+
+    #[OneToMany(
+        mappedBy: 'campeonato', 
+        targetEntity: Estatistica::class
+    )]
+    private Collection $estatisticas;
 
     public function __construct(string $nome, string $regiao, int $numFases, int $numEquipes, int $numTurnos, string $temporada, ?int $rodadas = null, ?int $rodadaAtual = 1, ?int $id = null, ?bool $ativado = null) 
     {
@@ -28,9 +59,25 @@ class Campeonato{
         $this->ativado = ($ativado ?? false);
     }
 
-    public function setId(int $id): void
+    public function equipes(): Collection
     {
-        $this->id = $id;
+        return $this->equipes();
+    }
+
+    public function addEquipe(Equipe $equipe): void 
+    {
+        if ($this->equipes->contains($equipe)) {
+            return;
+        }
+
+        $this->equipes()->add($equipe);
+        $equipe->enrollInCampeonato($this);
+    }
+
+    public function addEstatistica(Estatistica $estatistica): void
+    {
+        $this->estatisticas->add($estatistica);
+        $estatistica->setCampeonato($this);
     }
 
     private function defineRodadas(int $turnos, int $equipes, ?int $rodadas): int
@@ -42,33 +89,4 @@ class Campeonato{
     {
         return ($rodadaAtual ?? 1);
     }
-
-    public static function fromArray(
-        array $campeonatoData, 
-        string $nome = 'nome', 
-        string $regiao = 'regiao', 
-        string $numFases = 'num_fases', 
-        string $numEquipes = 'num_equipes', 
-        string $numTurnos = 'num_turnos', 
-        string $temporada = 'temporada', 
-        string $rodadas = 'rodadas', 
-        string $rodadaAtual = 'rodada_atual', 
-        ?string $id = 'id',
-        ?string $ativado = 'ativado',
-    ): Campeonato
-    {
-        return new Campeonato(
-            $campeonatoData[$nome], 
-            $campeonatoData[$regiao], 
-            $campeonatoData[$numFases], 
-            $campeonatoData[$numEquipes], 
-            $campeonatoData[$numTurnos], 
-            $campeonatoData[$temporada], 
-            $campeonatoData[$rodadas],
-            $campeonatoData[$rodadaAtual],
-            id: $campeonatoData[$id],
-            ativado: $campeonatoData[$ativado],
-        );
-    }
-
 }

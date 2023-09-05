@@ -12,7 +12,7 @@ class EquipeService
 {
     public function __construct(
         private EquipeRepository $equipeRepository,
-        private PaisService $paisService
+        private PaisService $paisService,
     ) {
     }
 
@@ -29,6 +29,9 @@ class EquipeService
 
     public function save(Equipe $equipe): bool
     {
+        $pais = $this->paisService->findById($equipe->paisId);
+        $equipe->setPais($pais);
+
         // EquipeValidation::validadeEquipe($equipe);
         if(isset($equipe->id)){
             return $this->update($equipe);
@@ -45,7 +48,7 @@ class EquipeService
             return false;
         }
 
-        return $this->equipeRepository->add($equipe);   
+        return $this->equipeRepository->add($equipe, true);   
     }
 
     private function update(Equipe $equipe): bool
@@ -56,10 +59,10 @@ class EquipeService
             return false;
         }
 
-        return $this->equipeRepository->update($equipe);
+        return $this->equipeRepository->update($equipe, true);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id, $flush=false): bool
     {
         $equipe = $this->equipeRepository->findById($id);
 

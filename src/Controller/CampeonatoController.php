@@ -123,7 +123,12 @@ class CampeonatoController extends Controller
         $campeonato = $this->campeonatoService->findById($id);
         $estatisticaList = $this->estatisticaService->findByCampeonatoId($campeonato->id);
         $partidaList = $this->partidaService->findAllByCampeonatoId($campeonato->id);
-        
+        // $estatisticaList = [];
+        // $partidaList = [];
+        // // var_dump($partidaList);
+        // var_dump($estatisticaList);
+        // exit;
+
         $partidasMap = RodadaDTO::fillPartidaMap($partidaList);
 
         return new Response(302, [],

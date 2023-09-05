@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Service;
 
-use App\Http\Entity\Equipe;
 use App\Http\Entity\Estatistica;
 use App\Http\Entity\Partida;
 use App\Http\Repository\EstatisticaRepository;
-use App\Http\Service\Validation\EstatisticaValidation;
 
 class EstatisticaService
 {
@@ -99,22 +97,27 @@ class EstatisticaService
     public function findByCampeonatoId(int $champId): array
     {
         $classificacao = $this->estatisticaRepository->findAllByCampeonatoId($champId);
-        usort($classificacao, function($equipeA, $equipeB) {
+        usort($classificacao, function(Estatistica $equipeA, Estatistica $equipeB) {
             
             if($equipeA->pontos != $equipeB->pontos) {
+                // por pontos
                 return ($equipeA->pontos < $equipeB->pontos) ? 1 : -1;
             }  
             if($equipeA->saldoGols != $equipeB->saldoGols){
+                // por saldo de gols
                 return ($equipeA->saldoGols < $equipeB->saldoGols) ? 1 : -1;
             } 
             
             if($equipeA->golsPro != $equipeB->golsPro) {
+                // por Gols a favor
                 return ($equipeA->golsPro < $equipeB->saldoGols) ? 1 : -1;
             } 
             if($equipeA->vitorias != $equipeB->vitorias) {
+                // por vitórias
                 return ($equipeA->vitorias < $equipeB->vitorias) ? 1 : -1;
             }
     
+            // Mantém
             return 0;
         });
 
