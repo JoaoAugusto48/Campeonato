@@ -3,62 +3,59 @@
 namespace App\Http\Entity;
 
 use App\Http\Entity\Pais;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping as ORM;
 
-#[Entity]
-#[Table(name: 'equipes')]
+#[ORM\Entity]
+#[ORM\Table(name: 'equipes')]
 class Equipe
 {
-    #[Id, GeneratedValue, Column]
-    public ?int $id;
-    #[Column]
-    public string $nome;
-    #[Column]
-    public string $sigla;
-    #[Column('pais_id')]
-    public int $paisId;
-    // #[Column]
-    private bool $status;
-
-    #[ManyToOne(targetEntity: Pais::class)]
-    public ?Pais $pais;
-
-    #[ManyToMany(Campeonato::class, 'equipes')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id;
+    #[ORM\Column]
+    private string $nome;
+    #[ORM\Column]
+    private string $sigla;
+    #[ORM\Column('pais_id')]
+    private int $paisId;
+    // private bool $status;
+    #[ORM\ManyToOne(targetEntity: Pais::class, fetch: 'EAGER')]
+    #[ORM\JoinColumn('pais_id', referencedColumnName: 'id')]
+    private ?Pais $pais = null;
+    
+    #[ORM\ManyToMany(Campeonato::class, 'equipes')]
+    #[ORM\JoinTable(name: 'estatisticas')]
     private Collection $campeonatos;
-
-    #[OneToMany(
+    
+    #[ORM\OneToMany(
         mappedBy: 'equipe',
-        targetEntity: Estatistica::class
+        targetEntity: Estatistica::class,
     )]
     private Collection $estatisticas;
-
-    #[OneToMany(
+    
+    #[ORM\OneToMany(
+        targetEntity: Partida::class,
         mappedBy: 'equipe',
-        targetEntity: Partida::class
     )]
     public Collection $partidas;
-    
+
     public function __construct(
         string $nome,
         string $sigla,
         int $paisId,
         ?int $id = null,
         ?Pais $pais = null,
-    ){
+    ) {
         $this->nome = $nome;
         $this->sigla = $this->configureSigla($sigla);
         $this->paisId = $paisId;
         $this->id = $id;
-        
+
         $this->pais = $pais;
+
+        $this->campeonatos = new ArrayCollection();
+        $this->partidas = new ArrayCollection();
     }
 
     public function enrollInCampeonato(Campeonato $campeonato): void
@@ -77,27 +74,75 @@ class Equipe
         $estatistica->setEquipe($this);
     }
 
-    public function addPartida(Partida $partida): void 
+    /** @return Collection<Campeonato> */
+    public function campeonatos(): Collection
+    {
+        return $this->campeonatos;
+    }
+
+    /** @return Collection<Partida> */
+    public function partidas(): Collection
+    {
+        return $this->partidas;
+    }
+
+    public function addPartida(Partida $partida): void
     {
         $this->partidas->add($partida);
     }
 
-    public function setPais(Pais $pais): void 
+    private function configureSigla(string $sigla): string
+    {
+        return strtoupper($sigla);
+    }
+
+    public function setPais(Pais $pais): void
     {
         $this->pais = $pais;
     }
-    
-    public function getStatus():int{
-        return $this->status;
-    }
-    
-    public function setStatus(int $status):void{
-        $this->status = $status;
-    }
 
-    private function configureSigla(string $sigla): string
+    public function getPais(): Pais
     {
-        return strtoupper($sigla); 
+        return $this->pais;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    public function setNome(string $nome): void
+    {
+        $this->nome = $nome;
+    }
+
+    public function getSigla(): string
+    {
+        return $this->sigla;
+    }
+
+    public function setSigla(string $sigla): void
+    {
+        $this->sigla = $sigla;
+    }
+
+    public function getPaisId(): int
+    {
+        return $this->paisId;
+    }
+
+    public function setPaisId(int $paisId): void
+    {
+        $this->paisId = $paisId;
+    }
 }

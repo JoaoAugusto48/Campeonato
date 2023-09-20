@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
+use App\Http\DTO\PartidaFormDTO;
 use App\Http\Entity\Partida;
 use App\Http\Helper\InvalidMessageTrait;
 use App\Http\Helper\SuccessMessageTrait;
@@ -43,18 +44,20 @@ class PartidaController implements RequestHandlerInterface
     {
         $oldUrl = $request->getServerParams()['HTTP_REFERER'];
         try {
-            $partidaData = $request->getParsedBody();
-            $partidaResult = $this->partidaService->findById(intval($partidaData['id']));
-
-            $partida = new Partida(
-                $partidaResult->campeonatoId,
-                $partidaResult->timeCasaId,
-                $partidaResult->timeVisitanteId,
-                $partidaResult->rodada,
-                intval($partidaData['golsCasa']),
-                intval($partidaData['golsFora']),
-                $partidaResult->id
-            );
+            $partidaData = new PartidaFormDTO($request->getParsedBody(), id: $id);
+            $partida = $this->partidaService->findById($partidaData->id);
+            
+            $partida->setNumGolCasa($partidaData->numGolCasa);
+            $partida->setNumGolVisitante($partidaData->numGolVisitante);
+            // $partida = new Partida(
+            //     $partida->getCampeonatoId(),
+            //     $partida->getTimeCasaId(),
+            //     $partida->getTimeVisitanteId(),
+            //     $partida->getRodada(),
+            //     $partidaData->numGolCasa,
+            //     $partidaData->numGolVisitante,
+            //     $partida->getId()
+            // );
 
             $result = $this->partidaService->save($partida);
             if(!$result) {

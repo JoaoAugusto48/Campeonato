@@ -2,39 +2,28 @@
 
 namespace App\Http\Entity;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping as ORM;
 
-#[Entity]
+#[ORM\Entity]
 class Pais
 {
-    #[Id, GeneratedValue, Column]
-    public ?int $id;
-    #[Column(length: 25)]
-    public string $nome;
-    #[Column(length: 3)]
-    public string $sigla;
-    #[Column]
-    public bool $status;
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    private ?int $id;
+    #[ORM\Column(length: 25)]
+    private string $nome;
+    #[ORM\Column(length: 3)]
+    private string $sigla;
+    #[ORM\Column]
+    private bool $status;
 
-    public function __construct(string $nome, string $sigla, ?int $id = null) 
-    {
+    public function __construct(
+        string $nome = '', 
+        string $sigla = '', 
+        ?int $id = null
+    ) {
         $this->nome = $nome;
         $this->sigla = $this->configureSigla($sigla);
         $this->id = $id;
-    }
-
-    public function paisEncode(): string 
-    {
-        return htmlspecialchars(json_encode($this));
-    }
-
-    public static function paisDecode(string $stringPais): Pais
-    {
-        $paisData = json_decode($stringPais, true);
-        return new Pais($paisData['nome'], $paisData['sigla'], $paisData['id']);
     }
 
     private function configureSigla(string $sigla): string
@@ -42,9 +31,43 @@ class Pais
         return strtoupper($sigla); 
     }
 
-    public function __toString(): string 
+    public function getId()
     {
-        return "{$this->sigla} - {$this->nome}";
+        return $this->id;
     }
 
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+   public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    public function setNome($nome): void
+    {
+        $this->nome = $nome;
+    }
+
+    public function getSigla(): string
+    {
+        return $this->sigla;
+    }
+
+    public function setSigla($sigla): void
+    {
+        $this->sigla = $sigla;
+    }
+
+    public function getStatus(): bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
 }

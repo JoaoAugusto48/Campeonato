@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\DTO;
 
-use App\Http\Entity\Campeonato;
+use App\Http\DTO\CampeonatoDTO;
 
 class RodadaDTO
 {
     public readonly int $partidaId;
     public readonly int $rodada;
-    /** @var \App\Http\DTO\PartidaDTO[] $partidas*/
+    /** @var \App\Http\DTO\PartidaEquipeDTO[] $partidas*/
     public readonly array $partidas;
 
     /** @var \App\Http\Entity\Partida[] $partidaList
      *  @return \App\Http\DTO\RodadaDTO[]
      */
-    public static function fillPartidas(Campeonato $campeonato, array $partidaList): array
+    public static function fillPartidas(CampeonatoDTO $campeonato, array $partidaList): array
     {
         $rodadaList = [];
 
@@ -30,7 +30,7 @@ class RodadaDTO
                     $timeCasa = new EquipePartidaDTO($partida->timeCasa->nome,$partida->timeCasa->sigla,$partida->numGolCasa,$partida->timeCasa->id);
                     $timeVisitante = new EquipePartidaDTO($partida->timeVisitante->nome,$partida->timeVisitante->sigla,$partida->numGolVisitante,$partida->timeVisitante->id);
                     
-                    $partidas[] = new PartidaDTO($timeCasa, $timeVisitante, $partida->id);
+                    $partidas[] = new PartidaEquipeDTO($timeCasa, $timeVisitante, $partida->id);
                 }
             }
             $rodada->partidas = $partidas;
@@ -45,19 +45,24 @@ class RodadaDTO
     {
         $partidaMap = [];
   
-        foreach($partidaList as $partida) {            
-
+        foreach($partidaList as $partida) {
+            
             $golsCasa = $partida->numGolCasa;
             $golsVisitante = $partida->numGolVisitante;
             if(!$partida->status){
                 $golsCasa = null;
                 $golsVisitante = null;    
-            } 
-
-            $timeCasa = new EquipePartidaDTO($partida->timeCasa->nome,$partida->timeCasa->sigla,$golsCasa,$partida->timeCasa->id);
+            }
+           
+            $timeCasa = new EquipePartidaDTO(
+                $partida->timeCasa->nome,
+                $partida->timeCasa->sigla,
+                $golsCasa,
+                $partida->timeCasa->id
+            );
             $timeVisitante = new EquipePartidaDTO($partida->timeVisitante->nome,$partida->timeVisitante->sigla,$golsVisitante,$partida->timeVisitante->id);
             
-            $partidaMap[$partida->rodada][] = new PartidaDTO($timeCasa, $timeVisitante, $partida->id);
+            $partidaMap[$partida->rodada][] = new PartidaEquipeDTO($timeCasa, $timeVisitante, $partida->id);
         }
         return $partidaMap;
     }

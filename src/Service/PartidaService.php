@@ -29,40 +29,42 @@ class PartidaService
         return $this->partidaRepository->findById($id);
     }
 
-    public function save(Partida $partida): bool
+    public function save(Partida $partida, bool $flush = true): bool
     {
-        if(isset($partida->id)){
-            return $this->update($partida);
+        if(!is_null($partida->getId())){
+            return $this->update($partida, $flush);
         }
 
-        return $this->insert($partida);
+        return $this->insert($partida, $flush);
     }
 
-    private function insert(Partida $partida): bool
+    private function insert(Partida $partida, bool $flush): bool
     {
         return false;
     }
 
-    private function update(Partida $partida): bool
+    private function update(Partida $partida, bool $flush): bool
     {
-        $equipesEstatistica = $this->estatisticaService->findByCampeonatoEquipeId($partida->campeonatoId, $partida->timeCasaId, $partida->timeVisitanteId);
-        $oldPartida = $this->partidaRepository->findById($partida->id);
+        $equipesEstatistica = $this->estatisticaService->findByCampeonatoEquipeId($partida->getCampeonatoId(), $partida->getTimeCasaId(), $partida->getTimeVisitanteId(), $partida->getRodada());
+        var_dump($equipesEstatistica);
+        exit;
+        $oldPartida = $this->partidaRepository->findById($partida->getId());
 
         $estatEquipeCasa = $equipesEstatistica[0];
         $estatEquipeVisitante = $equipesEstatistica[1];
-        if($equipesEstatistica[1]->equipeId === $partida->timeCasaId) {
+        if($equipesEstatistica[1]->getEquipeId() === $partida->getTimeCasaId()) {
             $estatEquipeCasa = $equipesEstatistica[1];
             $estatEquipeVisitante = $equipesEstatistica[0];
         }
 
         $partidaResult = new Partida(
-            $partida->campeonatoId,
-            $estatEquipeCasa->equipeId,
-            $estatEquipeVisitante->equipeId,
-            $partida->rodada,
-            $partida->numGolCasa,
-            $partida->numGolVisitante,
-            $partida->id
+            $partida->getCampeonatoId(),
+            $estatEquipeCasa->getEquipeId(),
+            $estatEquipeVisitante->getEquipeId(),
+            $partida->getRodada(),
+            $partida->getNumGolCasa(),
+            $partida->getNumGolVisitante(),
+            $partida->getId()
         );
 
         $estatResult = false;
@@ -74,7 +76,7 @@ class PartidaService
         }
 
         $partidaResult = $estatResult ? $this->partidaRepository->update($partida) : false;
-        $this->campeonatoService->defineProximaRodada($partida->campeonatoId, $partida->rodada);
+        $this->campeonatoService->defineProximaRodada($partida->getCampeonatoId(), $partida->getRodada());
 
         return $estatResult && $partidaResult;
     }

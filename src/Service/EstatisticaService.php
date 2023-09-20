@@ -18,7 +18,7 @@ class EstatisticaService
     public function save(Estatistica $estatistica): bool
     {
         // EstatisticaValidation::validaEstatistica($estatistica);
-        if(isset($estatistica->id)){
+        if(!is_null($estatistica->getId())){
             return $this->update($estatistica);
         }
 
@@ -43,19 +43,19 @@ class EstatisticaService
         $newGolsCasa = 0;
         $newGolsVisitante = 0;
 
-        if($partidaResult->numGolCasa > $partidaResult->numGolVisitante) {
+        if($partidaResult->getNumGolCasa() > $partidaResult->getNumGolVisitante()) {
             $newVitoriaCasa++;
-        } else if($partidaResult->numGolVisitante > $partidaResult->numGolCasa) {
+        } else if($partidaResult->getNumGolVisitante() > $partidaResult->getNumGolCasa()) {
             $newDerrotaCasa++;
         } else {
             $newEmpateCasa++;
         }
 
-        if($oldPartida->status){
+        if($oldPartida->getStatus()){
             // Verifica resultado atual com o anterior da equipe
-            if($oldPartida->numGolCasa > $oldPartida->numGolVisitante) {
+            if($oldPartida->getNumGolCasa() > $oldPartida->getNumGolVisitante()) {
                 $newVitoriaCasa--;
-            } else if($oldPartida->numGolVisitante > $oldPartida->numGolCasa) {
+            } else if($oldPartida->getNumGolVisitante() > $oldPartida->getNumGolCasa()) {
                 $newDerrotaCasa--;
             } else {
                 $newEmpateCasa--;
@@ -63,29 +63,29 @@ class EstatisticaService
         }
 
         // Define gols feitos e sofridos
-        $newGolsCasa = $partidaResult->numGolCasa - $oldPartida->numGolCasa;
-        $newGolsVisitante = $partidaResult->numGolVisitante - $oldPartida->numGolVisitante;
+        $newGolsCasa = $partidaResult->getNumGolCasa() - $oldPartida->getNumGolCasa();
+        $newGolsVisitante = $partidaResult->getNumGolVisitante() - $oldPartida->getNumGolVisitante();
 
         $novaEstatCasa = new Estatistica(
-            $estatCasa->vitorias + $newVitoriaCasa,
-            $estatCasa->empates + $newEmpateCasa,
-            $estatCasa->derrotas + $newDerrotaCasa,
-            $estatCasa->golsPro + $newGolsCasa,
-            $estatCasa->golsContra + $newGolsVisitante,
-            $partidaResult->campeonatoId,
-            $estatCasa->equipeId,
-            $estatCasa->id
+            $estatCasa->getVitorias() + $newVitoriaCasa,
+            $estatCasa->getEmpates() + $newEmpateCasa,
+            $estatCasa->getDerrotas() + $newDerrotaCasa,
+            $estatCasa->getGolsPro() + $newGolsCasa,
+            $estatCasa->getGolsContra() + $newGolsVisitante,
+            $partidaResult->getCampeonatoId(),
+            $estatCasa->getEquipeId(),
+            $estatCasa->getId()
         );
 
         $novaEstatVisitante = new Estatistica(
-            $estatVisitante->vitorias + $newDerrotaCasa,
-            $estatVisitante->empates + $newEmpateCasa,
-            $estatVisitante->derrotas + $newVitoriaCasa,
-            $estatVisitante->golsPro + $newGolsVisitante,
-            $estatVisitante->golsContra + $newGolsCasa,
-            $partidaResult->campeonatoId,
-            $estatVisitante->equipeId,
-            $estatVisitante->id
+            $estatVisitante->getVitorias() + $newDerrotaCasa,
+            $estatVisitante->getEmpates() + $newEmpateCasa,
+            $estatVisitante->getDerrotas() + $newVitoriaCasa,
+            $estatVisitante->getGolsPro() + $newGolsVisitante,
+            $estatVisitante->getGolsContra() + $newGolsCasa,
+            $partidaResult->getCampeonatoId(),
+            $estatVisitante->getEquipeId(),
+            $estatVisitante->getId()
         );
         
         $estatList = [$novaEstatCasa, $novaEstatVisitante];
@@ -99,22 +99,22 @@ class EstatisticaService
         $classificacao = $this->estatisticaRepository->findAllByCampeonatoId($champId);
         usort($classificacao, function(Estatistica $equipeA, Estatistica $equipeB) {
             
-            if($equipeA->pontos != $equipeB->pontos) {
+            if($equipeA->getPontos() != $equipeB->getPontos()) {
                 // por pontos
-                return ($equipeA->pontos < $equipeB->pontos) ? 1 : -1;
+                return ($equipeA->getPontos() < $equipeB->getPontos()) ? 1 : -1;
             }  
-            if($equipeA->saldoGols != $equipeB->saldoGols){
+            if($equipeA->getSaldoGols() != $equipeB->getSaldoGols()){
                 // por saldo de gols
-                return ($equipeA->saldoGols < $equipeB->saldoGols) ? 1 : -1;
+                return ($equipeA->getSaldoGols() < $equipeB->getSaldoGols()) ? 1 : -1;
             } 
             
-            if($equipeA->golsPro != $equipeB->golsPro) {
+            if($equipeA->getGolsPro() != $equipeB->getGolsPro()) {
                 // por Gols a favor
-                return ($equipeA->golsPro < $equipeB->saldoGols) ? 1 : -1;
+                return ($equipeA->getGolsPro() < $equipeB->getGolsPro()) ? 1 : -1;
             } 
-            if($equipeA->vitorias != $equipeB->vitorias) {
+            if($equipeA->getVitorias() != $equipeB->getVitorias()) {
                 // por vitórias
-                return ($equipeA->vitorias < $equipeB->vitorias) ? 1 : -1;
+                return ($equipeA->getVitorias() < $equipeB->getVitorias()) ? 1 : -1;
             }
     
             // Mantém
@@ -125,8 +125,8 @@ class EstatisticaService
     }
 
     /** @return \App\Http\Entity\Estatistica[]  */
-    public function findByCampeonatoEquipeId(int $champId, int $equipe1Id, int $equipe2Id): array
+    public function findByCampeonatoEquipeId(int $champId, int $equipe1Id, int $equipe2Id, int $rodada): array
     {
-        return $this->estatisticaRepository->findByCampeonatoEquipesId($champId, $equipe1Id, $equipe2Id);
+        return $this->estatisticaRepository->findByCampeonatoEquipesId($champId, $equipe1Id, $equipe2Id, $rodada);
     }
 }

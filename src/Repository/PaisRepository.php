@@ -12,57 +12,50 @@ class PaisRepository
     private $repository;
     
     public function __construct(
-        private EntityManager $entityManager
+        private EntityManager $entityManager,
     ) {
         $this->repository = $entityManager->getRepository(Pais::class);
     }
 
-    public function add(Pais $pais, $flush=false): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function add(Pais $pais, $flush = true): void
     {
-        try {
-            $pais->status = true;
-            $this->entityManager->persist($pais);
+        $pais->setStatus(true);
+        $this->entityManager->persist($pais);
 
-            if($flush) {
-                $this->entityManager->flush();
-            }
-            return true;
-        } catch (\Throwable) {
-            return false;
+        if($flush) {
+            $this->entityManager->flush();
         }
     }
 
-    public function update(Pais $pais, $flush=false): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function update(Pais $pais, bool $flush = true): void
     {
-        try {
-            $paisUpdate = $this->findById($pais->id);
-            $paisUpdate->nome = $pais->nome;
-            $paisUpdate->sigla = $pais->sigla;
-            
-            if($flush) {
-                $this->entityManager->flush();
-            }      
-            return true;
-        } catch (\Throwable) {
-            return false;
-        }
+        // var_dump($this->entityManager->getUnitOfWork()->getIdentityMap());
+        // exit;
+        if($flush) {
+            $this->entityManager->flush($pais);
+        }      
     }
 
-    public function delete(int $id): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function delete(int $id, bool $flush = true): void
     {
-        try {
-            $paisDelete = $this->findById($id);
-            $paisDelete->status = false;
+        $paisDelete = $this->findById($id);
+        $paisDelete->setStatus(false);
 
-            $flush = false;
-            if($flush) {
-                $this->entityManager->flush();
-            }
-            return true;
-        } catch (\Throwable) {
-            return false;
+        if($flush) {
+            $this->entityManager->flush();
         }
-
     }
 
     public function findById(int $id): Pais
@@ -70,7 +63,9 @@ class PaisRepository
         return $this->repository->findOneBy(['id' => $id]);
     }
 
-    /** @return \App\Http\Entity\Pais[] */
+    /** 
+     * @return \App\Http\Entity\Pais[] 
+     */
     public function listOrderedByNome(): array
     {
         return $this->repository->findBy(

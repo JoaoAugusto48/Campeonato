@@ -27,50 +27,46 @@ class EquipeService
         return $this->equipeRepository->findById($id);
     }
 
-    public function save(Equipe $equipe): bool
+    public function save(Equipe $equipe): void
     {
-        $pais = $this->paisService->findById($equipe->paisId);
+        $pais = $this->paisService->findById($equipe->getPaisId());
         $equipe->setPais($pais);
 
-        // EquipeValidation::validadeEquipe($equipe);
-        if(isset($equipe->id)){
-            return $this->update($equipe);
+        EquipeValidation::validadeEquipe($equipe);
+        if(!is_null($equipe->getId())){
+            $this->update($equipe);
         }
 
-        return $this->insert($equipe);
+        $this->insert($equipe);
     }
 
-    private function insert(Equipe $equipe): bool
+    private function insert(Equipe $equipe): void
+    {        
+        if(is_null($equipe->getPais())) {
+            return;
+        }
+
+        $this->equipeRepository->add($equipe, true);   
+    }
+
+    private function update(Equipe $equipe): void
     {
-        $pais = $this->paisService->findById($equipe->paisId);
-        
-        if(is_null($pais)) {
-            return false;
+        if(is_null($equipe->getPais())) {
+            return;
         }
 
-        return $this->equipeRepository->add($equipe, true);   
+        $this->equipeRepository->update($equipe, true);
     }
 
-    private function update(Equipe $equipe): bool
-    {
-        $pais = $this->paisService->findById($equipe->paisId);
-        
-        if(is_null($pais)) {
-            return false;
-        }
-
-        return $this->equipeRepository->update($equipe, true);
-    }
-
-    public function delete(int $id, $flush=false): bool
+    public function delete(int $id, $flush = true): void
     {
         $equipe = $this->equipeRepository->findById($id);
 
         if(is_null($equipe)){
-            return false;
+            return;
         }
 
-        return $this->equipeRepository->delete($equipe->id);
+        $this->equipeRepository->delete($equipe, $flush);
     }
 
 }

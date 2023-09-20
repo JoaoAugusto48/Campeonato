@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
-use App\Http\DTO\PaisFormDTO;
 use App\Http\Entity\Pais;
+
+use App\Http\DTO\PaisFormDTO;
+use App\Http\DTO\PaisDTO;
+
 use App\Http\Service\PaisService;
-use League\Plates\Engine;
+
 use Nyholm\Psr7\Response;
+use League\Plates\Engine;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,7 +27,7 @@ class PaisController extends Controller
 
     public function index(): ResponseInterface
     {
-        $paisList = $this->paisService->findAll();
+        $paisList = PaisDTO::paisDTOList($this->paisService->findAll());
 
         return new Response(302, [], 
             $this->templates->render(
@@ -35,7 +39,6 @@ class PaisController extends Controller
 
     public function create(ServerRequestInterface $request): ResponseInterface
     {
-        
         return new Response(302, [], 
             $this->templates->render(
                 'pais/pais-form', 
@@ -46,27 +49,24 @@ class PaisController extends Controller
 
     public function store(ServerRequestInterface $request): ResponseInterface
     {
+        $paisData = new PaisFormDTO($request->getParsedBody());
         try {
-            $paisData = new PaisFormDTO($request->getParsedBody());
-            $pais = new Pais($paisData->nome, $paisData->sigla);
-            
-            $result = $this->paisService->save($pais);
-            if(!$result){
-                throw new \RuntimeException('Ocorreu um erro e não foi possível adicionar o País.');
-            }
+            $this->paisService->save(new Pais($paisData->nome, $paisData->sigla));
 
-            $this->addSuccessMessage("País '{$pais->nome}' criado com sucesso.");
+            $this->addSuccessMessage("País '{$paisData->nome}' criado com sucesso.");
             return new Response(302, [
-                'Location' => '/paises',
-                'method' => 'GET'
-            ]);
-        } catch (\RuntimeException $e) {
-            
-            $this->addErrorMessage($e->getMessage());
-            return new Response(302, [
-                    'Location' => '/paises/create', 
+                    'Location' => '/paises',
                     'method' => 'GET'
                 ]
+            );
+        } catch (\Throwable $e) {
+            
+            $this->addErrorMessage($e->getMessage());
+            return new Response(302, [], 
+                $this->templates->render(
+                    'pais/pais-form',
+                    ['pais' => $paisData]
+                )
             );
         }
     } 
@@ -79,7 +79,8 @@ class PaisController extends Controller
     public function edit(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         /** @var ?Pais $pais */
-        $pais = $this->paisService->findById($id);
+        $paisResult = $this->paisService->findById($id);
+        $pais = PaisDTO::getPaisDTO($paisResult);
 
         return new Response(302, [], 
             $this->templates->render(
@@ -92,22 +93,22 @@ class PaisController extends Controller
     public function update(ServerRequestInterface $request, int $id): ResponseInterface
     {
         try {
+            $pais = $this->paisService->findById($id);
+
             $paisData = new PaisFormDTO($request->getParsedBody(), $id);
-            $pais = new Pais($paisData->nome, $paisData->sigla, $paisData->id);
+            $pais->setNome($paisData->nome);
+            $pais->setSigla($paisData->sigla);
             
-            $result = $this->paisService->save($pais);
-            if(!$result){
-                throw new \RuntimeException();
-            }
+            $this->paisService->save($pais);
             
-            $this->addSuccessMessage("País '{$pais->nome}' atualizado com sucesso.");
+            $this->addSuccessMessage("País '{$pais->getNome()}' atualizado com sucesso.");
             return new Response(302, [
                 'Location' => '/paises',
                 'method' => 'GET'
             ]);
         } catch (\Throwable $th) {
             
-            $this->addErrorMessage($th->getMessage());
+           $this->addErrorMessage($th->getMessage());
             return new Response(302, [
                 'Location' => '/paises/edit?id=' . $id,
                 'method' => 'GET'
@@ -118,15 +119,9 @@ class PaisController extends Controller
     public function destroy(int $id): ResponseInterface
     {
         try {
-            $result = $this->paisService->delete($id);
-
-            if(!$result) {
-                throw new \RuntimeException();
-            }
-            
+            $this->paisService->delete($id);
             $this->addSuccessMessage("País deletado com sucesso.");
         } catch (\Throwable) {
-            // não removeu
             $this->addErrorMessage("Não foi possível deletar o País.");
         }
 

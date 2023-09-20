@@ -1,6 +1,6 @@
 <?php
 $this->layout('layout');
-/** @var \App\Http\Entity\Campeonato $campeonato
+/** @var \App\Http\DTO\CampeonatoDTO $campeonato
  *  @var \App\Http\Entity\Estatistica[] $estatisticaList 
  *  @var \App\Http\DTO\RodadaDTO[] $partidasMap
  * */

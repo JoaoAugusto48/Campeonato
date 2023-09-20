@@ -17,52 +17,41 @@ class EquipeRepository
         $this->repository = $entityManager->getRepository(Equipe::class);
     }
 
-    public function add(Equipe $equipe, $flush=false): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function add(Equipe $equipe, $flush = true): void
     {
-        try {
-            $this->entityManager->persist($equipe);
-            
-            if($flush) {
-                $this->entityManager->flush();
-            }
-
-            return true;
-        } catch (\Throwable) {
-            return false;
+        $this->entityManager->persist($equipe);
+        
+        if($flush) {
+            $this->entityManager->flush();
         }
     }
 
-    public function update(Equipe $equipe, $flush=false): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function update(Equipe $equipe, $flush = true): void
     {
-        try {
-            $equipeUpdate = $this->findById($equipe->id);
-            $equipeUpdate->nome = $equipe->nome;
-            $equipeUpdate->sigla = $equipe->sigla;
-
-            if($flush) {
-                $this->entityManager->flush();
-            }
-
-            return true;
-        } catch (\Throwable) {
-            return false;
+        if($flush) {
+            $this->entityManager->flush($equipe);
         }
     }
 
-    public function delete(int $id): bool
+    /** 
+     * @throws \Doctrine\ORM\OptimisticLockException 
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function delete(Equipe $equipe, bool $flush = true): void
     {
-        try {
-            $equipeDelete = $this->findById($id);
-            $this->entityManager->remove($equipeDelete);
+        // não está funcionando
+        $this->entityManager->remove($equipe);
 
-            $flush = false;
-            if ($flush) {
-                $this->entityManager->flush();
-            }
-
-            return true;
-        } catch (\Throwable) {
-            return false;
+        if ($flush) {
+            $this->entityManager->flush();
         }
     }
 

@@ -61,11 +61,12 @@ class EstatisticaRepository
     }
 
     /** @return \App\Http\Entity\Estatistica[] */
-    public function findByCampeonatoEquipesId(int $campId, int $equipe1Id, int $equipe2Id): array
+    public function findByCampeonatoEquipesId(int $campId, int $equipe1Id, int $equipe2Id, int $rodada): array
     {
         return $this->repository->findBy([
             'campeonatoId' => $campId,
             'equipeId' => [$equipe1Id, $equipe2Id],
+            'rodada' => $rodada
         ]);
     }
 

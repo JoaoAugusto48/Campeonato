@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controller;
 
-use App\Http\DTO\CampeonatoFormDTO;
-use App\Http\DTO\RodadaDTO;
 use App\Http\Entity\Campeonato;
+
+use App\Http\DTO\CampeonatoFormDTO;
+use App\Http\DTO\CampeonatoDTO;
+use App\Http\DTO\EstatisticaDTO;
+use App\Http\DTO\PartidaDTO;
+use App\Http\DTO\RodadaDTO;
+
 use App\Http\Enum\RegiaoEnum;
+
 use App\Http\Service\CampeonatoService;
-use App\Http\Service\EquipeService;
 use App\Http\Service\EstatisticaService;
+use App\Http\Service\EquipeService;
 use App\Http\Service\PartidaService;
-use League\Plates\Engine;
+
 use Nyholm\Psr7\Response;
+use League\Plates\Engine;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -56,7 +63,7 @@ class CampeonatoController extends Controller
 
     public function index(): ResponseInterface
     {
-        $campeonatoList = $this->campeonatoService->findAll();
+        $campeonatoList = CampeonatoDTO::campeonatoDTOList($this->campeonatoService->findAll());
 
         return new Response(302, [],
             $this->templates->render(
@@ -94,13 +101,9 @@ class CampeonatoController extends Controller
                 $campData->temporada,
                 $campData->rodadas
             );
-            $result = $this->campeonatoService->save($camp);
+            $this->campeonatoService->save($camp);
 
-            if(!$result){
-                throw new \RuntimeException();
-            }
-
-            $this->addSuccessMessage("Campeonato '{$camp->nome}' cadastrado com sucesso.");
+            $this->addSuccessMessage("Campeonato '{$camp->getNome()}' cadastrado com sucesso.");
             return new Response(302, [
                     'Location' => '/',
                     'method' => 'GET'
@@ -120,14 +123,9 @@ class CampeonatoController extends Controller
 
     public function show(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
-        $campeonato = $this->campeonatoService->findById($id);
-        $estatisticaList = $this->estatisticaService->findByCampeonatoId($campeonato->id);
-        $partidaList = $this->partidaService->findAllByCampeonatoId($campeonato->id);
-        // $estatisticaList = [];
-        // $partidaList = [];
-        // // var_dump($partidaList);
-        // var_dump($estatisticaList);
-        // exit;
+        $campeonato = CampeonatoDTO::getCampeonatoDTO($this->campeonatoService->findById($id));
+        $estatisticaList = EstatisticaDTO::estatisticaDTOList($this->estatisticaService->findByCampeonatoId($campeonato->id));
+        $partidaList = PartidaDTO::partidaDTOList($this->partidaService->findAllByCampeonatoId($campeonato->id));
 
         $partidasMap = RodadaDTO::fillPartidaMap($partidaList);
 
@@ -146,7 +144,7 @@ class CampeonatoController extends Controller
     public function edit(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         /** @var ?Campeonato $campeonato */
-        $campeonato = $this->campeonatoService->findById($id);
+        $campeonato = CampeonatoDTO::getCampeonatoDTO($this->campeonatoService->findById($id));
         $regiaoList = RegiaoEnum::cases();
 
         return new Response(302, [], 
@@ -163,25 +161,21 @@ class CampeonatoController extends Controller
     public function update(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         try {
+            $camp = $this->campeonatoService->findById($id);
+
             $campData = new CampeonatoFormDTO($request->getParsedBody(), $id);
-            $camp = new Campeonato(
-                $campData->nome,
-                $campData->regiao,
-                $campData->numFases,
-                $campData->numEquipes,
-                $campData->numTurnos,
-                $campData->temporada,
-                $campData->rodadas,
-                id: $campData->id
-            );
+            
+            $camp->setNome($campData->nome);
+            $camp->setRegiao($campData->regiao);
+            $camp->setNumFases($campData->numFases);
+            $camp->setNumEquipes($campData->numEquipes);
+            $camp->setNumTurnos($campData->numTurnos);
+            $camp->setTemporada($campData->temporada);
+            $camp->setRodadas($campData->rodadas);
 
-            $result = $this->campeonatoService->save($camp);
+            $this->campeonatoService->save($camp);
 
-            if(!$result){
-                throw new \RuntimeException();
-            }
-
-            $this->addSuccessMessage("Campeonato '{$camp->nome}' atualizado com sucesso.");
+            $this->addSuccessMessage("Campeonato '{$camp->getNome()}' atualizado com sucesso.");
             return new Response(302, [
                     'Location' => '/',
                     'method' => 'GET'
@@ -201,11 +195,7 @@ class CampeonatoController extends Controller
     public function destroy(int $id): ResponseInterface
     {
         try {
-            $result = $this->campeonatoService->delete($id);
-            
-            if(!$result){
-                throw new \RuntimeException();
-            }
+            $this->campeonatoService->delete($id);
             
             $this->addSuccessMessage('Campeonato deletado com sucesso');
         } catch (\Throwable $th) {
@@ -222,7 +212,8 @@ class CampeonatoController extends Controller
     {
         $oldUrl = $request->getServerParams()['HTTP_REFERER'];
         try {
-            $campData = $this->campeonatoService->findById($id);
+            $campData = CampeonatoDTO::getCampeonatoDTO($this->campeonatoService->findById($id));
+
             $equipeList = $this->estatisticaService->findByCampeonatoId($id);
 
             if($campData->ativado) {
@@ -246,11 +237,8 @@ class CampeonatoController extends Controller
                 ativado: true
             );
 
-            $result = $this->campeonatoService->activateCampeonato($campNew);
-            if(!$result) {
-                throw new \RuntimeException('Não foi possível ativar o campeonato');
-            }
-
+            $this->campeonatoService->activateCampeonato($campNew);
+            
             $this->addSuccessMessage('Inserir área de ativação do campeonato');
         } catch (\Throwable $th) {
             $this->addErrorMessage($th->getMessage());    

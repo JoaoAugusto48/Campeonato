@@ -12,8 +12,8 @@ final class EquipeValidation
 
     public static function validadeEquipe(Equipe $equipe): void
     {
-        PatternValidation::validateString('Nome', $equipe->nome);
-        self::validateSigla($equipe->sigla);
+        PatternValidation::validateString('Nome', $equipe->getNome());
+        self::validateSigla($equipe->getSigla());
     }
 
     /** @throws \PDOException */

@@ -30,59 +30,49 @@ class CampeonatoService
         return $this->campeonatoRepository->findById($id);
     }
 
-    public function save(Campeonato $campeonato): bool
+    public function save(Campeonato $campeonato, bool $flush = true): void
     {
         // CampeonatoValidation::validadeCampeonato($campeonato);
-        if(isset($campeonato->id)){
-            return $this->update($campeonato);
+        if(!is_null($campeonato->getId())){
+            $this->update($campeonato, $flush);
         }
 
-        return $this->insert($campeonato);
+        $this->insert($campeonato, $flush);
     }
 
-    public function insert(Campeonato $campeonato): bool
+    private function insert(Campeonato $campeonato, bool $flush): void
     {
-        return $this->campeonatoRepository->add($campeonato);
+        $campeonato->setAtivado(false);
+        $this->campeonatoRepository->add($campeonato, $flush);
     }
 
-    public function update(Campeonato $campeonato): bool
+    private function update(Campeonato $campeonato, bool $flush): void
     {
-        $camp = $this->findById($campeonato->id);
+        if($campeonato->getAtivado()) {
+            
+            $camp = $this->findById($campeonato->getId());
 
-        if($camp->ativado) {
-            if($camp->numTurnos !== $campeonato->numTurnos) {
+            if($camp->getNumTurnos() !== $campeonato->getNumTurnos()) {
                 throw new \InvalidArgumentException('Número de turnos não pode ser alterado, para campeonatos ativados.');
             }
 
-            if($camp->numEquipes !== $campeonato->numEquipes) {
+            if($camp->getNumEquipes() !== $campeonato->getNumEquipes()) {
                 throw new \InvalidArgumentException('Número de equipes não pode ser alterado, para campeonatos ativados.');
             }
         }
 
-        $campUpdate = new Campeonato(
-            $campeonato->nome,
-            $campeonato->regiao,
-            $camp->numFases,
-            $camp->numEquipes,
-            $camp->numTurnos,
-            $campeonato->temporada,
-            $camp->rodadas,
-            ($campeonato->rodadaAtual ?? $camp->rodadaAtual),
-            id: $campeonato->id,
-            ativado: ($campeonato->ativado ?? $camp->ativado)
-        );
-
-        return $this->campeonatoRepository->update($campUpdate);
+        $this->campeonatoRepository->update($campeonato, $flush);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id, bool $flush = true): void
     {
-        return $this->campeonatoRepository->delete($id);
+        $campeonato = $this->findById($id);
+        $this->campeonatoRepository->delete($campeonato, $flush);
     }
 
-    public function activateCampeonato(Campeonato $campeonato): bool
+    public function activateCampeonato(Campeonato $campeonato): void
     {
-        return $this->save($campeonato);
+        $this->save($campeonato);
     }
 
     public function defineProximaRodada(int $campeonatoId, int $rodada)
@@ -90,19 +80,21 @@ class CampeonatoService
         $partidasList = $this->partidaRepository->findAllNotPlayedByCampeonatoIdRound($campeonatoId, $rodada);
         $campeonato = $this->findById($campeonatoId);
         
-        if((sizeof($partidasList) === 0) && ($campeonato->rodadaAtual !== $campeonato->rodadas) && ($rodada === $campeonato->rodadaAtual)) {
+        if((sizeof($partidasList) === 0) && ($campeonato->getRodadaAtual() !== $campeonato->getRodadas()) && ($rodada === $campeonato->getRodadaAtual())) {
+
+            $campeonato->setRodadaAtual($campeonato->getRodadaAtual() + 1);
 
             $newCampeonato = new Campeonato(
-                $campeonato->nome,
-                $campeonato->regiao,
-                $campeonato->numEquipes,
-                $campeonato->numEquipes,
-                $campeonato->numTurnos,
-                $campeonato->temporada,
-                $campeonato->rodadas,
-                $campeonato->rodadaAtual + 1,
-                $campeonato->id,
-                $campeonato->ativado
+                $campeonato->getNome(),
+                $campeonato->getRegiao(),
+                $campeonato->getNumFases(),
+                $campeonato->getNumEquipes(),
+                $campeonato->getNumTurnos(),
+                $campeonato->getTemporada(),
+                $campeonato->getRodadas(),
+                $campeonato->getRodadaAtual(),
+                $campeonato->getId(),
+                $campeonato->getAtivado()
             );
             return $this->save($newCampeonato);
         }

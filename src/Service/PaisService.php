@@ -12,7 +12,7 @@ class PaisService
 {
 
     public function __construct(
-        private PaisRepository $paisRepository
+        private PaisRepository $paisRepository,
     ) {
     }
 
@@ -27,35 +27,37 @@ class PaisService
         return $this->paisRepository->findById($id);
     }
 
-    public function save(Pais $pais): bool
+    public function save(Pais $pais, bool $flush = true): void
     {
         PaisValidation::validatePais($pais);
-        if(isset($pais->id)){
-            return $this->update($pais);
+        if(!is_null($pais->getId())){
+            $this->update($pais, $flush);
         }
-
-        return $this->insert($pais);
+        $this->insert($pais, $flush);
     }
 
-    private function insert(Pais $pais): bool
+    private function insert(Pais $pais, bool $flush): void
     {
-        return $this->paisRepository->add($pais, true);
+        $this->paisRepository->add($pais, $flush);
     }
 
-    private function update(Pais $pais): bool
+    private function update(Pais $pais, bool $flush): void
     {
-        return $this->paisRepository->update($pais, true);
+        $this->paisRepository->update($pais, $flush);
     }
 
-    public function delete(int $id): bool
+    /**
+     * @throws \RuntimeException
+     */
+    public function delete(int $id): void
     {
         $pais = $this->paisRepository->findById($id);
         
         if(is_null($pais)){
-            return false;
+            throw new \RuntimeException('País inexistente.');
         }
         
-        return $this->paisRepository->delete($pais->id);
+        $this->paisRepository->delete($pais->getId(), true);
     }
 
 }

@@ -12,8 +12,8 @@ final class PaisValidation
 
     public static function validatePais(Pais $pais): void
     {
-        PatternValidation::validateString('Nome', $pais->nome);
-        self::validateSigla($pais->sigla);
+        PatternValidation::validateString('Nome', $pais->getNome());
+        self::validateSigla($pais->getSigla());
     }
 
     /** @throws \PDOException */

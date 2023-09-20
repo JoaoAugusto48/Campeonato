@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controller;
 
 use App\Http\Entity\Equipe;
-use App\Http\Entity\Pais;
+
+use App\Http\DTO\EquipeFormDTO;
+use App\Http\DTO\EquipeDTO;
+use App\Http\DTO\PaisDTO;
+
 use App\Http\Service\EquipeService;
 use App\Http\Service\PaisService;
-use League\Plates\Engine;
+
 use Nyholm\Psr7\Response;
+use League\Plates\Engine;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -26,7 +31,8 @@ class EquipeController extends Controller
 
     public function index(): ResponseInterface
     {
-        $equipeList = $this->equipeService->findAll();
+        $equipes = $this->equipeService->findAll();
+        $equipeList = EquipeDTO::equipeDTOList($equipes);
         
         return new Response(302, [],
             $this->templates->render(
@@ -38,14 +44,13 @@ class EquipeController extends Controller
 
     public function create(ServerRequestInterface $request): ResponseInterface
     {
-        $equipe = null;
-        $paisList = $this->paisService->findAll();
+        $paisList = PaisDTO::paisDTOList($this->paisService->findAll());
         
         return new Response(302, [],
             $this->templates->render(
                 'equipe/equipe-form',
                 [
-                    'equipe' => $equipe,
+                    'equipe' => null,
                     'paisList' => $paisList
                 ]
             )
@@ -55,26 +60,23 @@ class EquipeController extends Controller
     public function store(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $equipeData = $request->getParsedBody();
+            $equipeData = new EquipeFormDTO($request->getParsedBody());
             
-            $equipe = new Equipe(
-                $equipeData['nome'],
-                $equipeData['sigla'],
-                intval($equipeData['pais'])
+            $this->equipeService->save(
+                new Equipe(
+                    $equipeData->nome, 
+                    $equipeData->sigla, 
+                    $equipeData->paisId
+                )
             );
-            $result = $this->equipeService->save($equipe);
 
-            if(!$result){
-                throw new \RuntimeException();
-            }
-
-            $this->addSuccessMessage("Equipe '$equipe->nome' cadastrada com sucesso.");
+            $this->addSuccessMessage("Equipe '{$equipeData->nome}' cadastrada com sucesso.");
             return new Response(302, [
                     'Location' => '/equipes',
                     'method' => 'GET'
                 ]    
             );
-        } catch (\RuntimeException $e) {
+        } catch (\Throwable $e) {
             
             $this->addErrorMessage($e->getMessage());
             return new Response(302, [
@@ -93,8 +95,11 @@ class EquipeController extends Controller
     public function edit(ServerRequestInterface $request, ?int $id): ResponseInterface
     {
         /** @var ?Equipe $equipe */
-        $equipe = $this->equipeService->findById($id);
-        $paisList = $this->paisService->findAll();
+        $equipeResult = $this->equipeService->findById($id);
+        $equipe = EquipeDTO::getEquipeDTO($equipeResult);
+
+        $paises = $this->paisService->findAll();
+        $paisList = PaisDTO::paisDTOList($paises);
 
         return new Response(302, [],
             $this->templates->render(
@@ -110,27 +115,23 @@ class EquipeController extends Controller
     public function update(ServerRequestInterface $request, int $id): ResponseInterface
     {
         try {
-            $equipeData = $request->getParsedBody();            
+            $equipe = $this->equipeService->findById($id);
+            $equipeData = new EquipeFormDTO($request->getParsedBody(), $id);
             
-            $equipe = new Equipe(
-                $equipeData['nome'],
-                $equipeData['sigla'],
-                intval($equipeData['pais']),
-                $id,
-            );
+            $equipe->setId($equipeData->id);
+            $equipe->setNome($equipeData->nome);
+            $equipe->setSigla($equipeData->sigla);
+            $equipe->setPaisId($equipeData->paisId);
 
-            $result = $this->equipeService->save($equipe);
-            if(!$result){
-                throw new \RuntimeException();
-            }
-
-            $this->addSuccessMessage("Equipe '$equipe->nome' atualizada com sucesso.");
+            $this->equipeService->save($equipe);
+            
+            $this->addSuccessMessage("Equipe '{$equipe->getNome()}' atualizada com sucesso.");
             return new Response(302, [
                     'Location' => '/equipes',
                     'method' => 'GET'
                 ]    
             );
-        } catch (\RuntimeException $e) {
+        } catch (\Throwable $e) {
             
             $this->addErrorMessage($e->getMessage());
             return new Response(302, [
@@ -144,14 +145,12 @@ class EquipeController extends Controller
     public function destroy(int $id): ResponseInterface
     {
         try {
-            $result = $this->equipeService->delete($id);
-            if(!$result){
-                throw new \RuntimeException();
-            }
-
+            $this->equipeService->delete($id);
+            
             $this->addSuccessMessage('Equipe deletada com sucesso');
         } catch (\Throwable $th) {
-            $this->addErrorMessage('Não foi possível deletar a Equipe');
+            $this->addErrorMessage($th->getMessage());
+            // $this->addErrorMessage('Não foi possível deletar a Equipe');
         }
 
         return new Response(302, [

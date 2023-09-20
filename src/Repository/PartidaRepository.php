@@ -22,7 +22,7 @@ class PartidaRepository
         return false;
     }
 
-    public function update(Partida $partida): bool
+    public function update(Partida $partida, bool $flush = true): bool
     {
         // $stmt = $this->pdo->prepare($this->sql->update());
         // $stmt->bindValue(':campeonatos_id', $partida->campeonatoId, PDO::PARAM_INT);
@@ -53,11 +53,7 @@ class PartidaRepository
     /** @return \App\Http\Entity\Partida[] */
     public function findAllByCampeonatoId(int $campId): array
     {
-        try {
-            return $this->repository->findBy(['campeonatoId' => $campId]);
-        } catch (\Throwable $th) {
-            var_dump($th->getMessage());
-        }
+        return $this->repository->findBy(['campeonatoId' => $campId]);
     }
 
     /** @return \App\Http\Entity\Partida[] */
